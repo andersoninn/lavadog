@@ -14,10 +14,10 @@ export function HeroTrustBadges() {
           key={label}
           className="flex flex-col items-center gap-2.5 text-center sm:flex-row sm:whitespace-nowrap sm:text-left"
         >
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-[#F2E2D2] text-blue-strong">
-            <Icon className="size-4.5" />
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#F2E2D2] text-blue-strong">
+            <Icon className="size-8 text-blue" />
           </span>
-          <span className="max-w-28 text-sm font-medium leading-tight text-foreground/80">
+          <span className="max-w-28 text-sm font-medium leading-tight text-foreground/80 lg:max-w-30 text-wrap">
             {label}
           </span>
         </li>

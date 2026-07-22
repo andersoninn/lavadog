@@ -34,7 +34,7 @@ export function NavbarActions({ className, cartCount = 0 }: NavbarActionsProps) 
         aria-label="Carrinho de compras"
       >
         <ShoppingBag className="size-4.5" />
-        <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+        <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground pt-0.5">
           {cartCount}
         </span>
       </Link>

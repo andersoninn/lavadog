@@ -1,4 +1,4 @@
-export function HeroImagem() {
+export function HeroDesktopImagem() {
   return (
     <div className="flex justify-center lg:justify-end">
       <img
