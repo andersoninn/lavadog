@@ -9,8 +9,9 @@ Referência visual: `public/Site Model.png` (modelo enviado para aprovação da 
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS v4, mobile-first
 - shadcn/ui (componentes escritos manualmente em `components/ui`, seguindo o padrão oficial — o registry `ui.shadcn.com` não tem acesso de rede neste ambiente, mas `components.json` já está configurado para `npx shadcn add` funcionar normalmente na máquina local)
+- Fonte: Manrope (`--font-manrope`, usada tanto para título quanto texto corrido)
 - GSAP + ScrollTrigger para animações on-scroll (`lib/gsap.ts`, `components/animations/scroll-reveal.tsx`)
-- lucide-react para ícones
+- lucide-react para ícones (fixado em `0.577.0` — versões `1.x` quebram Server Components por criar Context no carregamento do módulo)
 - Componentização Solid: cada componente com responsabilidade única, máximo 100 linhas (exceto formulários)
 
 ## Paleta de cores (tema central)
@@ -26,6 +27,7 @@ Todas as cores principais vivem como CSS variables em `app/globals.css` (`:root`
 | `--blue` | `#79a1c8` | `bg-blue` / `text-blue` | **azul padrão da marca** — títulos e texto em destaque |
 | `--blue-soft` | `#eaf1f8` | `bg-blue-soft` | fundo claro atrás de ícones/badges azuis |
 | `--blue-strong` | `#3a5e80` | `text-blue-strong` | ícones pequenos sobre `blue-soft` (contraste melhor que o azul padrão) |
+| `--primary-soft` | `#fdf3e2` | `bg-primary-soft` | fundo claro atrás de ícones/badges amarelos |
 | `--muted` / `--card` / `--border` | — | `bg-muted`, `bg-card`, `border-border` | neutros de apoio (cards, divisórias) |
 
 Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo claro — ótimo para títulos grandes/negrito, mas evitar em texto pequeno ou parágrafos corridos (usar `blue-strong` nesses casos).
@@ -35,7 +37,7 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 - [x] Fundação do projeto: tema de cores (`app/globals.css`), fontes (Poppins + Inter), `lib/utils.ts`, `components/ui/button.tsx`, `components/ui/sheet.tsx`, GSAP configurado
 - [x] Navbar (`components/layout/navbar/`): logo, links, ações (WhatsApp/conta/carrinho), menu mobile com Sheet
 - [x] Hero (`components/sections/hero/`): headline, CTAs, badges de confiança, imagem com card flutuante, animação on-scroll
-- [ ] Sobre a LavaDog Store
+- [x] Sobre a LavaDog Store (`components/sections/about/`): foto circular com badge flutuante, título, parágrafo e 4 cards de diferenciais
 - [ ] Nossos Serviços
 - [ ] Nossa Store (vitrine de categorias)
 - [ ] Por que escolher a LavaDog Store
@@ -67,7 +69,8 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 
 ## Pendências / decisões em aberto
 
-- Logo definitivo da cliente: usando placeholder (ícone de cachorro + "LavaDog Store" em texto). Substituir pelo logo real assim que recebido.
-- Foto do hero (`public/images/hero-dog.jpg`) é um recorte temporário do `Site Model.png`, só para visualização do layout. Substituir pela fotografia definitiva da cliente.
+- Logo definitivo: já integrado (`public/images/logo.png`).
+- Fotos do hero (`heroDog1.png`, `heroBgDesktop.png`, `heroMobileBg.png`, `dogfoots.png`): já são os assets reais da cliente.
+- Foto da seção "Sobre" (`public/images/about-dog.jpg`) ainda é um recorte temporário do `Site Model.png`, só para visualização do layout. Substituir pela fotografia definitiva da cliente.
 - Número de WhatsApp no navbar é placeholder (`wa.me/5500000000000`). Atualizar com o número real.
 - Links da navbar apontam para âncoras (`#sobre`, `#servicos`, etc.) que serão criadas conforme as seções forem construídas.

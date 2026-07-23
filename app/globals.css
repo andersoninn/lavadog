@@ -18,6 +18,7 @@
   /* Brand: amarelo padrão (CTAs, coroa, detalhes) */
   --primary: #f5bf5f;
   --primary-hover: #d5a652;
+  --primary-soft: #fdf3e2;
   --primary-foreground: #221b14;
 
   /* Brand: blue (nosso azul padrão — títulos, ícones, links em destaque) */
@@ -43,6 +44,7 @@
 
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
   --color-primary-foreground: var(--primary-foreground);
 
   --color-blue: var(--blue);
