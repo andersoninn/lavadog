@@ -17,7 +17,7 @@ export default function Home() {
           <Store />
           <FeaturedProducts />
         </ScreenScroller>
-        {/* <Contatos /> */}
+        <Contatos />
       </main>
     </>
   );
