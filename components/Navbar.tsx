@@ -7,6 +7,7 @@ import { User } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { requestScreenIndex, useIsAtHeroTop } from "@/components/ui/use-screen-index";
+import { useNavbarHidden } from "@/components/ui/use-navbar-hidden";
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/nav-links";
@@ -23,6 +24,7 @@ const SCREEN_INDEX_BY_HREF: Record<string, number> = {
 export default function Navbar() {
   const [open, setOpen] = React.useState(false);
   const scrolled = !useIsAtHeroTop();
+  const navHidden = useNavbarHidden() && !open;
 
   function handleNavLinkClick(href: string) {
     const index = SCREEN_INDEX_BY_HREF[href];
@@ -41,11 +43,12 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl border-b border-transparent md:rounded-md md:border md:transition-all md:ease-out",
+        "fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl border-b border-transparent transition-transform duration-300 ease-out md:rounded-md md:border md:transition-[all,transform] md:ease-out",
         {
           "md:border-border md:bg-background/95 md:shadow md:backdrop-blur-lg md:supports-backdrop-filter:bg-background/50 md:top-4 md:max-w-6xl":
             scrolled && !open,
           "bg-background/90": open,
+          "md:translate-y-[calc(-100%-2rem)] lg:translate-y-0": navHidden,
         },
       )}
     >
