@@ -14,7 +14,10 @@ const companyLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative flex h-full w-full items-center bg-foreground px-6 text-background sm:px-12 lg:px-20">
+    <footer
+      id="footer"
+      className="relative flex h-full w-full items-center bg-foreground px-6 text-background sm:px-12 lg:px-20"
+    >
       <div className="mx-auto grid w-full max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <p className="text-xl font-bold">LavaDog Store</p>

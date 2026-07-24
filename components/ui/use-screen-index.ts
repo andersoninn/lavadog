@@ -3,9 +3,14 @@
 import * as React from "react";
 
 export const SCREEN_INDEX_EVENT = "lavadog:screen-index";
+export const SCREEN_INDEX_REQUEST_EVENT = "lavadog:screen-index-request";
 
 export function emitScreenIndex(index: number) {
   window.dispatchEvent(new CustomEvent<number>(SCREEN_INDEX_EVENT, { detail: index }));
+}
+
+export function requestScreenIndex(index: number) {
+  window.dispatchEvent(new CustomEvent<number>(SCREEN_INDEX_REQUEST_EVENT, { detail: index }));
 }
 
 export function useIsAtHeroTop() {

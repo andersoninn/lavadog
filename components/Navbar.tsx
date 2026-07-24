@@ -6,16 +6,30 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
-import { useIsAtHeroTop } from "@/components/ui/use-screen-index";
+import { requestScreenIndex, useIsAtHeroTop } from "@/components/ui/use-screen-index";
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/nav-links";
 
 const WHATSAPP_HREF = "https://wa.me/5500000000000";
 
+const SCREEN_INDEX_BY_HREF: Record<string, number> = {
+  "#home": 0,
+  "#servicos": 1,
+  "#store": 2,
+  "#sobre": 3,
+};
+
 export default function Navbar() {
   const [open, setOpen] = React.useState(false);
   const scrolled = !useIsAtHeroTop();
+
+  function handleNavLinkClick(href: string) {
+    const index = SCREEN_INDEX_BY_HREF[href];
+    if (index !== undefined) {
+      requestScreenIndex(index);
+    }
+  }
 
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -54,12 +68,16 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2 md:gap-3 lg:gap-6">
-          <div className="hidden shrink-0 items-center gap-1 lg:flex">
+          <div className="hidden shrink-0 items-center gap-1 lg:flex lg:mr-7">
             {navLinks.map((link) => (
               <a
-                key={link.href}
+                key={link.label}
                 className={buttonVariants({ variant: "ghost", size: "sm" })}
                 href={link.href}
+                onClick={(e) => {
+                  if (SCREEN_INDEX_BY_HREF[link.href] !== undefined) e.preventDefault();
+                  handleNavLinkClick(link.href);
+                }}
               >
                 {link.label}
               </a>
@@ -113,10 +131,14 @@ export default function Navbar() {
           <div className="grid gap-y-2">
             {navLinks.map((link) => (
               <a
-                key={link.href}
+                key={link.label}
                 className={buttonVariants({ variant: "ghost", className: "justify-start" })}
                 href={link.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  if (SCREEN_INDEX_BY_HREF[link.href] !== undefined) e.preventDefault();
+                  handleNavLinkClick(link.href);
+                  setOpen(false);
+                }}
               >
                 {link.label}
               </a>

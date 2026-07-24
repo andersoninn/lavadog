@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# playwright mcp test artifacts
+.playwright-mcp/
+
 # next.js
 /.next/
 /out/

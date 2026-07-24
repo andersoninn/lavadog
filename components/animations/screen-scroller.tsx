@@ -2,7 +2,10 @@
 
 import * as React from "react";
 import { gsap, Observer } from "@/lib/gsap";
-import { emitScreenIndex } from "@/components/ui/use-screen-index";
+import {
+  emitScreenIndex,
+  SCREEN_INDEX_REQUEST_EVENT,
+} from "@/components/ui/use-screen-index";
 
 type ScreenScrollerProps = {
   children: React.ReactNode;
@@ -48,6 +51,19 @@ export function ScreenScroller({ children }: ScreenScrollerProps) {
       window.addEventListener("scroll", handleReEntry, { passive: true });
     }
 
+    function handleScreenIndexRequest(event: Event) {
+      if (animating) return;
+      const target = (event as CustomEvent<number>).detail;
+      if (target < 0 || target > lastIndex) return;
+
+      window.removeEventListener("scroll", handleReEntry);
+      observer.enable();
+      window.scrollTo({ top: container!.offsetTop, behavior: "auto" });
+
+      const direction = target >= currentIndex ? 1 : -1;
+      gotoScreen(target, direction);
+    }
+
     function gotoScreen(index: number, direction: 1 | -1) {
       if (index === currentIndex || index < 0 || index > lastIndex) return;
       animating = true;
@@ -91,9 +107,12 @@ export function ScreenScroller({ children }: ScreenScrollerProps) {
       onDown: () => !animating && gotoScreen(currentIndex - 1, -1),
     });
 
+    window.addEventListener(SCREEN_INDEX_REQUEST_EVENT, handleScreenIndexRequest);
+
     return () => {
       observer.kill();
       window.removeEventListener("scroll", handleReEntry);
+      window.removeEventListener(SCREEN_INDEX_REQUEST_EVENT, handleScreenIndexRequest);
     };
   }, [screens.length]);
 
