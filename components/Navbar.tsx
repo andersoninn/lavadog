@@ -1,0 +1,154 @@
+"use client";
+
+import * as React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { User } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
+import { useIsAtHeroTop } from "@/components/ui/use-screen-index";
+import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
+import { cn } from "@/lib/utils";
+import { navLinks } from "@/lib/nav-links";
+
+const WHATSAPP_HREF = "https://wa.me/5500000000000";
+
+export default function Navbar() {
+  const [open, setOpen] = React.useState(false);
+  const scrolled = !useIsAtHeroTop();
+
+  React.useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  return (
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl border-b border-transparent md:rounded-md md:border md:transition-all md:ease-out",
+        {
+          "md:border-border md:bg-background/95 md:shadow md:backdrop-blur-lg md:supports-backdrop-filter:bg-background/50 md:top-4 md:max-w-6xl":
+            scrolled && !open,
+          "bg-background/90": open,
+        },
+      )}
+    >
+      <nav
+        className={cn(
+          "flex h-20 w-full items-center justify-between px-4 md:h-16 md:transition-all md:ease-out",
+          { "md:px-2": scrolled },
+        )}
+      >
+        <Link href="/" aria-label="LavaDog Store, ir para o início" className="shrink-0">
+          {/* <Image
+            src="/images/logo.png"
+            alt="LavaDog Store"
+            width={140}
+            height={40}
+            className="h-10 w-auto"
+            priority
+          /> */}
+          <p className="text-lg font-bold">Lava Dog</p>
+        </Link>
+
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-6">
+          <div className="hidden shrink-0 items-center gap-1 lg:flex">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                className={buttonVariants({ variant: "ghost", size: "sm" })}
+                href={link.href}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="hidden shrink-0 items-center gap-2 md:flex">
+            <Link
+              href={WHATSAPP_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Fale conosco pelo WhatsApp"
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+            >
+              <WhatsAppIcon className="size-4" />
+            </Link>
+            <Link
+              href="/conta"
+              aria-label="Minha conta"
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+            >
+              <User className="size-4" />
+            </Link>
+            <Button asChild>
+              <a href="#contato">Agendar Serviço</a>
+            </Button>
+          </div>
+
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => setOpen(!open)}
+            className="lg:hidden"
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+          >
+            <MenuToggleIcon open={open} className="size-5" duration={300} />
+          </Button>
+        </div>
+      </nav>
+
+      <div
+        className={cn(
+          "fixed inset-x-0 top-20 bottom-0 z-50 flex flex-col overflow-hidden border-y bg-background/95 backdrop-blur-lg md:top-16 lg:hidden",
+          open ? "block" : "hidden",
+        )}
+      >
+        <div
+          data-slot={open ? "open" : "closed"}
+          className="data-[slot=open]:animate-in data-[slot=open]:zoom-in-95 data-[slot=closed]:animate-out data-[slot=closed]:zoom-out-95 flex h-full w-full flex-col justify-between gap-y-2 p-4 ease-out"
+        >
+          <div className="grid gap-y-2">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                className={buttonVariants({ variant: "ghost", className: "justify-start" })}
+                href={link.href}
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="flex flex-col gap-2 md:hidden">
+            <div className="flex gap-2">
+              <Link
+                href={WHATSAPP_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Fale conosco pelo WhatsApp"
+                onClick={() => setOpen(false)}
+                className={cn(buttonVariants({ variant: "outline", size: "icon" }), "flex-1")}
+              >
+                <WhatsAppIcon className="size-4" />
+              </Link>
+              <Link
+                href="/conta"
+                aria-label="Minha conta"
+                onClick={() => setOpen(false)}
+                className={cn(buttonVariants({ variant: "outline", size: "icon" }), "flex-1")}
+              >
+                <User className="size-4" />
+              </Link>
+            </div>
+            <Button className="w-full" asChild onClick={() => setOpen(false)}>
+              <a href="#contato">Agendar Serviço</a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}

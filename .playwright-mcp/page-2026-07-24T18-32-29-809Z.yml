@@ -1,0 +1,86 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - navigation [ref=f2e3]:
+      - link "LavaDog Store, ir para o início" [ref=f2e4] [cursor=pointer]:
+        - /url: /
+        - paragraph [ref=f2e5]: Lava Dog
+      - generic [ref=f2e6]:
+        - link "Home" [ref=f2e7] [cursor=pointer]:
+          - /url: "#home"
+        - link "Nossos Serviços" [ref=f2e8] [cursor=pointer]:
+          - /url: "#servicos"
+        - link "Store" [ref=f2e9] [cursor=pointer]:
+          - /url: "#store"
+        - link "Quem Somos" [ref=f2e10] [cursor=pointer]:
+          - /url: "#sobre"
+        - link "Depoimentos" [ref=f2e11] [cursor=pointer]:
+          - /url: "#depoimentos"
+        - link "Contatos" [ref=f2e12] [cursor=pointer]:
+          - /url: "#contato"
+      - generic [ref=f2e13]:
+        - link "Fale conosco pelo WhatsApp" [ref=f2e14] [cursor=pointer]:
+          - /url: https://wa.me/5500000000000
+        - link "Minha conta" [ref=f2e15] [cursor=pointer]:
+          - /url: /conta
+        - link "Agendar Serviço" [ref=f2e16] [cursor=pointer]:
+          - /url: "#contato"
+  - main [ref=f2e17]:
+    - generic [ref=f2e18]: Hero
+    - generic [ref=f2e24]:
+      - generic [ref=f2e27]:
+        - generic [ref=f2e28]: Foto do cliente
+        - generic [ref=f2e33]:
+          - text: Depoimentos
+          - heading "O Que Nossos Clientes Dizem" [level=2] [ref=f2e34]
+          - paragraph [ref=f2e35]: “Encontrei a LavaDog Store enquanto procurava um banho e tosa de confiança para o meu golden retriever. A equipe realmente entende do assunto e trata cada pet com muito carinho. Recomendo de olhos fechados.”
+          - generic [ref=f2e36]:
+            - generic [ref=f2e39]:
+              - paragraph [ref=f2e40]: Mariana Silva
+              - paragraph [ref=f2e41]: Tutora de Cachorro
+            - generic [ref=f2e42]:
+              - button "Depoimento anterior" [ref=f2e43]
+              - button "Próximo depoimento" [ref=f2e46]
+      - generic [ref=f2e50]:
+        - generic [ref=f2e51]:
+          - generic [ref=f2e52]:
+            - paragraph [ref=f2e53]: LavaDog Store
+            - paragraph [ref=f2e54]: Mais que um pet shop, um lugar de amor e cuidado.
+            - generic [ref=f2e55]:
+              - textbox "Seu e-mail" [ref=f2e56]
+              - button "Inscrever-se" [ref=f2e57]
+          - generic [ref=f2e58]:
+            - paragraph [ref=f2e59]: Empresa
+            - list [ref=f2e60]:
+              - listitem [ref=f2e61]:
+                - link "Quem Somos" [ref=f2e62] [cursor=pointer]:
+                  - /url: "#sobre"
+              - listitem [ref=f2e63]:
+                - link "Termos de Uso" [ref=f2e64] [cursor=pointer]:
+                  - /url: /termos-de-uso
+              - listitem [ref=f2e65]:
+                - link "Nossos Produtos" [ref=f2e66] [cursor=pointer]:
+                  - /url: "#store"
+              - listitem [ref=f2e67]:
+                - link "Nossas Lojas" [ref=f2e68] [cursor=pointer]:
+                  - /url: "#store"
+              - listitem [ref=f2e69]:
+                - link "Central de Ajuda" [ref=f2e70] [cursor=pointer]:
+                  - /url: "#contato"
+              - listitem [ref=f2e71]:
+                - link "Novidades" [ref=f2e72] [cursor=pointer]:
+                  - /url: "#depoimentos"
+          - generic [ref=f2e73]:
+            - paragraph [ref=f2e74]: Contato
+            - list [ref=f2e75]:
+              - listitem [ref=f2e76]: Rua das Flores, 123 - São Paulo, SP
+              - listitem [ref=f2e77]: +55 11 0000-0000
+              - listitem [ref=f2e78]: contato@lavadogstore.com
+            - generic [ref=f2e79]:
+              - link "Facebook" [ref=f2e80] [cursor=pointer]:
+                - /url: "#"
+              - link "LinkedIn" [ref=f2e83] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=f2e88] [cursor=pointer]:
+                - /url: "#"
+        - button "Voltar ao topo" [ref=f2e92]
+  - button "Open Next.js Dev Tools" [ref=f2e100] [cursor=pointer]

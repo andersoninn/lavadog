@@ -4,10 +4,10 @@ export type NavLink = {
 };
 
 export const navLinks: NavLink[] = [
-  { label: "Sobre Nós", href: "#sobre" },
-  { label: "Serviços", href: "#servicos" },
+  { label: "Home", href: "#home" },
+  { label: "Nossos Serviços", href: "#servicos" },
   { label: "Store", href: "#store" },
-  { label: "Benefícios", href: "#beneficios" },
+  { label: "Quem Somos", href: "#sobre" },
   { label: "Depoimentos", href: "#depoimentos" },
-  { label: "Contato", href: "#contato" },
+  { label: "Contatos", href: "#contato" },
 ];

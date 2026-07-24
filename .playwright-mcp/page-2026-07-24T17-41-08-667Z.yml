@@ -1,0 +1,26 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - link "LavaDog Store, ir para o início" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "LavaDog Store" [ref=e5]
+      - generic [ref=e6]:
+        - link "Sobre Nós" [ref=e7] [cursor=pointer]:
+          - /url: "#sobre"
+        - link "Serviços" [ref=e8] [cursor=pointer]:
+          - /url: "#servicos"
+        - link "Store" [ref=e9] [cursor=pointer]:
+          - /url: "#store"
+        - link "Benefícios" [ref=e10] [cursor=pointer]:
+          - /url: "#beneficios"
+        - link "Depoimentos" [ref=e11] [cursor=pointer]:
+          - /url: "#depoimentos"
+        - link "Contato" [ref=e12] [cursor=pointer]:
+          - /url: "#contato"
+        - link "Entrar" [ref=e13] [cursor=pointer]:
+          - /url: /conta
+        - link "Agendar Serviço" [ref=e14] [cursor=pointer]:
+          - /url: "#contato"
+  - main [ref=e15]:
+    - generic [ref=e16]: Hero
+  - button "Open Next.js Dev Tools" [ref=e23] [cursor=pointer]
