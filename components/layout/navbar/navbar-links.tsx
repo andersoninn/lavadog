@@ -23,7 +23,7 @@ export function NavbarLinks({
             href={link.href}
             onClick={onNavigate}
             className={cn(
-              "text-sm font-medium text-foreground/80 transition-colors hover:text-foreground",
+              "text-[1.00625rem] font-medium text-foreground/80 transition-colors hover:text-foreground",
               linkClassName,
             )}
           >

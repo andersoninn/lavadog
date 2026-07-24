@@ -31,7 +31,7 @@ export function MobileMenu() {
         </div>
         <NavbarLinks
           className="mt-4 flex-col items-start gap-5"
-          linkClassName="text-base"
+          linkClassName="text-[1.15rem]"
           onNavigate={() => setOpen(false)}
         />
         <NavbarActions className="mt-auto pt-6" />

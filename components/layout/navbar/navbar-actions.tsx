@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 const iconButtonClass =
   "flex size-11 items-center justify-center rounded-full bg-background/90 text-foreground/80 transition-colors hover:border hover:border-primary hover:bg-card hover:text-foreground sm:size-10";
+const actionIconClass = "size-[1.2375rem]";
 
 type NavbarActionsProps = {
   className?: string;
@@ -21,11 +22,11 @@ export function NavbarActions({ className, cartCount = 0 }: NavbarActionsProps) 
         className={iconButtonClass}
         aria-label="Fale conosco pelo WhatsApp"
       >
-        <WhatsAppIcon className="size-4.5" />
+        <WhatsAppIcon className={actionIconClass} />
       </Link>
 
       <Link href="/conta" className={iconButtonClass} aria-label="Minha conta">
-        <User className="size-4.5" />
+        <User className={actionIconClass} />
       </Link>
 
       <Link
@@ -33,7 +34,7 @@ export function NavbarActions({ className, cartCount = 0 }: NavbarActionsProps) 
         className={cn(iconButtonClass, "relative")}
         aria-label="Carrinho de compras"
       >
-        <ShoppingBag className="size-4.5" />
+        <ShoppingBag className={actionIconClass} />
         <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground pt-0.5">
           {cartCount}
         </span>

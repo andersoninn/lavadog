@@ -38,7 +38,7 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 - [x] Navbar (`components/layout/navbar/`): logo, links, ações (WhatsApp/conta/carrinho), menu mobile com Sheet
 - [x] Hero (`components/sections/hero/`): headline, CTAs, badges de confiança, imagem com card flutuante, animação on-scroll
 - [x] Sobre a LavaDog Store (`components/sections/about/`): foto circular com badge flutuante, título, parágrafo e 4 cards de diferenciais
-- [ ] Nossos Serviços
+- [x] Nossos Serviços (`components/sections/services/`): cabeçalho com CTA e 4 cards de serviço (foto + ícone + título + descrição + link)
 - [ ] Nossa Store (vitrine de categorias)
 - [ ] Por que escolher a LavaDog Store
 - [ ] Depoimentos
@@ -72,5 +72,6 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 - Logo definitivo: já integrado (`public/images/logo.png`).
 - Fotos do hero (`heroDog1.png`, `heroBgDesktop.png`, `heroMobileBg.png`, `dogfoots.png`): já são os assets reais da cliente.
 - Foto da seção "Sobre" (`public/images/about-dog.jpg`) ainda é um recorte temporário do `Site Model.png`, só para visualização do layout. Substituir pela fotografia definitiva da cliente.
+- Fotos dos 4 cards de "Nossos Serviços" (`public/images/services/*.jpg`) também são recortes temporários do `Site Model.png`. Substituir pelas fotos reais de cada serviço.
 - Número de WhatsApp no navbar é placeholder (`wa.me/5500000000000`). Atualizar com o número real.
 - Links da navbar apontam para âncoras (`#sobre`, `#servicos`, etc.) que serão criadas conforme as seções forem construídas.

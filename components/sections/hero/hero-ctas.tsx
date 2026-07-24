@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export function HeroCtas() {
   return (
-    <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+    <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-10">
       <Button size="lg" asChild>
         <a href="#servicos">
           Conheça nossos serviços
@@ -11,7 +11,7 @@ export function HeroCtas() {
         </a>
       </Button>
 
-      <a
+      {/* <a
         href="#video"
         className="group flex items-center gap-3 text-sm font-semibold text-foreground"
       >
@@ -19,7 +19,7 @@ export function HeroCtas() {
           <Play className="size-4 fill-current" />
         </span>
         <span className="text-foreground">Assista ao vídeo</span>
-      </a>
+      </a> */}
     </div>
   );
 }
