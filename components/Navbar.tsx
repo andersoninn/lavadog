@@ -71,7 +71,7 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2 md:gap-3 lg:gap-6">
-          <div className="hidden shrink-0 items-center gap-1 lg:flex lg:mr-7">
+          <div className="hidden shrink-0 items-center gap-1 lg:flex lg:mr-38">
             {navLinks.map((link) => (
               <a
                 key={link.label}

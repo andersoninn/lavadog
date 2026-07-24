@@ -22,9 +22,9 @@ export default function StoreCategories() {
         Categorias
       </span>
       <h2 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
-        Escolha o Amiguinho e
+        Escolha o amiguinho e
         <br />
-        Comece a Comprar
+        comece a comprar
       </h2>
 
       <div className="mt-6 flex flex-wrap justify-center gap-4 sm:gap-6">

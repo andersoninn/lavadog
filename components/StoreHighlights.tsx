@@ -19,8 +19,8 @@ export default function StoreHighlights() {
         </a>
       </div>
 
-      <div className="aspect-square rounded-lg bg-blue-soft sm:aspect-auto" />
-      <div className="aspect-square rounded-lg bg-muted sm:aspect-auto" />
+      <div className="aspect-square rounded-lg bg-blue-soft sm:aspect-auto lg:aspect-video" />
+      <div className="aspect-square rounded-lg bg-muted sm:aspect-auto lg:aspect-video" />
     </div>
   );
 }
