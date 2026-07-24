@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Store from "@/components/Store";
-import QuemSomos from "@/components/QuemSomos";
+import FeaturedProducts from "@/components/FeaturedProducts";
 import Contatos from "@/components/Contatos";
 import { ScreenScroller } from "@/components/animations/screen-scroller";
 
@@ -15,7 +15,7 @@ export default function Home() {
           <Hero />
           <Services />
           <Store />
-          <QuemSomos />
+          <FeaturedProducts />
         </ScreenScroller>
         {/* <Contatos /> */}
       </main>

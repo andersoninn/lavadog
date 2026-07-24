@@ -6,10 +6,9 @@ export default function StoreHighlights() {
       <div className="aspect-square rounded-lg bg-primary-soft sm:aspect-auto" />
 
       <div className="flex flex-col justify-center gap-3">
-        <h3 className="text-xl font-bold text-foreground">Brinquedos para Pets</h3>
+        <h3 className="text-xl font-bold text-foreground">Alimentação Premium</h3>
         <p className="text-sm text-muted-foreground">
-          Seguros, resistentes e feitos para horas de diversão — nossos brinquedos fortalecem o
-          laço entre você e seu companheiro.
+          Nutrição completa e saborosa para o dia a dia do seu pet.
         </p>
         <a
           href="#store"
