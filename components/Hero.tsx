@@ -74,18 +74,19 @@ export default function Hero() {
 
         <Button
           asChild
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 md:bottom-2 md:left-auto md:right-4 md:translate-x-0 lg:right-14 lg:bottom-24"
+          size="lg"
+          className="absolute bottom-16 left-1/2 -translate-x-1/2 font-bold shadow-xl transition-all hover:scale-105 hover:shadow-2xl focus-visible:ring-offset-2 md:bottom-2 md:left-auto md:right-4 md:translate-x-0 lg:right-14 lg:bottom-24"
         >
           <a href="#store">
             Conheça nossa loja
-            <ArrowDown className="size-4" />
+            <ArrowDown className="size-4" aria-hidden="true" />
           </a>
         </Button>
       </div>
 
-      <div className="flex  w-full items-center overflow-hidden">
+      {/* <div className="flex  w-full items-center overflow-hidden">
         <Marquee items={marqueeItems} />
-      </div>
+      </div> */}
     </section>
   );
 }

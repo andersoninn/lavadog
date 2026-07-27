@@ -10,7 +10,7 @@ const categories = [
   { label: "Peixes", icon: Fish },
   { label: "Aves", icon: Bird },
   { label: "Coelhos", icon: Rabbit },
-  { label: "Répteis", icon: Turtle },
+  // { label: "Répteis", icon: Turtle },
 ];
 
 export default function StoreCategories() {
