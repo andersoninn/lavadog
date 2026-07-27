@@ -1,4 +1,7 @@
-import { Star } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -14,9 +17,41 @@ const products = [
   },
   { name: "Escova para Gatos", price: "R$ 60", rating: 5, image: "bg-muted" },
   { name: "Kit de Ossinhos", price: "R$ 90", rating: 5, image: "bg-primary-soft" },
+  { name: "Brinquedo Mordedor", price: "R$ 45", rating: 4, image: "bg-blue-soft" },
+  {
+    name: "Arranhador para Gatos",
+    price: "R$ 180",
+    oldPrice: "R$ 220",
+    rating: 5,
+    sale: true,
+    image: "bg-muted",
+  },
+  { name: "Cama Pet Confort", price: "R$ 150", rating: 4, image: "bg-primary-soft" },
+  { name: "Ração Premium 10kg", price: "R$ 130", rating: 5, image: "bg-blue-soft" },
+  { name: "Shampoo Neutro", price: "R$ 55", rating: 4, image: "bg-muted" },
+  { name: "Comedouro Duplo", price: "R$ 70", rating: 3, image: "bg-primary-soft" },
+  {
+    name: "Guia Retrátil",
+    price: "R$ 95",
+    oldPrice: "R$ 115",
+    rating: 4,
+    sale: true,
+    image: "bg-blue-soft",
+  },
+  { name: "Roupinha para Cães", price: "R$ 85", rating: 5, image: "bg-muted" },
 ];
 
+const ITEMS_PER_PAGE = 4;
+const PAGE_COUNT = Math.ceil(products.length / ITEMS_PER_PAGE);
+
 export default function ProductsGrid() {
+  const [page, setPage] = useState(0);
+
+  const visibleProducts = products.slice(
+    page * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE + ITEMS_PER_PAGE,
+  );
+
   return (
     <div>
       <div className="flex items-end justify-between gap-4">
@@ -34,7 +69,7 @@ export default function ProductsGrid() {
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {products.map((product) => (
+        {visibleProducts.map((product) => (
           <div key={product.name}>
             <div className={cn("relative h-44 rounded-lg ", product.image)}>
               {product.sale && (
@@ -63,6 +98,44 @@ export default function ProductsGrid() {
             </p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6 flex items-center justify-center gap-3">
+        <button
+          type="button"
+          aria-label="Página anterior"
+          disabled={page === 0}
+          onClick={() => setPage((p) => Math.max(0, p - 1))}
+          className="flex size-8 items-center justify-center rounded-full border border-border text-foreground transition-colors disabled:opacity-30 enabled:hover:bg-muted"
+        >
+          <ChevronLeft className="size-4" />
+        </button>
+
+        <div className="flex items-center gap-2">
+          {Array.from({ length: PAGE_COUNT }).map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Página ${i + 1}`}
+              aria-current={page === i}
+              onClick={() => setPage(i)}
+              className={cn(
+                "size-2 rounded-full transition-colors",
+                page === i ? "bg-primary" : "bg-border",
+              )}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          aria-label="Próxima página"
+          disabled={page === PAGE_COUNT - 1}
+          onClick={() => setPage((p) => Math.min(PAGE_COUNT - 1, p + 1))}
+          className="flex size-8 items-center justify-center rounded-full border border-border text-foreground transition-colors disabled:opacity-30 enabled:hover:bg-muted"
+        >
+          <ChevronRight className="size-4" />
+        </button>
       </div>
     </div>
   );
