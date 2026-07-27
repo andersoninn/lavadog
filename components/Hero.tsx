@@ -31,7 +31,7 @@ export default function Hero() {
 
   return (
     <section id="home" className="flex h-screen w-full flex-col overflow-hidden">
-      <div className="relative h-[85%] w-full overflow-hidden">
+      <div className="relative w-full flex-1 overflow-hidden">
         {banners.map((banner, index) => (
           <React.Fragment key={banner.desktop}>
             <Image
@@ -83,7 +83,7 @@ export default function Hero() {
         </Button>
       </div>
 
-      <div className="flex flex-1 items-center overflow-hidden">
+      <div className="flex  w-full items-center overflow-hidden">
         <Marquee items={marqueeItems} />
       </div>
     </section>
