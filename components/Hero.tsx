@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Marquee from "@/components/Marquee";
 import { cn } from "@/lib/utils";
 
 const banners = [
@@ -11,6 +12,8 @@ const banners = [
   { desktop: "/images/bannerDesktop2.png", mobile: "/images/bannerMobile2.png" },
   { desktop: "/images/bannerDesktop3.png", mobile: "/images/bannerMobile3.png" },
 ];
+
+const marqueeItems = ["Amor", "Cuidado", "Qualidade", "Confiança", "Bem-Estar", "Carinho"];
 
 export default function Hero() {
   const [active, setActive] = React.useState(0);
@@ -27,70 +30,62 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      {banners.map((banner, index) => (
-        <React.Fragment key={banner.desktop}>
-          <Image
-            src={banner.desktop}
-            alt={`LavaDog Store - banner ${index + 1}`}
-            fill
-            priority={index === 0}
-            className={cn(
-              "hidden object-cover transition-opacity duration-1000 ease-in-out md:block",
-              index === active ? "opacity-100" : "opacity-0",
-            )}
-          />
-          <Image
-            src={banner.mobile}
-            alt={`LavaDog Store - banner ${index + 1}`}
-            fill
-            priority={index === 0}
-            className={cn(
-              "object-cover transition-opacity duration-1000 ease-in-out md:hidden",
-              index === active ? "opacity-100" : "opacity-0",
-            )}
-          />
-        </React.Fragment>
-      ))}
-
-      {/* <button
-        type="button"
-        aria-label="Banner anterior"
-        onClick={() => goTo(active - 1)}
-        className="absolute top-1/2 left-4 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-background/80 text-foreground transition-colors hover:bg-background sm:left-8"
-      >
-        <ChevronLeft className="size-5" />
-      </button>
-      <button
-        type="button"
-        aria-label="Próximo banner"
-        onClick={() => goTo(active + 1)}
-        className="absolute top-1/2 right-4 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-background/80 text-foreground transition-colors hover:bg-background sm:right-8"
-      >
-        <ChevronRight className="size-5" />
-      </button> */}
-
-      <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
+    <section id="home" className="flex h-screen w-full flex-col overflow-hidden">
+      <div className="relative h-[85%] w-full overflow-hidden">
         {banners.map((banner, index) => (
-          <button
-            key={banner.desktop}
-            type="button"
-            aria-label={`Ir para o banner ${index + 1}`}
-            onClick={() => goTo(index)}
-            className={cn(
-              "h-2 rounded-full transition-all",
-              index === active ? "w-6 bg-primary" : "w-2 bg-background/70",
-            )}
-          />
+          <React.Fragment key={banner.desktop}>
+            <Image
+              src={banner.desktop}
+              alt={`LavaDog Store - banner ${index + 1}`}
+              fill
+              priority={index === 0}
+              className={cn(
+                "hidden object-cover transition-opacity duration-1000 ease-in-out md:block",
+                index === active ? "opacity-100" : "opacity-0",
+              )}
+            />
+            <Image
+              src={banner.mobile}
+              alt={`LavaDog Store - banner ${index + 1}`}
+              fill
+              priority={index === 0}
+              className={cn(
+                "object-cover transition-opacity duration-1000 ease-in-out md:hidden",
+                index === active ? "opacity-100" : "opacity-0",
+              )}
+            />
+          </React.Fragment>
         ))}
+
+        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
+          {banners.map((banner, index) => (
+            <button
+              key={banner.desktop}
+              type="button"
+              aria-label={`Ir para o banner ${index + 1}`}
+              onClick={() => goTo(index)}
+              className={cn(
+                "h-2 rounded-full transition-all",
+                index === active ? "w-6 bg-primary" : "w-2 bg-background/70",
+              )}
+            />
+          ))}
+        </div>
+
+        <Button
+          asChild
+          className="absolute bottom-16 left-1/2 -translate-x-1/2 md:bottom-2 md:left-auto md:right-4 md:translate-x-0 lg:right-14 lg:bottom-24"
+        >
+          <a href="#store">
+            Conheça nossa loja
+            <ArrowDown className="size-4" />
+          </a>
+        </Button>
       </div>
 
-      <Button asChild className="absolute right-4 bottom-16 md:bottom-2 lg:bottom-24  lg:right-14">
-        <a href="#store">
-          Conheça nossa loja
-          <ArrowDown className="size-4" />
-        </a>
-      </Button>
+      <div className="flex flex-1 items-center overflow-hidden">
+        <Marquee items={marqueeItems} />
+      </div>
     </section>
   );
 }

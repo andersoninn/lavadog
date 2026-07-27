@@ -3,10 +3,10 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { User } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
-import { requestScreenIndex, useIsAtHeroTop } from "@/components/ui/use-screen-index";
+import { useScroll } from "@/components/ui/use-scroll";
 import { useNavbarHidden } from "@/components/ui/use-navbar-hidden";
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
 import { cn } from "@/lib/utils";
@@ -14,24 +14,10 @@ import { navLinks } from "@/lib/nav-links";
 
 const WHATSAPP_HREF = "https://wa.me/5500000000000";
 
-const SCREEN_INDEX_BY_HREF: Record<string, number> = {
-  "#home": 0,
-  "#servicos": 1,
-  "#store": 2,
-  "#sobre": 3,
-};
-
 export default function Navbar() {
   const [open, setOpen] = React.useState(false);
-  const scrolled = !useIsAtHeroTop();
+  const scrolled = useScroll(10);
   const navHidden = useNavbarHidden() && !open;
-
-  function handleNavLinkClick(href: string) {
-    const index = SCREEN_INDEX_BY_HREF[href];
-    if (index !== undefined) {
-      requestScreenIndex(index);
-    }
-  }
 
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -43,9 +29,9 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl border-b border-transparent transition-transform duration-300 ease-out md:rounded-md md:border md:transition-[all,transform] md:ease-out",
+        "fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl rounded-md border border-transparent transition-[all,transform] duration-300 ease-out",
         {
-          "md:border-border md:bg-background/95 md:shadow md:backdrop-blur-lg md:supports-backdrop-filter:bg-background/50 md:top-4 md:max-w-6xl":
+          "top-4 inset-x-[2.5%] w-auto border-border bg-background/95 shadow backdrop-blur-lg supports-backdrop-filter:bg-background/50 lg:inset-x-0 lg:w-full lg:max-w-6xl":
             scrolled && !open,
           "bg-background/90": open,
           "md:translate-y-[calc(-100%-2rem)] lg:translate-y-0": navHidden,
@@ -55,7 +41,7 @@ export default function Navbar() {
       <nav
         className={cn(
           "flex h-20 w-full items-center justify-between px-4 md:h-16 md:transition-all md:ease-out",
-          { "md:px-2": scrolled },
+          { "px-2": scrolled },
         )}
       >
         <Link href="/" aria-label="LavaDog Store, ir para o início" className="shrink-0">
@@ -77,10 +63,6 @@ export default function Navbar() {
                 key={link.label}
                 className={buttonVariants({ variant: "ghost", size: "sm" })}
                 href={link.href}
-                onClick={(e) => {
-                  if (SCREEN_INDEX_BY_HREF[link.href] !== undefined) e.preventDefault();
-                  handleNavLinkClick(link.href);
-                }}
               >
                 {link.label}
               </a>
@@ -104,9 +86,32 @@ export default function Navbar() {
             >
               <User className="size-4" />
             </Link>
-            <Button asChild>
-              <a href="#contato">Agendar Serviço</a>
-            </Button>
+            <Link
+              href="/carrinho"
+              aria-label="Carrinho de compras"
+              className={cn(buttonVariants({ variant: "outline", size: "icon" }), "hidden lg:inline-flex")}
+            >
+              <ShoppingCart className="size-4" />
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2 md:hidden">
+            <Link
+              href={WHATSAPP_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Fale conosco pelo WhatsApp"
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+            >
+              <WhatsAppIcon className="size-4" />
+            </Link>
+            <Link
+              href="/carrinho"
+              aria-label="Carrinho de compras"
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+            >
+              <ShoppingCart className="size-4" />
+            </Link>
           </div>
 
           <Button
@@ -137,39 +142,15 @@ export default function Navbar() {
                 key={link.label}
                 className={buttonVariants({ variant: "ghost", className: "justify-start" })}
                 href={link.href}
-                onClick={(e) => {
-                  if (SCREEN_INDEX_BY_HREF[link.href] !== undefined) e.preventDefault();
-                  handleNavLinkClick(link.href);
-                  setOpen(false);
-                }}
+                onClick={() => setOpen(false)}
               >
                 {link.label}
               </a>
             ))}
           </div>
           <div className="flex flex-col gap-2 md:hidden">
-            <div className="flex gap-2">
-              <Link
-                href={WHATSAPP_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Fale conosco pelo WhatsApp"
-                onClick={() => setOpen(false)}
-                className={cn(buttonVariants({ variant: "outline", size: "icon" }), "flex-1")}
-              >
-                <WhatsAppIcon className="size-4" />
-              </Link>
-              <Link
-                href="/conta"
-                aria-label="Minha conta"
-                onClick={() => setOpen(false)}
-                className={cn(buttonVariants({ variant: "outline", size: "icon" }), "flex-1")}
-              >
-                <User className="size-4" />
-              </Link>
-            </div>
             <Button className="w-full" asChild onClick={() => setOpen(false)}>
-              <a href="#contato">Agendar Serviço</a>
+              <a href="/conta">Login</a>
             </Button>
           </div>
         </div>

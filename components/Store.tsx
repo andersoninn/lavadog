@@ -4,7 +4,10 @@ import StoreMarquee from "@/components/StoreMarquee";
 
 export default function Store() {
   return (
-    <section className="flex h-screen w-full flex-col justify-center gap-8 overflow-hidden bg-background py-6">
+    <section
+      id="store"
+      className="flex h-screen w-full flex-col justify-center gap-8 overflow-hidden bg-background py-6"
+    >
       <div className="px-6 sm:px-10 lg:px-16">
         <StoreHighlights />
       </div>
