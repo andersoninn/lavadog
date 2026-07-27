@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <footer
       id="footer"
-      className="relative flex h-full w-full items-center bg-foreground px-6 text-background sm:px-12 lg:px-20"
+      className="relative w-full bg-foreground px-6 py-16 text-background sm:px-12 lg:px-20 lg:py-20"
     >
       <div className="mx-auto grid w-full max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
         <div>

@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Store from "@/components/Store";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import Contatos from "@/components/Contatos";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <FeaturedProducts />
         <Contatos />
       </main>
+      <Footer />
     </>
   );
 }

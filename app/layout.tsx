@@ -20,7 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${manrope.variable} h-full antialiased`}>
+    <html lang="pt-BR" className={`${manrope.variable} h-full scroll-smooth antialiased`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; } window.scrollTo(0, 0);",
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

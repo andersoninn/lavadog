@@ -29,7 +29,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl rounded-md border border-transparent transition-[all,transform] duration-300 ease-out",
+        "animate-in fade-in slide-in-from-top-8 fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-7xl rounded-md border border-transparent transition-[all,transform] duration-300 ease-out",
         {
           "top-4 inset-x-[2.5%] w-auto border-border bg-background/95 shadow backdrop-blur-lg supports-backdrop-filter:bg-background/50 lg:inset-x-0 lg:w-full lg:max-w-6xl":
             scrolled && !open,

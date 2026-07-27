@@ -31,7 +31,7 @@ export default function Hero() {
 
   return (
     <section id="home" className="flex h-screen w-full flex-col overflow-hidden">
-      <div className="relative w-full flex-1 overflow-hidden">
+      <div className="animate-in fade-in relative w-full flex-1 overflow-hidden duration-1000">
         {banners.map((banner, index) => (
           <React.Fragment key={banner.desktop}>
             <Image
@@ -57,7 +57,7 @@ export default function Hero() {
           </React.Fragment>
         ))}
 
-        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
+        <div className="animate-in fade-in slide-in-from-bottom-4 absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2 delay-300 duration-700">
           {banners.map((banner, index) => (
             <button
               key={banner.desktop}
@@ -75,7 +75,7 @@ export default function Hero() {
         <Button
           asChild
           size="lg"
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 font-bold shadow-xl transition-all hover:scale-105 hover:shadow-2xl focus-visible:ring-offset-2 md:bottom-2 md:left-auto md:right-4 md:translate-x-0 lg:right-14 lg:bottom-24"
+          className="animate-in fade-in slide-in-from-bottom-6 absolute bottom-16 left-1/2 -translate-x-1/2 font-bold shadow-xl delay-500 duration-700 transition-all hover:scale-105 hover:shadow-2xl focus-visible:ring-offset-2 md:bottom-2 md:left-auto md:right-4 md:translate-x-0 lg:right-14 lg:bottom-24"
         >
           <a href="#store">
             Conheça nossa loja

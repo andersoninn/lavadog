@@ -1,9 +1,18 @@
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export default function StoreHighlights() {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-      <div className="aspect-square rounded-lg bg-primary-soft sm:aspect-auto" />
+      <div className="relative aspect-square lg:aspect-[4/3] overflow-hidden rounded-lg bg-primary-soft">
+        <Image
+          src="/images/dogAndBall.png"
+          alt="Cachorro brincando com bola"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
       <div className="flex flex-col justify-center gap-3 lg:px-4">
         <h3 className="text-xl font-bold text-foreground">Alimentação Premium</h3>
@@ -19,8 +28,17 @@ export default function StoreHighlights() {
         </a>
       </div>
 
-      <div className="aspect-square rounded-lg bg-blue-soft sm:aspect-auto lg:aspect-video" />
-      <div className="aspect-square rounded-lg bg-muted sm:aspect-auto lg:aspect-video" />
+      <div className="relative aspect-square lg:aspect-[4/3] overflow-hidden rounded-lg bg-primary-soft">
+        <Image
+          src="/images/catAndFood.png"
+          alt="Gato ao lado de comida"
+          fill
+          className="object-cover"
+        />
+      </div>
+      <div className="relative aspect-square lg:aspect-[4/3] overflow-hidden rounded-lg bg-primary-soft">
+        <Image src="/images/petToys.png" alt="Brinquedos para pets" fill className="object-cover" />
+      </div>
     </div>
   );
 }
