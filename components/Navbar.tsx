@@ -59,13 +59,13 @@ export default function Navbar() {
         <div className="flex items-center gap-2 md:gap-3 lg:gap-6">
           <div className="hidden shrink-0 items-center gap-1 lg:flex lg:mr-38">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 className={buttonVariants({ variant: "ghost", size: "sm" })}
                 href={link.href}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -138,14 +138,14 @@ export default function Navbar() {
         >
           <div className="grid gap-y-2">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 className={buttonVariants({ variant: "ghost", className: "justify-start" })}
                 href={link.href}
                 onClick={() => setOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="flex flex-col gap-2 md:hidden">

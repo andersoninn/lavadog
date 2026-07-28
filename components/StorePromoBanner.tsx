@@ -62,9 +62,9 @@ export default function StorePromoBanner() {
       </div>
 
       {/* Floating Card */}
-      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 items-center justify-between rounded-lg bg-[#F4E7C7] px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-99">
+      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 items-center justify-between rounded-lg bg-[#F4E7C7]  px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-99  bg-[url('/images/bgCtaStoreLight.png')]">
         <div className="flex items-center gap-8">
-          <div className="flex gap-8">
+          <div className="flex gap-8"> 
             <p className="text-6xl font-black leading-none text-[#5B371F]">20% off</p>
 
             <p className="mt-2 text-xl font-semibold text-[#6D4B31]">
