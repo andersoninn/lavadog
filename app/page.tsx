@@ -1,18 +1,21 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Store from "@/components/Store";
-import FeaturedProducts from "@/components/FeaturedProducts";
+import StorePromoBanner from "@/components/StorePromoBanner";
 import Contatos from "@/components/Contatos";
 import Footer from "@/components/Footer";
+import { getCurrentCart } from "@/lib/cart-actions";
 
-export default function Home() {
+export default async function Home() {
+  const cart = await getCurrentCart().catch(() => null);
+
   return (
     <>
-      <Navbar />
+      <Navbar cartCount={cart?.totalQuantity ?? 0} />
       <main className="flex-1">
         <Hero />
         <Store />
-        <FeaturedProducts />
+        <StorePromoBanner />
         <Contatos />
       </main>
       <Footer />

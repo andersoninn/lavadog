@@ -1,3 +1,5 @@
+import type { ShopifyStoreProduct } from "@/lib/shopify";
+
 export type ProductBadge = "novo" | "promocao" | "mais-vendido";
 
 export type Product = {
@@ -11,26 +13,148 @@ export type Product = {
   reviewsCount: number;
   badge?: ProductBadge;
   inStock: boolean;
-  image: string;
+  image: string | null;
+  createdAt: string;
+  species: string[];
+  variantId: string | null;
 };
 
-export const categories = [
-  "Brinquedos",
-  "Ração",
-  "Acessórios",
-  "Higiene & Banho",
-  "Camas & Conforto",
-  "Saúde",
-] as const;
+// Coleção "vitrine" que a Shopify cria automaticamente pra loja online —
+// não é uma categoria de verdade, então ignoramos ela na hora de mapear.
+const IGNORED_COLLECTION_HANDLES = new Set(["frontpage"]);
 
-export const brands = [
-  "LavaDog",
-  "PetLove",
-  "Vitalcan",
-  "Golden",
-  "Premier",
-  "Furmax",
-] as const;
+// Categoria usada quando um produto ainda não foi colocado em nenhuma
+// coleção real no admin da Shopify.
+const FALLBACK_CATEGORY = "Outros";
+
+const NEW_PRODUCT_WINDOW_DAYS = 30;
+
+// Espécie do pet é derivada das tags do produto no Shopify. Duas formas:
+// 1) tag no formato "animal:nome" (ex: "animal:hamster") — o que vier depois
+//    dos dois-pontos vira categoria automaticamente, sem precisar mexer em
+//    código. É a forma recomendada pra cliente marcar espécies novas.
+// 2) palavras-chave já usadas nos produtos que ela importou (ex: tag solta
+//    "cão") — mantidas por compatibilidade com o que já está cadastrado.
+const SPECIES_KEYWORDS: { label: string; keywords: string[] }[] = [
+  { label: "Cães", keywords: ["cão", "cao", "cachorro", "dog"] },
+  { label: "Gatos", keywords: ["gato", "felino", "cat"] },
+  { label: "Peixes", keywords: ["peixe", "aquário", "aquario", "fish"] },
+  { label: "Aves", keywords: ["ave", "pássaro", "passaro", "bird"] },
+  { label: "Coelhos", keywords: ["coelho", "rabbit"] },
+];
+
+const KNOWN_SPECIES_LABELS = SPECIES_KEYWORDS.map(({ label }) => label);
+
+function capitalize(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function deriveSpecies(tags: string[]): string[] {
+  const normalizedTags = tags.map((tag) => tag.trim().toLowerCase());
+  const speciesSet = new Set<string>();
+
+  // 1) tags explícitas "animal:xxx"
+  for (const tag of normalizedTags) {
+    if (tag.startsWith("animal:")) {
+      const value = tag.slice("animal:".length).trim();
+      if (value) speciesSet.add(value.split(/\s+/).map(capitalize).join(" "));
+    }
+  }
+
+  // 2) palavras-chave conhecidas em tags soltas
+  for (const { label, keywords } of SPECIES_KEYWORDS) {
+    if (keywords.some((keyword) => normalizedTags.some((tag) => tag.includes(keyword)))) {
+      speciesSet.add(label);
+    }
+  }
+
+  return Array.from(speciesSet);
+}
+
+export type StoreCatalog = {
+  products: Product[];
+  categories: string[];
+  brands: string[];
+  species: string[];
+  priceBounds: { min: number; max: number };
+};
+
+/**
+ * Converte os produtos vindos da Storefront API pro formato que o resto do
+ * site (ProductCard, filtros, etc.) já sabe renderizar. As categorias e
+ * marcas são derivadas dos dados reais (coleções e vendor), então qualquer
+ * coleção nova criada na Shopify aparece automaticamente aqui — sem precisar
+ * mexer em código.
+ */
+export function mapShopifyProducts(shopifyProducts: ShopifyStoreProduct[]): StoreCatalog {
+  const categorySet = new Set<string>();
+  const brandSet = new Set<string>();
+  const speciesSet = new Set<string>();
+
+  const products: Product[] = shopifyProducts.map((sp) => {
+    const realCollections = sp.collections.edges
+      .map((edge) => edge.node)
+      .filter((collection) => !IGNORED_COLLECTION_HANDLES.has(collection.handle));
+
+    const category = realCollections[0]?.title.trim() || FALLBACK_CATEGORY;
+    categorySet.add(category);
+
+    const brand = sp.vendor.trim() || "Sem marca";
+    brandSet.add(brand);
+
+    const species = deriveSpecies(sp.tags);
+    species.forEach((label) => speciesSet.add(label));
+
+    const price = Number(sp.priceRange.minVariantPrice.amount);
+    const compareAtAmount = sp.compareAtPriceRange.minVariantPrice.amount;
+    const compareAtPrice = compareAtAmount ? Number(compareAtAmount) : undefined;
+    const oldPrice = compareAtPrice && compareAtPrice > price ? compareAtPrice : undefined;
+
+    const isNew =
+      Date.now() - new Date(sp.createdAt).getTime() <
+      NEW_PRODUCT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+    const badge: ProductBadge | undefined = oldPrice ? "promocao" : isNew ? "novo" : undefined;
+
+    return {
+      id: sp.id,
+      name: sp.title,
+      category,
+      brand,
+      price,
+      oldPrice,
+      rating: 0,
+      reviewsCount: 0,
+      badge,
+      inStock: sp.availableForSale,
+      image: sp.featuredImage?.url ?? null,
+      createdAt: sp.createdAt,
+      species,
+      variantId: sp.variants.edges[0]?.node.id ?? null,
+    };
+  });
+
+  const prices = products.map((p) => p.price).filter((p) => p > 0);
+
+  // Espécies conhecidas (Cães, Gatos...) primeiro, na ordem de sempre;
+  // qualquer espécie nova marcada via tag "animal:xxx" entra depois, em
+  // ordem alfabética — assim a lista cresce sozinha conforme a cliente
+  // cadastra produtos de bichos novos.
+  const knownSpecies = KNOWN_SPECIES_LABELS.filter((label) => speciesSet.has(label));
+  const extraSpecies = Array.from(speciesSet)
+    .filter((label) => !KNOWN_SPECIES_LABELS.includes(label))
+    .sort((a, b) => a.localeCompare(b, "pt-PT"));
+
+  return {
+    products,
+    categories: Array.from(categorySet).sort((a, b) => a.localeCompare(b, "pt-PT")),
+    brands: Array.from(brandSet).sort((a, b) => a.localeCompare(b, "pt-PT")),
+    species: [...knownSpecies, ...extraSpecies],
+    priceBounds: {
+      min: prices.length ? Math.min(...prices) : 0,
+      max: prices.length ? Math.max(...prices) : 0,
+    },
+  };
+}
 
 export type SortOption =
   | "recentes"
@@ -48,43 +172,5 @@ export const sortOptions: { value: SortOption; label: string }[] = [
 ];
 
 export function formatPrice(value: number) {
-  return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  return value.toLocaleString("pt-PT", { style: "currency", currency: "EUR" });
 }
-
-const swatches = ["bg-primary-soft", "bg-blue-soft", "bg-muted"];
-
-function swatch(index: number) {
-  return swatches[index % swatches.length];
-}
-
-export const products: Product[] = [
-  { id: "p1", name: "Coleira Estampada para Cães", category: "Acessórios", brand: "LavaDog", price: 90, rating: 4, reviewsCount: 32, inStock: true, image: swatch(0) },
-  { id: "p2", name: "Kit Acessórios para Gatos", category: "Acessórios", brand: "PetLove", price: 120, oldPrice: 150, rating: 4, reviewsCount: 18, badge: "promocao", inStock: true, image: swatch(1) },
-  { id: "p3", name: "Escova Removedora de Pelos", category: "Higiene & Banho", brand: "Furmax", price: 60, rating: 5, reviewsCount: 54, badge: "mais-vendido", inStock: true, image: swatch(2) },
-  { id: "p4", name: "Kit de Ossinhos Naturais", category: "Brinquedos", brand: "LavaDog", price: 90, rating: 5, reviewsCount: 41, inStock: true, image: swatch(0) },
-  { id: "p5", name: "Brinquedo Mordedor Resistente", category: "Brinquedos", brand: "Golden", price: 45, rating: 4, reviewsCount: 27, badge: "novo", inStock: true, image: swatch(1) },
-  { id: "p6", name: "Arranhador Torre para Gatos", category: "Acessórios", brand: "PetLove", price: 220, oldPrice: 260, rating: 5, reviewsCount: 12, badge: "promocao", inStock: false, image: swatch(2) },
-  { id: "p7", name: "Cama Pet Confort Ortopédica", category: "Camas & Conforto", brand: "Premier", price: 190, rating: 4, reviewsCount: 65, inStock: true, image: swatch(0) },
-  { id: "p8", name: "Ração Premium Adulto 10kg", category: "Ração", brand: "Vitalcan", price: 180, rating: 5, reviewsCount: 88, badge: "mais-vendido", inStock: true, image: swatch(1) },
-  { id: "p9", name: "Shampoo Neutro Hipoalergênico", category: "Higiene & Banho", brand: "Furmax", price: 55, rating: 4, reviewsCount: 21, inStock: true, image: swatch(2) },
-  { id: "p10", name: "Comedouro Duplo em Inox", category: "Acessórios", brand: "Golden", price: 70, rating: 3, reviewsCount: 9, inStock: true, image: swatch(0) },
-  { id: "p11", name: "Guia Retrátil 5 Metros", category: "Acessórios", brand: "LavaDog", price: 95, oldPrice: 115, rating: 4, reviewsCount: 37, badge: "promocao", inStock: true, image: swatch(1) },
-  { id: "p12", name: "Roupinha de Inverno para Cães", category: "Acessórios", brand: "PetLove", price: 85, rating: 5, reviewsCount: 16, badge: "novo", inStock: true, image: swatch(2) },
-  { id: "p13", name: "Ração Filhotes Frango 3kg", category: "Ração", brand: "Vitalcan", price: 75, rating: 5, reviewsCount: 44, inStock: true, image: swatch(0) },
-  { id: "p14", name: "Bola Interativa com Dispenser", category: "Brinquedos", brand: "Golden", price: 65, rating: 4, reviewsCount: 23, badge: "novo", inStock: true, image: swatch(1) },
-  { id: "p15", name: "Caminha Redonda Pelúcia", category: "Camas & Conforto", brand: "Premier", price: 140, rating: 4, reviewsCount: 31, inStock: false, image: swatch(2) },
-  { id: "p16", name: "Suplemento Vitamínico Pet", category: "Saúde", brand: "Vitalcan", price: 50, rating: 4, reviewsCount: 19, inStock: true, image: swatch(0) },
-  { id: "p17", name: "Antipulgas e Carrapatos", category: "Saúde", brand: "Furmax", price: 68, rating: 5, reviewsCount: 72, badge: "mais-vendido", inStock: true, image: swatch(1) },
-  { id: "p18", name: "Escova de Dentes Pet", category: "Higiene & Banho", brand: "PetLove", price: 28, rating: 3, reviewsCount: 8, inStock: true, image: swatch(2) },
-  { id: "p19", name: "Corda de Nós para Cães", category: "Brinquedos", brand: "LavaDog", price: 35, rating: 4, reviewsCount: 29, inStock: true, image: swatch(0) },
-  { id: "p20", name: "Casinha de Madeira Média", category: "Camas & Conforto", brand: "Premier", price: 320, oldPrice: 380, rating: 5, reviewsCount: 14, badge: "promocao", inStock: true, image: swatch(1) },
-  { id: "p21", name: "Petisco Natural Desidratado", category: "Ração", brand: "Golden", price: 42, rating: 4, reviewsCount: 33, badge: "novo", inStock: true, image: swatch(2) },
-  { id: "p22", name: "Bebedouro Fonte Automático", category: "Acessórios", brand: "Furmax", price: 165, rating: 5, reviewsCount: 47, inStock: true, image: swatch(0) },
-  { id: "p23", name: "Tapete Higiênico Ultra Absorvente", category: "Higiene & Banho", brand: "Vitalcan", price: 58, rating: 4, reviewsCount: 61, inStock: true, image: swatch(1) },
-  { id: "p24", name: "Transportadora de Viagem M", category: "Acessórios", brand: "Premier", price: 210, rating: 4, reviewsCount: 22, inStock: false, image: swatch(2) },
-];
-
-export const priceBounds = {
-  min: Math.min(...products.map((product) => product.price)),
-  max: Math.max(...products.map((product) => product.price)),
-};

@@ -2,16 +2,26 @@ import { Button } from "@/components/ui/button";
 import FilterCard from "@/components/store-page/FilterCard";
 import SearchFilter from "@/components/store-page/SearchFilter";
 import CategoryFilter from "@/components/store-page/CategoryFilter";
+import SpeciesFilter from "@/components/store-page/SpeciesFilter";
 import BrandFilter from "@/components/store-page/BrandFilter";
 import PriceFilter from "@/components/store-page/PriceFilter";
 import RatingFilter from "@/components/store-page/RatingFilter";
 import AvailabilityFilter from "@/components/store-page/AvailabilityFilter";
 
+import type { Product } from "@/lib/store-data";
+
 export type StoreFiltersProps = {
+  categories: string[];
+  species: string[];
+  brands: string[];
+  products: Product[];
+  priceBounds: { min: number; max: number };
   search: string;
   onSearchChange: (value: string) => void;
   selectedCategories: string[];
   onToggleCategory: (category: string) => void;
+  selectedSpecies: string[];
+  onToggleSpecies: (species: string) => void;
   selectedBrands: string[];
   onToggleBrand: (brand: string) => void;
   maxPrice: number;
@@ -26,10 +36,17 @@ export type StoreFiltersProps = {
 };
 
 export default function StoreFilters({
+  categories,
+  species,
+  brands,
+  products,
+  priceBounds,
   search,
   onSearchChange,
   selectedCategories,
   onToggleCategory,
+  selectedSpecies,
+  onToggleSpecies,
   selectedBrands,
   onToggleBrand,
   maxPrice,
@@ -48,16 +65,32 @@ export default function StoreFilters({
         <SearchFilter value={search} onChange={onSearchChange} />
       </FilterCard>
 
+      {species.length > 0 && (
+        <FilterCard title="Espécie">
+          <SpeciesFilter
+            species={species}
+            products={products}
+            selected={selectedSpecies}
+            onToggle={onToggleSpecies}
+          />
+        </FilterCard>
+      )}
+
       <FilterCard title="Categorias">
-        <CategoryFilter selected={selectedCategories} onToggle={onToggleCategory} />
+        <CategoryFilter
+          categories={categories}
+          products={products}
+          selected={selectedCategories}
+          onToggle={onToggleCategory}
+        />
       </FilterCard>
 
       <FilterCard title="Faixa de Preço">
-        <PriceFilter value={maxPrice} onChange={onMaxPriceChange} />
+        <PriceFilter priceBounds={priceBounds} value={maxPrice} onChange={onMaxPriceChange} />
       </FilterCard>
 
       <FilterCard title="Marcas">
-        <BrandFilter selected={selectedBrands} onToggle={onToggleBrand} />
+        <BrandFilter brands={brands} selected={selectedBrands} onToggle={onToggleBrand} />
       </FilterCard>
 
       <FilterCard title="Disponibilidade">

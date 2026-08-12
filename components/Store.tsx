@@ -2,8 +2,19 @@ import StoreHighlights from "@/components/StoreHighlights";
 import StoreCategories from "@/components/StoreCategories";
 import StoreMarquee from "@/components/StoreMarquee";
 import { ScrollReveal } from "@/components/animations/scroll-reveal";
+import { getStoreProducts } from "@/lib/shopify";
+import { mapShopifyProducts } from "@/lib/store-data";
 
-export default function Store() {
+export default async function Store() {
+  let species: string[] = [];
+
+  try {
+    const shopifyProducts = await getStoreProducts();
+    species = mapShopifyProducts(shopifyProducts).species;
+  } catch (error) {
+    console.error("Falha ao buscar espécies da Shopify:", error);
+  }
+
   return (
     <section
       id="store"
@@ -20,7 +31,7 @@ export default function Store() {
         <div className="px-6 sm:px-10 lg:px-16">
           <StoreHighlights />
         </div>
-        <StoreCategories />
+        <StoreCategories species={species} />
         <StoreMarquee />
       </ScrollReveal>
     </section>

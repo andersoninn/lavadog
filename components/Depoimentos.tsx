@@ -1,57 +1,76 @@
-import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
+import { CircularTestimonials } from "@/components/ui/circular-testimonials";
+
+const avatar = (nome: string) =>
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(nome)}&background=fdf3e2&color=6D4B31&size=256&bold=true`;
+
+const depoimentos = [
+  {
+    quote:
+      "Encontrei a LavaDog Store enquanto procurava um banho e tosa de confiança para o meu golden retriever. A equipe realmente entende do assunto e trata cada pet com muito carinho. Recomendo de olhos fechados.",
+    name: "Mariana Silva",
+    designation: "Tutora de Cachorro",
+    src: avatar("Mariana Silva"),
+  },
+  {
+    quote:
+      "Desde que comecei a comprar na LavaDog Store, meu gato nunca esteve tão bem cuidado. Produtos de qualidade, entrega rápida e um atendimento que faz toda a diferença.",
+    name: "Carlos Mendes",
+    designation: "Tutor de Gato",
+    src: avatar("Carlos Mendes"),
+  },
+  {
+    quote:
+      "O serviço de banho e tosa é impecável. Meu labrador sai sempre cheiroso e feliz, e a equipe tem uma paciência incrível com ele. Virei cliente fiel.",
+    name: "Beatriz Alves",
+    designation: "Tutora de Cachorro",
+    src: avatar("Beatriz Alves"),
+  },
+  {
+    quote:
+      "Adorei a variedade de produtos e a facilidade de comprar online. O desconto na primeira compra foi o empurrão que eu precisava, e agora não troco por nada.",
+    name: "Rafael Santos",
+    designation: "Tutor de Cachorro",
+    src: avatar("Rafael Santos"),
+  },
+  {
+    quote:
+      "Atendimento humano, atencioso e que realmente ama animais. Sinto que a LavaDog Store cuida do meu pet como se fosse da família deles.",
+    name: "Juliana Costa",
+    designation: "Tutora de Gato",
+    src: avatar("Juliana Costa"),
+  },
+];
 
 export default function Depoimentos() {
   return (
-    <div className="flex h-full w-full items-center bg-background px-6 sm:px-12 lg:px-20">
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-2">
-        <div className="relative mx-auto flex size-64 items-center justify-center rounded-full bg-primary-soft">
-          <Quote className="absolute -top-4 -left-4 size-10 text-primary" fill="currentColor" />
-          <span className="text-sm font-medium text-muted-foreground">Foto do cliente</span>
-        </div>
-
-        <div>
-          <span className="text-sm font-semibold uppercase tracking-wide text-primary">
-            Depoimentos
-          </span>
-          <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
-            O Que Nossos Clientes Dizem
-          </h2>
-          <p className="mt-4 max-w-xl text-muted-foreground">
-            &ldquo;Encontrei a LavaDog Store enquanto procurava um banho e tosa de confiança para
-            o meu golden retriever. A equipe realmente entende do assunto e trata cada pet com
-            muito carinho. Recomendo de olhos fechados.&rdquo;
-          </p>
-
-          <div className="mt-8 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="size-12 rounded-full bg-muted" />
-              <div>
-                <p className="font-semibold text-foreground">Mariana Silva</p>
-                <p className="text-xs font-medium uppercase text-muted-foreground">
-                  Tutora de Cachorro
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                aria-label="Depoimento anterior"
-                className="flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
-              >
-                <ArrowLeft className="size-4" />
-              </button>
-              <button
-                type="button"
-                aria-label="Próximo depoimento"
-                className="flex size-9 items-center justify-center rounded-full border border-border bg-foreground text-background transition-colors hover:bg-primary hover:text-primary-foreground"
-              >
-                <ArrowRight className="size-4" />
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="flex w-full flex-col items-center gap-6 bg-background px-6 py-4 sm:px-12 lg:px-20">
+      <div className="text-center">
+        <span className="text-sm font-semibold uppercase tracking-wide text-primary">
+          Depoimentos
+        </span>
+        <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
+          O Que Nossos Clientes Dizem
+        </h2>
       </div>
+
+      <CircularTestimonials
+        testimonials={depoimentos}
+        autoplay
+        autoplayInterval={3000}
+        colors={{
+          name: "#221b14",
+          designation: "#6D4B31",
+          testimony: "#4b5563",
+          arrowBackground: "#f5bf5f",
+          arrowForeground: "#221b14",
+          arrowHoverBackground: "#d5a652",
+        }}
+        fontSizes={{
+          name: "1.375rem",
+          designation: "0.9rem",
+          quote: "1.05rem",
+        }}
+      />
     </div>
   );
 }

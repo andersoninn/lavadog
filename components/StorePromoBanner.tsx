@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const tabs = ["Sobre a Loja", "O Que Oferecemos", "Benefícios"];
@@ -75,20 +76,26 @@ export default function StorePromoBanner() {
           </div>
         </div>
 
-        <Button className="rounded-full bg-white px-8 text-[#5B371F] hover:bg-white/90">
-          Comprar Agora
+        <Button
+          asChild
+          className="rounded-full bg-primary px-10 py-6 text-base font-bold text-[#3A2C22] shadow-[0_10px_25px_rgba(245,191,95,0.45)] transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_14px_30px_rgba(245,191,95,0.55)]"
+        >
+          <Link href="/store">Comprar Agora</Link>
         </Button>
       </div>
 
       {/* Mobile Card */}
       <div className="absolute bottom-0 left-1/2 z-20 w-[90vw] max-w-sm -translate-x-1/2 translate-y-1/2 lg:hidden">
-        <div className="rounded-xl bg-[#F4E7C7] p-5 text-[#5B371F] shadow-xl flex flex-col items-center justify-center text-center gap-2">
+        <div className="rounded-xl bg-[#F4E7C7] bg-[url('/images/bgCtaStoreLight.png')] p-5 text-[#5B371F] shadow-xl flex flex-col items-center justify-center text-center gap-2">
           <p className="text-4xl font-black">20% OFF</p>
 
           <p className="mt-1 text-sm">Desconto na sua primeira compra online.</p>
 
-          <Button className="mt-4 w-full rounded-xl hover:bg-[#4A2F1A] bg-white font-black text-[#5B371F]">
-            Comprar Agora
+          <Button
+            asChild
+            className="mt-4 w-full rounded-xl bg-primary py-6 font-black text-[#3A2C22] shadow-[0_10px_25px_rgba(245,191,95,0.45)] transition-all hover:bg-primary-hover active:scale-[0.98]"
+          >
+            <Link href="/store">Comprar Agora</Link>
           </Button>
         </div>
       </div>

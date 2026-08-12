@@ -1,9 +1,11 @@
-import { formatPrice, priceBounds } from "@/lib/store-data";
+import { formatPrice } from "@/lib/store-data";
 
 export default function PriceFilter({
+  priceBounds,
   value,
   onChange,
 }: {
+  priceBounds: { min: number; max: number };
   value: number;
   onChange: (value: number) => void;
 }) {

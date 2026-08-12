@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function StoreHighlights() {
@@ -19,13 +20,13 @@ export default function StoreHighlights() {
         <p className="text-sm text-muted-foreground">
           Nutrição completa e saborosa para o dia a dia do seu pet.
         </p>
-        <a
-          href="#store"
+        <Link
+          href="/store"
           className="inline-flex w-fit items-center gap-1 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
         >
           Ver mais
           <ArrowRight className="size-4" />
-        </a>
+        </Link>
       </div>
 
       <div className="relative aspect-square lg:aspect-[4/3] overflow-hidden rounded-lg bg-primary-soft">

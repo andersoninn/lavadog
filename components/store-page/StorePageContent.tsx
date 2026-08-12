@@ -7,13 +7,27 @@ import StoreToolbar from "@/components/store-page/StoreToolbar";
 import StoreFilters from "@/components/store-page/StoreFilters";
 import ProductGrid from "@/components/store-page/ProductGrid";
 import StorePagination from "@/components/store-page/StorePagination";
-import { priceBounds, products, type SortOption } from "@/lib/store-data";
+import type { SortOption, StoreCatalog } from "@/lib/store-data";
 
 const ITEMS_PER_PAGE = 12;
 
-export default function StorePageContent() {
+export default function StorePageContent({
+  catalog,
+  initialCategory,
+  initialSpecies,
+}: {
+  catalog: StoreCatalog;
+  initialCategory?: string;
+  initialSpecies?: string;
+}) {
+  const { products, categories, species, brands, priceBounds } = catalog;
   const [search, setSearch] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    initialCategory ? [initialCategory] : [],
+  );
+  const [selectedSpecies, setSelectedSpecies] = useState<string[]>(
+    initialSpecies ? [initialSpecies] : [],
+  );
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState(priceBounds.max);
   const [minRating, setMinRating] = useState(0);
@@ -28,6 +42,11 @@ export default function StorePageContent() {
     const filtered = products.filter((product) => {
       if (search && !product.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) return false;
+      if (
+        selectedSpecies.length > 0 &&
+        !selectedSpecies.some((s) => product.species.includes(s))
+      )
+        return false;
       if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand)) return false;
       if (product.price > maxPrice) return false;
       if (minRating > 0 && product.rating < minRating) return false;
@@ -42,17 +61,34 @@ export default function StorePageContent() {
       case "preco-desc":
         return [...filtered].sort((a, b) => b.price - a.price);
       case "nome":
-        return [...filtered].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+        return [...filtered].sort((a, b) => a.name.localeCompare(b.name, "pt-PT"));
+      case "recentes":
+        return [...filtered].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
       case "mais-vendidos":
-        return [...filtered].sort((a, b) => b.reviewsCount - a.reviewsCount);
+        // A lista já vem da Shopify ordenada por mais vendidos (sortKey:
+        // BEST_SELLING), então só precisamos manter a ordem original.
+        return filtered;
       default:
         return filtered;
     }
-  }, [search, selectedCategories, selectedBrands, maxPrice, minRating, inStockOnly, promoOnly, sort]);
+  }, [
+    products,
+    search,
+    selectedCategories,
+    selectedSpecies,
+    selectedBrands,
+    maxPrice,
+    minRating,
+    inStockOnly,
+    promoOnly,
+    sort,
+  ]);
 
   useEffect(() => {
     setPage(1);
-  }, [search, selectedCategories, selectedBrands, maxPrice, minRating, inStockOnly, promoOnly, sort]);
+  }, [search, selectedCategories, selectedSpecies, selectedBrands, maxPrice, minRating, inStockOnly, promoOnly, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
@@ -69,6 +105,12 @@ export default function StorePageContent() {
     );
   }
 
+  function toggleSpecies(speciesLabel: string) {
+    setSelectedSpecies((prev) =>
+      prev.includes(speciesLabel) ? prev.filter((s) => s !== speciesLabel) : [...prev, speciesLabel],
+    );
+  }
+
   function toggleBrand(brand: string) {
     setSelectedBrands((prev) => (prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]));
   }
@@ -76,6 +118,7 @@ export default function StorePageContent() {
   function clearFilters() {
     setSearch("");
     setSelectedCategories([]);
+    setSelectedSpecies([]);
     setSelectedBrands([]);
     setMaxPrice(priceBounds.max);
     setMinRating(0);
@@ -84,10 +127,17 @@ export default function StorePageContent() {
   }
 
   const filtersProps = {
+    categories,
+    species,
+    brands,
+    products,
+    priceBounds,
     search,
     onSearchChange: setSearch,
     selectedCategories,
     onToggleCategory: toggleCategory,
+    selectedSpecies,
+    onToggleSpecies: toggleSpecies,
     selectedBrands,
     onToggleBrand: toggleBrand,
     maxPrice,
@@ -126,7 +176,7 @@ export default function StorePageContent() {
         </aside>
 
         <div className="min-w-0 flex-1">
-          <ProductGrid products={paginatedProducts} />
+          <ProductGrid products={paginatedProducts} view={view} />
           <StorePagination currentPage={safePage} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </div>

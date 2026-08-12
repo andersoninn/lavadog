@@ -1,10 +1,11 @@
-import { brands } from "@/lib/store-data";
 import { cn } from "@/lib/utils";
 
 export default function BrandFilter({
+  brands,
   selected,
   onToggle,
 }: {
+  brands: string[];
   selected: string[];
   onToggle: (brand: string) => void;
 }) {

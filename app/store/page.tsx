@@ -2,18 +2,60 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StorePageContent from "@/components/store-page/StorePageContent";
+import { getStoreProducts } from "@/lib/shopify";
+import { mapShopifyProducts, type StoreCatalog } from "@/lib/store-data";
+import { getCurrentCart } from "@/lib/cart-actions";
 
 export const metadata: Metadata = {
   title: "Store | LavaDog Store",
   description: "Encontre os melhores produtos para o seu pet na LavaDog Store.",
 };
 
-export default function StorePage() {
+const EMPTY_CATALOG: StoreCatalog = {
+  products: [],
+  categories: [],
+  brands: [],
+  species: [],
+  priceBounds: { min: 0, max: 0 },
+};
+
+export default async function StorePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const initialCategory = typeof params.categoria === "string" ? params.categoria : undefined;
+  const initialSpecies = typeof params.animal === "string" ? params.animal : undefined;
+
+  let catalog = EMPTY_CATALOG;
+  let loadError = false;
+
+  try {
+    const shopifyProducts = await getStoreProducts();
+    catalog = mapShopifyProducts(shopifyProducts);
+  } catch (error) {
+    console.error("Falha ao buscar produtos da Shopify:", error);
+    loadError = true;
+  }
+
+  const cart = await getCurrentCart().catch(() => null);
+
   return (
     <>
-      <Navbar />
+      <Navbar cartCount={cart?.totalQuantity ?? 0} />
       <main className="flex-1">
-        <StorePageContent />
+        {loadError && (
+          <p className="mx-auto mt-6 w-full max-w-7xl px-6 text-sm text-red-600 sm:px-10 lg:px-16">
+            Não foi possível carregar o catálogo da loja agora. Tente novamente em instantes.
+          </p>
+        )}
+        <StorePageContent
+          key={`${initialCategory ?? ""}-${initialSpecies ?? ""}`}
+          catalog={catalog}
+          initialCategory={initialCategory}
+          initialSpecies={initialSpecies}
+        />
       </main>
       <Footer />
     </>

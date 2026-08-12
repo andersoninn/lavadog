@@ -35,43 +35,43 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 ## Fase 1 — Layout inicial (para aprovação da cliente)
 
 - [x] Fundação do projeto: tema de cores (`app/globals.css`), fontes (Poppins + Inter), `lib/utils.ts`, `components/ui/button.tsx`, `components/ui/sheet.tsx`, GSAP configurado
-- [x] Navbar (`components/layout/navbar/`): logo, links, ações (WhatsApp/conta/carrinho), menu mobile com Sheet
-- [x] Hero (`components/sections/hero/`): headline, CTAs, badges de confiança, imagem com card flutuante, animação on-scroll
-- [x] Sobre a LavaDog Store (`components/sections/about/`): foto circular com badge flutuante, título, parágrafo e 4 cards de diferenciais
-- [x] Nossos Serviços (`components/sections/services/`): cabeçalho com CTA e 4 cards de serviço (foto + ícone + título + descrição + link)
-- [ ] Nossa Store (vitrine de categorias)
-- [ ] Por que escolher a LavaDog Store
-- [ ] Depoimentos
-- [ ] CTA final + Footer
+- [x] Navbar (`components/Navbar.tsx`): logo, links, ações (WhatsApp/conta/carrinho), menu mobile com Sheet
+- [x] Hero (`components/Hero.tsx`): carrossel de banners integrado à navegação da navbar
+- [x] Nossa Store (`components/Store.tsx` + `StoreHighlights`, `StoreCategories`, `StoreMarquee`): vitrine de categorias, mais completa que o previsto — inclui página `/store` própria com filtros (categoria, marca, preço, avaliação, disponibilidade), grid de produtos e paginação
+- [x] Footer (`components/Footer.tsx`) e Contatos (`components/Contatos.tsx`)
+- [x] Depoimentos (`components/Depoimentos.tsx`): carrossel com auto-rotação a cada 3s + setas, 5 depoimentos placeholder — **construído mas ainda não importado em nenhuma página**, falta conectar
+- [x] CTA final (`components/StorePromoBanner.tsx`): card de 20% off — **construído mas ainda não importado em nenhuma página**, falta conectar
+- [ ] Por que escolher a LavaDog Store — não iniciado
+- [x] ~~Sobre a LavaDog Store~~ e ~~Nossos Serviços~~ — removidos a pedido da cliente, site fica focado só na loja
 
-## Fase 2 — Store própria (Stripe)
+## Fase 2 — Integração Shopify (headless)
 
-- [ ] Catálogo de produtos próprios
-- [ ] Carrinho
-- [ ] Checkout com Stripe
+Decisão de arquitetura: **sem Stripe**. Pagamento e checkout ficam 100% no Shopify. O Next.js é só o front-end (headless), lendo o catálogo da cliente direto da Storefront API dela.
 
-## Fase 3 — Produtos dropship (Shopify)
+- [ ] Cliente cadastra os produtos dela no admin do Shopify
+- [ ] Obter credenciais: domínio da loja Shopify + Storefront API access token
+- [ ] Conectar a Storefront API e buscar produtos/categorias reais
+- [ ] Mapear categorias do Shopify para as categorias já usadas em `StoreCategories` / `StoreFilters` (ajustar nomes, imagens e filtros pra ficarem compatíveis com os dados reais)
+- [ ] Trocar dados mockados de `lib/store-data.ts` e `ProductCard`/`ProductGrid` pelos dados vindos da API
+- [ ] Carrinho e checkout redirecionam para o checkout hospedado do Shopify
 
-- [ ] Definir estratégia de integração (Storefront API vs. importação de catálogo)
-- [ ] Exibição diferenciada dos produtos dropship na loja
-
-## Fase 4 — Supabase
+## Fase 3 — Supabase
 
 - [ ] Setup do projeto Supabase
 - [ ] Autenticação de usuários
-- [ ] Modelagem do banco (produtos, pedidos, serviços, agendamentos)
+- [ ] Modelagem do banco (serviços, agendamentos — não produtos/pedidos, que ficam no Shopify)
 
-## Fase 5 — Agendamento de serviços
+## Fase 4 — Agendamento de serviços
 
 - [ ] Painel da cliente para definir disponibilidade dos serviços
 - [ ] Fluxo do usuário do petshop para marcar serviço
-- [ ] Pré-pagamento no agendamento (Stripe)
+- [ ] Pré-pagamento no agendamento — forma de cobrança a definir (Shopify não cobre agendamento nativamente)
 
 ## Pendências / decisões em aberto
 
 - Logo definitivo: já integrado (`public/images/logo.png`).
 - Fotos do hero (`heroDog1.png`, `heroBgDesktop.png`, `heroMobileBg.png`, `dogfoots.png`): já são os assets reais da cliente.
-- Foto da seção "Sobre" (`public/images/about-dog.jpg`) ainda é um recorte temporário do `Site Model.png`, só para visualização do layout. Substituir pela fotografia definitiva da cliente.
-- Fotos dos 4 cards de "Nossos Serviços" (`public/images/services/*.jpg`) também são recortes temporários do `Site Model.png`. Substituir pelas fotos reais de cada serviço.
 - Número de WhatsApp no navbar é placeholder (`wa.me/5500000000000`). Atualizar com o número real.
-- Links da navbar apontam para âncoras (`#sobre`, `#servicos`, etc.) que serão criadas conforme as seções forem construídas.
+- `Depoimentos` e `StorePromoBanner` existem como componentes prontos mas não estão importados em `app/page.tsx` nem em `Store.tsx` — precisam ser conectados.
+- Falta receber da cliente: domínio da loja Shopify e o Storefront API access token, pra iniciar a Fase 2.
+- Categorias/filtros atuais (`StoreCategories`, `StoreFilters`) usam dados mockados de `lib/store-data.ts`; serão ajustados assim que o catálogo real do Shopify estiver conectado.

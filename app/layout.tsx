@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${manrope.variable} h-full scroll-smooth antialiased`}>
+    <html lang="pt-PT" className={`${manrope.variable} h-full scroll-smooth antialiased`}>
       <head>
         <script
           dangerouslySetInnerHTML={{

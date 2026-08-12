@@ -1,20 +1,22 @@
 "use client";
 
 import * as React from "react";
-import { Bird, Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
+import Link from "next/link";
+import { Bird, Cat, Dog, Fish, PawPrint, Rabbit, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const categories = [
-  { label: "Gatos", icon: Cat },
-  { label: "Cães", icon: Dog },
-  { label: "Peixes", icon: Fish },
-  { label: "Aves", icon: Bird },
-  { label: "Coelhos", icon: Rabbit },
-  // { label: "Répteis", icon: Turtle },
-];
+const SPECIES_ICONS: Record<string, LucideIcon> = {
+  Gatos: Cat,
+  Cães: Dog,
+  Peixes: Fish,
+  Aves: Bird,
+  Coelhos: Rabbit,
+};
 
-export default function StoreCategories() {
-  const [selected, setSelected] = React.useState("Cães");
+export default function StoreCategories({ species }: { species: string[] }) {
+  const [selected, setSelected] = React.useState(species[0]);
+
+  if (species.length === 0) return null;
 
   return (
     <div className="text-center">
@@ -28,12 +30,13 @@ export default function StoreCategories() {
       </h2>
 
       <div className="mt-6 flex flex-wrap justify-center gap-4 sm:gap-6">
-        {categories.map(({ label, icon: Icon }) => {
+        {species.map((label) => {
+          const Icon = SPECIES_ICONS[label] ?? PawPrint;
           const active = selected === label;
           return (
-            <button
+            <Link
               key={label}
-              type="button"
+              href={`/store?animal=${encodeURIComponent(label)}`}
               aria-pressed={active}
               onClick={() => setSelected(label)}
               className="flex flex-col items-center gap-2"
@@ -49,7 +52,7 @@ export default function StoreCategories() {
                 <Icon className="size-6" />
               </div>
               <span className="text-xs font-semibold text-foreground">{label}</span>
-            </button>
+            </Link>
           );
         })}
       </div>

@@ -14,7 +14,7 @@ import { navLinks } from "@/lib/nav-links";
 
 const WHATSAPP_HREF = "https://wa.me/5500000000000";
 
-export default function Navbar() {
+export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
   const [open, setOpen] = React.useState(false);
   const scrolled = useScroll(10);
   const navHidden = useNavbarHidden() && !open;
@@ -89,9 +89,17 @@ export default function Navbar() {
             <Link
               href="/carrinho"
               aria-label="Carrinho de compras"
-              className={cn(buttonVariants({ variant: "outline", size: "icon" }), "hidden lg:inline-flex")}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "icon" }),
+                "relative hidden lg:inline-flex",
+              )}
             >
               <ShoppingCart className="size-4" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
             </Link>
           </div>
 
@@ -108,9 +116,14 @@ export default function Navbar() {
             <Link
               href="/carrinho"
               aria-label="Carrinho de compras"
-              className={buttonVariants({ variant: "outline", size: "icon" })}
+              className={cn(buttonVariants({ variant: "outline", size: "icon" }), "relative")}
             >
               <ShoppingCart className="size-4" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
             </Link>
           </div>
 
