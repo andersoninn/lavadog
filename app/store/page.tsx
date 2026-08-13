@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StorePageContent from "@/components/store-page/StorePageContent";
 import { getStoreProducts } from "@/lib/shopify";
-import { mapShopifyProducts, type StoreCatalog } from "@/lib/store-data";
+import { mapShopifyProducts, type SortOption, type StoreCatalog } from "@/lib/store-data";
 import { getCurrentCart } from "@/lib/cart-actions";
 
 export const metadata: Metadata = {
@@ -19,6 +19,14 @@ const EMPTY_CATALOG: StoreCatalog = {
   priceBounds: { min: 0, max: 0 },
 };
 
+const VALID_SORT_OPTIONS: SortOption[] = [
+  "recentes",
+  "mais-vendidos",
+  "preco-asc",
+  "preco-desc",
+  "nome",
+];
+
 export default async function StorePage({
   searchParams,
 }: {
@@ -27,6 +35,11 @@ export default async function StorePage({
   const params = await searchParams;
   const initialCategory = typeof params.categoria === "string" ? params.categoria : undefined;
   const initialSpecies = typeof params.animal === "string" ? params.animal : undefined;
+  const initialPromoOnly = params.promo === "true";
+  const initialSort =
+    typeof params.sort === "string" && VALID_SORT_OPTIONS.includes(params.sort as SortOption)
+      ? (params.sort as SortOption)
+      : undefined;
 
   let catalog = EMPTY_CATALOG;
   let loadError = false;
@@ -51,10 +64,12 @@ export default async function StorePage({
           </p>
         )}
         <StorePageContent
-          key={`${initialCategory ?? ""}-${initialSpecies ?? ""}`}
+          key={`${initialCategory ?? ""}-${initialSpecies ?? ""}-${initialPromoOnly}-${initialSort ?? ""}`}
           catalog={catalog}
           initialCategory={initialCategory}
           initialSpecies={initialSpecies}
+          initialPromoOnly={initialPromoOnly}
+          initialSort={initialSort}
         />
       </main>
       <Footer />

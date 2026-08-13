@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { ArrowUp, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { WHATSAPP_HREF } from '@/lib/constants';
 
 const companyLinks = [
-  { label: 'Home', href: '#sobre' },
-  { label: 'Nossos Produtos', href: '#store' },
-  { label: 'Promoções', href: '#store' },
-  { label: 'Novidades', href: '#contato' },
-  { label: 'Depoimentos', href: '#depoimentos' },
+  { label: 'Home', href: '/' },
+  { label: 'Nossos Produtos', href: '/store' },
+  { label: 'Promoções', href: '/store?promo=true' },
+  { label: 'Novidades', href: '/store?sort=recentes' },
+  { label: 'Central de ajuda', href: WHATSAPP_HREF, external: true },
 ];
 
 export default function Footer() {
@@ -45,6 +46,8 @@ export default function Footer() {
               <li key={link.label}>
                 <Link
                   href={link.href}
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
                   className="transition-colors hover:text-background"
                 >
                   {link.label}

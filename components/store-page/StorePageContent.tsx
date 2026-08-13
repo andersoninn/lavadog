@@ -15,10 +15,14 @@ export default function StorePageContent({
   catalog,
   initialCategory,
   initialSpecies,
+  initialPromoOnly,
+  initialSort,
 }: {
   catalog: StoreCatalog;
   initialCategory?: string;
   initialSpecies?: string;
+  initialPromoOnly?: boolean;
+  initialSort?: SortOption;
 }) {
   const { products, categories, species, brands, priceBounds } = catalog;
   const [search, setSearch] = useState("");
@@ -32,8 +36,8 @@ export default function StorePageContent({
   const [maxPrice, setMaxPrice] = useState(priceBounds.max);
   const [minRating, setMinRating] = useState(0);
   const [inStockOnly, setInStockOnly] = useState(false);
-  const [promoOnly, setPromoOnly] = useState(false);
-  const [sort, setSort] = useState<SortOption>("recentes");
+  const [promoOnly, setPromoOnly] = useState(initialPromoOnly ?? false);
+  const [sort, setSort] = useState<SortOption>(initialSort ?? "recentes");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);

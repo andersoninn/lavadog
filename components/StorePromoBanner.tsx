@@ -1,8 +1,24 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-const tabs = ['Sobre a Loja', 'O Que Oferecemos', 'Benefícios'];
+const tabs = [
+  {
+    label: 'Sobre a Loja',
+    text: 'Produtos cuidadosamente selecionados para manter seu pet feliz, saudável e cheio de energia. Brinquedos, acessórios, alimentação e muito mais com a qualidade LavaDog.',
+  },
+  {
+    label: 'O Que Oferecemos',
+    text: 'Uma seleção completa de alimentação premium, brinquedos, acessórios e itens de higiene para cães e gatos de todos os portes e idades. Tudo em um só lugar, pensado para o dia a dia do seu pet.',
+  },
+  {
+    label: 'Benefícios',
+    text: 'Atendimento próximo e apaixonado por animais, entrega rápida e produtos com a garantia de qualidade LavaDog. Compre com confiança e cuide do seu pet com quem entende do assunto.',
+  },
+];
 
 // TODO: trocar pelo código real do cupom de 10% que a cliente já tem
 // cadastrado na loja inteira (Descontos, no admin da Shopify). A Storefront
@@ -11,6 +27,8 @@ const tabs = ['Sobre a Loja', 'O Que Oferecemos', 'Benefícios'];
 const DISCOUNT_CODE = 'LAVADOG10';
 
 export default function StorePromoBanner() {
+  const [activeTab, setActiveTab] = useState(0);
+
   return (
     <section
       className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen bg-[#3A2C22] text-white mt-24 lg:mt-28 pb-24"
@@ -36,23 +54,23 @@ export default function StorePromoBanner() {
 
           <div className="mt-8 hidden gap-8 border-b border-white/20 pb-3 md:flex">
             {tabs.map((tab, index) => (
-              <span
-                key={tab}
+              <button
+                key={tab.label}
+                type="button"
+                onClick={() => setActiveTab(index)}
                 className={`cursor-pointer text-sm transition ${
-                  index === 0
+                  index === activeTab
                     ? 'border-b-2 border-primary pb-2 text-white'
                     : 'pb-2 text-white/60 hover:text-white'
                 }`}
               >
-                {tab}
-              </span>
+                {tab.label}
+              </button>
             ))}
           </div>
 
           <p className="mt-6 max-w-md text-base leading-7 text-white/75">
-            Produtos cuidadosamente selecionados para manter seu pet feliz,
-            saudável e cheio de energia. Brinquedos, acessórios, alimentação e
-            muito mais com a qualidade LavaDog.
+            {tabs[activeTab].text}
           </p>
 
           <Button className="mt-10 rounded-full bg-white px-8 text-[#5B371F] hover:bg-white/90">
@@ -73,7 +91,7 @@ export default function StorePromoBanner() {
       </div>
 
       {/* Floating Card */}
-      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 items-center justify-between rounded-lg bg-[#F4E7C7]  px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-99  bg-[url('/images/bgCtaStoreLight.png')]">
+      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 items-center justify-between rounded-lg bg-[#F4E7C7]  px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-89  bg-[url('/images/bgCtaStoreLight.png')]">
         <div className="flex items-center gap-8">
           <p className="shrink-0 text-6xl font-black leading-none whitespace-nowrap text-[#5B371F]">
             10% off
