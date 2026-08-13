@@ -99,7 +99,7 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
             >
               <ShoppingCart className="size-4" />
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">SHOPIFY_STORE_DOMAIN
                   {cartCount > 9 ? '9+' : cartCount}
                 </span>
               )}
