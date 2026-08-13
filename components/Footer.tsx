@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { ArrowUp, Facebook, Instagram, Linkedin } from 'lucide-react';
-import { WHATSAPP_HREF } from '@/lib/constants';
+import { WHATSAPP_HREF, INSTAGRAM_HREF } from '@/lib/constants';
 
 const companyLinks = [
   { label: 'Home', href: '/' },
   { label: 'Nossos Produtos', href: '/store' },
   { label: 'Promoções', href: '/store?promo=true' },
-  { label: 'Novidades', href: '/store?sort=recentes' },
+  { label: 'Novidades', href: INSTAGRAM_HREF, external: true },
   { label: 'Central de ajuda', href: WHATSAPP_HREF, external: true },
 ];
 
@@ -81,7 +81,7 @@ export default function Footer() {
               <Linkedin className="size-4" />
             </Link> */}
             <Link
-              href="https://www.instagram.com/lavadog.store/"
+              href={INSTAGRAM_HREF}
               aria-label="Instagram"
               className="text-background/70 hover:text-background"
               target="_blank"
@@ -90,6 +90,20 @@ export default function Footer() {
             </Link>
           </div>
         </div>
+      </div>
+
+      <div className="mx-auto mt-12 flex w-full max-w-6xl flex-col items-center gap-2 border-t border-background/20 pt-6 text-xs text-background/60 sm:flex-row sm:justify-between">
+        <p>© {new Date().getFullYear()} LavaDog Store. Todos os direitos reservados.</p>
+        <p>
+          Desenvolvido por{' '}
+          {/* TODO: trocar "#" pelo link real do site da Oak Technologies quando estiver disponível */}
+          <Link
+            href="#"
+            className="font-semibold text-background/80 transition-colors hover:text-background"
+          >
+            Oak Technologies
+          </Link>
+        </p>
       </div>
 
       <button

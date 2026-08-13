@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, User } from 'lucide-react';
+import { PawPrint, ShoppingCart } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { MenuToggleIcon } from '@/components/ui/menu-toggle-icon';
 import { useScroll } from '@/components/ui/use-scroll';
@@ -48,15 +48,15 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
           aria-label="LavaDog Store, ir para o início"
           className="shrink-0"
         >
-          {/* <Image
+          <Image
             src="/images/logo.png"
             alt="LavaDog Store"
             width={140}
             height={40}
             className="h-10 w-auto"
             priority
-          /> */}
-          <p className="text-lg font-bold">Lava Dog</p>
+          />
+          {/* <p className="text-lg font-bold">Lava Dog</p> */}
         </Link>
 
         <div className="flex items-center gap-2 md:gap-3 lg:gap-6">
@@ -66,6 +66,8 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
                 key={link.label}
                 className={buttonVariants({ variant: 'ghost', size: 'sm' })}
                 href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
               >
                 {link.label}
               </Link>
@@ -82,13 +84,6 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
             >
               <WhatsAppIcon className="size-4" />
             </Link>
-            {/* <Link
-              href="/conta"
-              aria-label="Minha conta"
-              className={buttonVariants({ variant: 'outline', size: 'icon' })}
-            >
-              <User className="size-4" />
-            </Link> */}
             <Link
               href="/carrinho"
               aria-label="Carrinho de compras"
@@ -99,7 +94,7 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
             >
               <ShoppingCart className="size-4" />
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">SHOPIFY_STORE_DOMAIN
+                <span className="absolute -top-1.5 -right-1.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {cartCount > 9 ? '9+' : cartCount}
                 </span>
               )}
@@ -164,16 +159,17 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
                   className: 'justify-start',
                 })}
                 href={link.href}
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
                 onClick={() => setOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
           </div>
-          <div className="flex flex-col gap-2 md:hidden">
-            <Button className="w-full" asChild onClick={() => setOpen(false)}>
-              <a href="/conta">Login</a>
-            </Button>
+          <div className="flex items-center justify-center gap-2 border-t border-border pt-4 text-sm text-muted-foreground md:hidden">
+            <PawPrint className="size-4 text-primary" />
+            <span>Mais que um pet shop, um lugar de amor e cuidado.</span>
           </div>
         </div>
       </div>

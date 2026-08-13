@@ -52,13 +52,13 @@ export default function StorePromoBanner() {
             na LavaDog Store
           </h2>
 
-          <div className="mt-8 hidden gap-8 border-b border-white/20 pb-3 md:flex">
+          <div className="mt-8 flex gap-4 overflow-x-auto border-b border-white/20 pb-3 sm:gap-6 md:gap-8">
             {tabs.map((tab, index) => (
               <button
                 key={tab.label}
                 type="button"
                 onClick={() => setActiveTab(index)}
-                className={`cursor-pointer text-sm transition ${
+                className={`shrink-0 cursor-pointer text-xs whitespace-nowrap transition sm:text-sm ${
                   index === activeTab
                     ? 'border-b-2 border-primary pb-2 text-white'
                     : 'pb-2 text-white/60 hover:text-white'
@@ -73,8 +73,11 @@ export default function StorePromoBanner() {
             {tabs[activeTab].text}
           </p>
 
-          <Button className="mt-10 rounded-full bg-white px-8 text-[#5B371F] hover:bg-white/90">
-            Saiba Mais
+          <Button
+            asChild
+            className="mt-10 rounded-full bg-white px-8 text-[#5B371F] hover:bg-white/90"
+          >
+            <Link href="/store">Saiba Mais</Link>
           </Button>
         </div>
 
