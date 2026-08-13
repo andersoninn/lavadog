@@ -82,7 +82,13 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
             >
               <WhatsAppIcon className="size-4" />
             </Link>
-           git  */}
+            {/* <Link
+              href="/conta"
+              aria-label="Minha conta"
+              className={buttonVariants({ variant: 'outline', size: 'icon' })}
+            >
+              <User className="size-4" />
+            </Link> */}
             <Link
               href="/carrinho"
               aria-label="Carrinho de compras"
