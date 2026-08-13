@@ -76,7 +76,7 @@ export default function ProductCard({
           <ProductPrice price={product.price} oldPrice={product.oldPrice} />
         </div>
 
-        <AddToCartButton variantId={product.variantId} inStock={product.inStock} iconOnlyBelowSm />
+        <AddToCartButton product={product} iconOnlyBelowSm />
       </article>
     );
   }
@@ -95,7 +95,7 @@ export default function ProductCard({
 
         <ProductPrice price={product.price} oldPrice={product.oldPrice} />
 
-        <AddToCartButton variantId={product.variantId} inStock={product.inStock} className="mt-3" />
+        <AddToCartButton product={product} className="mt-3" />
       </div>
     </article>
   );

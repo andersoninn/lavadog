@@ -1,12 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-const tabs = ["Sobre a Loja", "O Que Oferecemos", "Benefícios"];
+const tabs = ['Sobre a Loja', 'O Que Oferecemos', 'Benefícios'];
+
+// TODO: trocar pelo código real do cupom de 10% que a cliente já tem
+// cadastrado na loja inteira (Descontos, no admin da Shopify). A Storefront
+// API não permite ler cupons por segurança, então esse valor precisa ser
+// atualizado aqui manualmente sempre que o cupom mudar.
+const DISCOUNT_CODE = 'LAVADOG10';
 
 export default function StorePromoBanner() {
   return (
-    <section className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen bg-[#3A2C22] text-white mt-24 lg:mt-28 pb-24" id="store-promo-banner">
+    <section
+      className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen bg-[#3A2C22] text-white mt-24 lg:mt-28 pb-24"
+      id="store-promo-banner"
+    >
       {/* Background */}
       <div className="absolute inset-0 bg-[url('/images/bgCtaStore.png')] bg-cover bg-center opacity-15" />
 
@@ -31,8 +40,8 @@ export default function StorePromoBanner() {
                 key={tab}
                 className={`cursor-pointer text-sm transition ${
                   index === 0
-                    ? "border-b-2 border-primary pb-2 text-white"
-                    : "pb-2 text-white/60 hover:text-white"
+                    ? 'border-b-2 border-primary pb-2 text-white'
+                    : 'pb-2 text-white/60 hover:text-white'
                 }`}
               >
                 {tab}
@@ -41,8 +50,9 @@ export default function StorePromoBanner() {
           </div>
 
           <p className="mt-6 max-w-md text-base leading-7 text-white/75">
-            Produtos cuidadosamente selecionados para manter seu pet feliz, saudável e cheio de
-            energia. Brinquedos, acessórios, alimentação e muito mais com a qualidade LavaDog.
+            Produtos cuidadosamente selecionados para manter seu pet feliz,
+            saudável e cheio de energia. Brinquedos, acessórios, alimentação e
+            muito mais com a qualidade LavaDog.
           </p>
 
           <Button className="mt-10 rounded-full bg-white px-8 text-[#5B371F] hover:bg-white/90">
@@ -65,14 +75,15 @@ export default function StorePromoBanner() {
       {/* Floating Card */}
       <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 items-center justify-between rounded-lg bg-[#F4E7C7]  px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-99  bg-[url('/images/bgCtaStoreLight.png')]">
         <div className="flex items-center gap-8">
-          <div className="flex gap-8"> 
-            <p className="text-6xl font-black leading-none text-[#5B371F]">20% off</p>
+          <p className="shrink-0 text-6xl font-black leading-none whitespace-nowrap text-[#5B371F]">
+            10% off
+          </p>
 
-            <p className="mt-2 text-xl font-semibold text-[#6D4B31]">
-              Desconto na sua
-              <br />
-              primeira compra online
-            </p>
+          <div className="mt-2 flex flex-col text-xl font-semibold text-[#6D4B31]">
+            <span className="whitespace-nowrap">Em toda a loja usando o</span>
+            <span className="whitespace-nowrap font-black tracking-wide">
+              cupom {DISCOUNT_CODE}
+            </span>
           </div>
         </div>
 
@@ -87,9 +98,12 @@ export default function StorePromoBanner() {
       {/* Mobile Card */}
       <div className="absolute bottom-0 left-1/2 z-20 w-[90vw] max-w-sm -translate-x-1/2 translate-y-1/2 lg:hidden">
         <div className="rounded-xl bg-[#F4E7C7] bg-[url('/images/bgCtaStoreLight.png')] p-5 text-[#5B371F] shadow-xl flex flex-col items-center justify-center text-center gap-2">
-          <p className="text-4xl font-black">20% OFF</p>
+          <p className="text-4xl font-black ">10% OFF</p>
 
-          <p className="mt-1 text-sm">Desconto na sua primeira compra online.</p>
+          <p className="mt-1 text-sm">
+            Em toda a loja usando o cupom{' '}
+            <span className="font-black">{DISCOUNT_CODE}</span>
+          </p>
 
           <Button
             asChild

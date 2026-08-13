@@ -2,6 +2,19 @@ import type { ShopifyStoreProduct } from "@/lib/shopify";
 
 export type ProductBadge = "novo" | "promocao" | "mais-vendido";
 
+export type ProductVariant = {
+  id: string;
+  title: string;
+  availableForSale: boolean;
+  price: number;
+  selectedOptions: { name: string; value: string }[];
+};
+
+export type ProductOption = {
+  name: string;
+  values: string[];
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -16,7 +29,12 @@ export type Product = {
   image: string | null;
   createdAt: string;
   species: string[];
+  /** Único id de variante quando o produto não tem escolha real (tamanho, cor, etc). */
   variantId: string | null;
+  /** true quando o produto tem mais de uma variante — precisa abrir o seletor antes de adicionar ao carrinho. */
+  hasVariants: boolean;
+  variants: ProductVariant[];
+  options: ProductOption[];
 };
 
 // Coleção "vitrine" que a Shopify cria automaticamente pra loja online —
@@ -115,6 +133,19 @@ export function mapShopifyProducts(shopifyProducts: ShopifyStoreProduct[]): Stor
       NEW_PRODUCT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
     const badge: ProductBadge | undefined = oldPrice ? "promocao" : isNew ? "novo" : undefined;
 
+    const variants: ProductVariant[] = sp.variants.edges.map((edge) => ({
+      id: edge.node.id,
+      title: edge.node.title,
+      availableForSale: edge.node.availableForSale,
+      price: Number(edge.node.price.amount),
+      selectedOptions: edge.node.selectedOptions,
+    }));
+
+    // A Shopify sempre cria pelo menos uma opção ("Title"/"Default Title")
+    // mesmo em produtos sem variação real — por isso o critério de "tem
+    // escolha de verdade" é ter mais de uma variante, não só ter `options`.
+    const hasVariants = variants.length > 1;
+
     return {
       id: sp.id,
       name: sp.title,
@@ -129,7 +160,10 @@ export function mapShopifyProducts(shopifyProducts: ShopifyStoreProduct[]): Stor
       image: sp.featuredImage?.url ?? null,
       createdAt: sp.createdAt,
       species,
-      variantId: sp.variants.edges[0]?.node.id ?? null,
+      variantId: variants[0]?.id ?? null,
+      hasVariants,
+      variants,
+      options: sp.options,
     };
   });
 

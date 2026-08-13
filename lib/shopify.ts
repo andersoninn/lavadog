@@ -173,11 +173,24 @@ const ALL_PRODUCTS_QUERY = /* GraphQL */ `
               }
             }
           }
-          variants(first: 1) {
+          options {
+            name
+            values
+          }
+          variants(first: 25) {
             edges {
               node {
                 id
+                title
                 availableForSale
+                selectedOptions {
+                  name
+                  value
+                }
+                price {
+                  amount
+                  currencyCode
+                }
               }
             }
           }
@@ -199,7 +212,18 @@ export type ShopifyStoreProduct = {
   compareAtPriceRange: { minVariantPrice: { amount: string | null } };
   featuredImage: { url: string; altText: string | null } | null;
   collections: { edges: { node: { title: string; handle: string } }[] };
-  variants: { edges: { node: { id: string; availableForSale: boolean } }[] };
+  options: { name: string; values: string[] }[];
+  variants: {
+    edges: {
+      node: {
+        id: string;
+        title: string;
+        availableForSale: boolean;
+        selectedOptions: { name: string; value: string }[];
+        price: { amount: string; currencyCode: string };
+      };
+    }[];
+  };
 };
 
 export async function getStoreProducts(first = 100): Promise<ShopifyStoreProduct[]> {
