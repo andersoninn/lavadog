@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { ArrowUp, Facebook, Instagram, Linkedin } from "lucide-react";
+import Link from 'next/link';
+import { ArrowUp, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 const companyLinks = [
-  { label: "Quem Somos", href: "#sobre" },
-  { label: "Termos de Uso", href: "/termos-de-uso" },
-  { label: "Nossos Produtos", href: "#store" },
-  { label: "Nossas Lojas", href: "#store" },
-  { label: "Central de Ajuda", href: "#contato" },
-  { label: "Novidades", href: "#depoimentos" },
+  { label: 'Home', href: '#sobre' },
+  { label: 'Nossos Produtos', href: '#store' },
+  { label: 'Promoções', href: '#store' },
+  { label: 'Novidades', href: '#contato' },
+  { label: 'Depoimentos', href: '#depoimentos' },
 ];
 
 export default function Footer() {
@@ -24,7 +23,7 @@ export default function Footer() {
           <p className="mt-3 max-w-xs text-sm text-background/70">
             Mais que um pet shop, um lugar de amor e cuidado.
           </p>
-          <div className="mt-6 flex max-w-xs items-center gap-2 border-b border-background/30 pb-2">
+          {/* <div className="mt-6 flex max-w-xs items-center gap-2 border-b border-background/30 pb-2">
             <input
               type="email"
               placeholder="Seu e-mail"
@@ -36,7 +35,7 @@ export default function Footer() {
             >
               Inscrever-se
             </button>
-          </div>
+          </div> */}
         </div>
 
         <div>
@@ -44,7 +43,10 @@ export default function Footer() {
           <ul className="mt-4 space-y-2 text-sm text-background/70">
             {companyLinks.map((link) => (
               <li key={link.label}>
-                <Link href={link.href} className="transition-colors hover:text-background">
+                <Link
+                  href={link.href}
+                  className="transition-colors hover:text-background"
+                >
                   {link.label}
                 </Link>
               </li>
@@ -55,18 +57,32 @@ export default function Footer() {
         <div>
           <p className="text-sm font-semibold">Contato</p>
           <ul className="mt-4 space-y-2 text-sm text-background/70">
-            <li>Rua das Flores, 123 - São Paulo, SP</li>
-            <li>+55 11 0000-0000</li>
-            <li>contato@lavadogstore.com</li>
+            <li> Rua 16 de Maio 41 Santiago e Bougado, 4785-607 Trofa</li>
+            <li>+351 926 777 360</li>
+            {/* <li>contato@lavadogstore.com</li> */}
           </ul>
           <div className="mt-4 flex gap-3">
-            <Link href="#" aria-label="Facebook" className="text-background/70 hover:text-background">
+            <Link
+              href="https://www.facebook.com/lavadogtere"
+              aria-label="Facebook"
+              className="text-background/70 hover:text-background"
+              target="_blank"
+            >
               <Facebook className="size-4" />
             </Link>
-            <Link href="#" aria-label="LinkedIn" className="text-background/70 hover:text-background">
+            {/* <Link
+              href="#"
+              aria-label="LinkedIn"
+              className="text-background/70 hover:text-background"
+            >
               <Linkedin className="size-4" />
-            </Link>
-            <Link href="#" aria-label="Instagram" className="text-background/70 hover:text-background">
+            </Link> */}
+            <Link
+              href="https://www.instagram.com/lavadog.store/"
+              aria-label="Instagram"
+              className="text-background/70 hover:text-background"
+              target="_blank"
+            >
               <Instagram className="size-4" />
             </Link>
           </div>
@@ -76,7 +92,7 @@ export default function Footer() {
       <button
         type="button"
         aria-label="Voltar ao topo"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         className="absolute right-6 bottom-6 flex size-10 items-center justify-center rounded-full bg-primary text-primary-foreground"
       >
         <ArrowUp className="size-4" />
