@@ -5,10 +5,21 @@ import StorePageContent from "@/components/store-page/StorePageContent";
 import { getStoreProducts } from "@/lib/shopify";
 import { mapShopifyProducts, type SortOption, type StoreCatalog } from "@/lib/store-data";
 import { getCurrentCart } from "@/lib/cart-actions";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Store | LavaDog Store",
-  description: "Encontre os melhores produtos para o seu pet na LavaDog Store.",
+  // O sufixo "| LavaDog Store" vem do template definido em app/layout.tsx.
+  title: "Store",
+  description:
+    "Catálogo completo da LavaDog Store: rações, brinquedos, higiene e acessórios para cães, gatos, aves, peixes e coelhos. Filtre por categoria, marca e preço.",
+  alternates: { canonical: "/store" },
+  openGraph: {
+    title: "Store | LavaDog Store",
+    description:
+      "Catálogo completo da LavaDog Store: rações, brinquedos, higiene e acessórios para o seu pet.",
+    url: "/store",
+    type: "website",
+  },
 };
 
 const EMPTY_CATALOG: StoreCatalog = {
@@ -56,6 +67,12 @@ export default async function StorePage({
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Store", path: "/store" },
+        ]}
+      />
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
       <main className="flex-1">
         {loadError && (

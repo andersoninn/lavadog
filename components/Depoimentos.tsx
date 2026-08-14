@@ -6,7 +6,7 @@ const avatar = (nome: string) =>
 const depoimentos = [
   {
     quote:
-      "Encontrei a LavaDog Store enquanto procurava um banho e tosa de confiança para o meu golden retriever. A equipe realmente entende do assunto e trata cada pet com muito carinho. Recomendo de olhos fechados.",
+      "Encontrei a LavaDog Store procurando produtos de confiança para o meu golden retriever. A equipe realmente entende do assunto e trata cada pet com muito carinho. Recomendo de olhos fechados.",
     name: "Mariana Silva",
     designation: "Tutora de Cachorro",
     src: avatar("Mariana Silva"),
@@ -20,7 +20,7 @@ const depoimentos = [
   },
   {
     quote:
-      "O serviço de banho e tosa é impecável. Meu labrador sai sempre cheiroso e feliz, e a equipe tem uma paciência incrível com ele. Virei cliente fiel.",
+      "O atendimento da LavaDog Store é impecável. Meu labrador sai sempre feliz com os produtos novos, e a equipe tem uma paciência incrível pra indicar o que é melhor pra ele. Virei cliente fiel.",
     name: "Beatriz Alves",
     designation: "Tutora de Cachorro",
     src: avatar("Beatriz Alves"),

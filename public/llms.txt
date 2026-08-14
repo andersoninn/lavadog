@@ -1,0 +1,42 @@
+# LavaDog Store
+
+> Pet shop online em Portugal. Vende rações, brinquedos, produtos de higiene e
+> acessórios para cães, gatos, aves, peixes e coelhos. O catálogo é gerido em
+> Shopify e o checkout acontece no ambiente seguro da Shopify.
+
+LavaDog Store é uma loja online portuguesa focada no bem-estar dos animais de
+estimação. O site é a montra do catálogo: o cliente navega por espécie, categoria,
+marca, preço e avaliação, adiciona ao carrinho e finaliza a compra no checkout
+da Shopify. O atendimento é feito por WhatsApp.
+
+- **Idioma:** Português (Portugal)
+- **Moeda:** EUR (€)
+- **Mercado:** Portugal
+
+## Páginas principais
+
+- [Home](https://www.lavadogstore.com/): apresentação da marca, banners em destaque, categorias por espécie de animal e promoções em vigor.
+- [Store](https://www.lavadogstore.com/store): catálogo completo com filtros por categoria, marca, espécie, faixa de preço, avaliação e disponibilidade.
+- [Carrinho](https://www.lavadogstore.com/carrinho): resumo do pedido antes de seguir para o checkout da Shopify.
+
+## Categorias de produtos
+
+- Ração e alimentação
+- Brinquedos
+- Higiene e banho
+- Acessórios (coleiras, camas, transporte)
+
+## Espécies atendidas
+
+Cães, gatos, aves, peixes e coelhos.
+
+## Contacto
+
+- WhatsApp: +351 926 777 360
+- Instagram: [@lavadog.store](https://www.instagram.com/lavadog.store/)
+
+## Notas para agentes e modelos
+
+- Preços e disponibilidade mudam com frequência: consultar sempre a página /store em vez de assumir valores memorizados.
+- Não existem páginas individuais por produto; o detalhe do produto abre em modal dentro de /store.
+- O pagamento nunca é processado no domínio lavadogstore.com — é sempre redirecionado para o checkout da Shopify.

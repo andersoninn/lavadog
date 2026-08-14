@@ -31,7 +31,7 @@ export default function StorePromoBanner() {
 
   return (
     <section
-      className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen bg-[#3A2C22] text-white mt-24 lg:mt-28 pb-24"
+      className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen bg-[#3A2C22] text-white mt-10 sm:mt-24 lg:mt-[84px] pb-24"
       id="store-promo-banner"
     >
       {/* Background */}

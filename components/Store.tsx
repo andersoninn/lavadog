@@ -32,7 +32,9 @@ export default async function Store() {
           <StoreHighlights />
         </div>
         <StoreCategories species={species} />
-        <StoreMarquee />
+        <div className="lg:mt-[84px]">
+          <StoreMarquee />
+        </div>
       </ScrollReveal>
     </section>
   );

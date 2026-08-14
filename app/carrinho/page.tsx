@@ -9,8 +9,11 @@ import { getCurrentCart } from "@/lib/cart-actions";
 import { formatPrice } from "@/lib/store-data";
 
 export const metadata: Metadata = {
-  title: "Carrinho | LavaDog Store",
+  title: "Carrinho",
   description: "Revise os itens do seu carrinho antes de finalizar a compra.",
+  // Página pessoal e sem valor de busca: não deve ser indexada nem gastar
+  // orçamento de rastreio do Google.
+  robots: { index: false, follow: true },
 };
 
 export default async function CarrinhoPage() {
