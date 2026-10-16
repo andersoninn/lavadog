@@ -96,13 +96,14 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} LavaDog Store. Todos os direitos reservados.</p>
         <p>
           Desenvolvido por{' '}
-          {/* TODO: trocar "#" pelo link real do site da Oak Technologies quando estiver disponível */}
-          <Link
-            href="#"
+          <a
+            href="https://oaktechnologies.pt/"
+            target="_blank"
+            rel="noopener"
             className="font-semibold text-background/80 transition-colors hover:text-background"
           >
             Oak Technologies
-          </Link>
+          </a>
         </p>
       </div>
 
