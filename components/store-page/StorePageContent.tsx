@@ -71,8 +71,8 @@ export default function StorePageContent({
           (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
       case "mais-vendidos":
-        // A lista já vem da Shopify ordenada por mais vendidos (sortKey:
-        // BEST_SELLING), então só precisamos manter a ordem original.
+        // O Stripe não sabe quais são os mais vendidos: fica a ordem em que
+        // os produtos chegam (os mais recentes primeiro).
         return filtered;
       default:
         return filtered;

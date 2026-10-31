@@ -44,28 +44,37 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 - [ ] Por que escolher a LavaDog Store — não iniciado
 - [x] ~~Sobre a LavaDog Store~~ e ~~Nossos Serviços~~ — removidos a pedido da cliente, site fica focado só na loja
 
-## Fase 2 — Integração Shopify (headless)
+## Fase 2 — Loja com Stripe (out/2026)
 
-Decisão de arquitetura: **sem Stripe**. Pagamento e checkout ficam 100% no Shopify. O Next.js é só o front-end (headless), lendo o catálogo da cliente direto da Storefront API dela.
+A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O Next.js mostra o catálogo; o pagamento acontece no **Stripe Checkout** (página da Stripe).
 
-- [ ] Cliente cadastra os produtos dela no admin do Shopify
-- [ ] Obter credenciais: domínio da loja Shopify + Storefront API access token
-- [ ] Conectar a Storefront API e buscar produtos/categorias reais
-- [ ] Mapear categorias do Shopify para as categorias já usadas em `StoreCategories` / `StoreFilters` (ajustar nomes, imagens e filtros pra ficarem compatíveis com os dados reais)
-- [ ] Trocar dados mockados de `lib/store-data.ts` e `ProductCard`/`ProductGrid` pelos dados vindos da API
-- [ ] Carrinho e checkout redirecionam para o checkout hospedado do Shopify
+- Catálogo: produtos e preços ativos do painel do Stripe (`lib/stripe.ts`), convertidos em `lib/store-data.ts` (`mapStripeProducts`).
+- Metadata do produto no Stripe: `categoria`, `marca`, `animal` (vírgulas), `preco_antigo`, `esgotado` (`true`).
+- Variantes: cada preço do produto é uma variante; a opção vem da metadata do preço (ex.: `tamanho` = `M`) ou do apelido (`Tamanho: M`).
+- Carrinho: cookie `carrinho` no próprio site (`lib/cart-actions.ts`); `finalizarCompra` cria a sessão de checkout.
+- Depois do pagamento: `/carrinho/concluido` (confirma no Stripe e esvazia o carrinho) → `/carrinho/obrigado`.
+- Variáveis: `STRIPE_SECRET_KEY` (obrigatória) e `STRIPE_SHIPPING_RATES` (ids das tarifas de envio, separados por vírgulas; opcional).
+- O Stripe não controla stock: a cliente marca `esgotado` à mão.
+
+- [x] Código da troca Shopify → Stripe (branch `stripe`)
+- [x] Acesso do Anderson à sandbox do Stripe (out/2026)
+- [ ] Chave de teste da sandbox na Vercel (Preview) e testar a compra
+- [ ] Produtos no Stripe (importar do CSV do Shopify, se houver)
+- [ ] Tarifas de envio no painel + `STRIPE_SHIPPING_RATES`
+- [ ] Métodos de pagamento (cartão, MB WAY, Multibanco) e marca no checkout
+- [ ] Acesso Developer na conta real, chave live na Vercel (Production) e juntar ao `master`
 
 ## Fase 3 — Supabase
 
 - [ ] Setup do projeto Supabase
 - [ ] Autenticação de usuários
-- [ ] Modelagem do banco (serviços, agendamentos — não produtos/pedidos, que ficam no Shopify)
+- [ ] Modelagem do banco (serviços, agendamentos — não produtos/pedidos, que ficam no Stripe)
 
 ## Fase 4 — Agendamento de serviços
 
 - [ ] Painel da cliente para definir disponibilidade dos serviços
 - [ ] Fluxo do usuário do petshop para marcar serviço
-- [ ] Pré-pagamento no agendamento — forma de cobrança a definir (Shopify não cobre agendamento nativamente)
+- [ ] Pré-pagamento no agendamento — forma de cobrança a definir (Stripe)
 
 ## Pendências / decisões em aberto
 
@@ -73,5 +82,4 @@ Decisão de arquitetura: **sem Stripe**. Pagamento e checkout ficam 100% no Shop
 - Fotos do hero (`heroDog1.png`, `heroBgDesktop.png`, `heroMobileBg.png`, `dogfoots.png`): já são os assets reais da cliente.
 - Número de WhatsApp no navbar é placeholder (`wa.me/5500000000000`). Atualizar com o número real.
 - `Depoimentos` e `StorePromoBanner` existem como componentes prontos mas não estão importados em `app/page.tsx` nem em `Store.tsx` — precisam ser conectados.
-- Falta receber da cliente: domínio da loja Shopify e o Storefront API access token, pra iniciar a Fase 2.
-- Categorias/filtros atuais (`StoreCategories`, `StoreFilters`) usam dados mockados de `lib/store-data.ts`; serão ajustados assim que o catálogo real do Shopify estiver conectado.
+- Categorias/filtros atuais (`StoreCategories`, `StoreFilters`) usam dados mockados de `lib/store-data.ts`; vêm do catálogo real no Stripe.

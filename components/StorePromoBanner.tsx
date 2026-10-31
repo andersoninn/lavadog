@@ -20,10 +20,9 @@ const tabs = [
   },
 ];
 
-// TODO: trocar pelo código real do cupom de 10% que a cliente já tem
-// cadastrado na loja inteira (Descontos, no admin da Shopify). A Storefront
-// API não permite ler cupons por segurança, então esse valor precisa ser
-// atualizado aqui manualmente sempre que o cupom mudar.
+// TODO: trocar pelo código real do cupom de 10%. No Stripe, o cupom é criado
+// em Catálogo de produtos → Cupões, com um "código promocional" (é esse código
+// que vai aqui). O checkout já aceita códigos promocionais.
 const DISCOUNT_CODE = 'LAVADOG10';
 
 export default function StorePromoBanner() {

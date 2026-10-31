@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import CartLineItem from "@/components/cart/CartLineItem";
-import { getCurrentCart } from "@/lib/cart-actions";
+import { finalizarCompra, getCurrentCart } from "@/lib/cart-actions";
 import { formatPrice } from "@/lib/store-data";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default async function CarrinhoPage() {
   const cart = await getCurrentCart().catch(() => null);
-  const lines = cart?.lines.edges.map((edge) => edge.node) ?? [];
+  const lines = cart?.lines ?? [];
   const isEmpty = lines.length === 0;
 
   return (
@@ -55,22 +55,22 @@ export default async function CarrinhoPage() {
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-semibold text-foreground">
-                    {formatPrice(Number(cart?.cost.subtotalAmount.amount ?? 0))}
+                    {formatPrice(cart?.subtotal ?? 0)}
                   </span>
                 </div>
                 <div className="mt-2 flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Total</span>
-                  <span className="text-lg font-bold text-foreground">
-                    {formatPrice(Number(cart?.cost.totalAmount.amount ?? 0))}
-                  </span>
+                  <span className="text-muted-foreground">Portes</span>
+                  <span className="text-muted-foreground">Calculados no pagamento</span>
                 </div>
 
-                <Button asChild className="mt-5 w-full">
-                  <a href={cart?.checkoutUrl}>Finalizar Compra</a>
-                </Button>
+                <form action={finalizarCompra}>
+                  <Button type="submit" className="mt-5 w-full">
+                    Finalizar Compra
+                  </Button>
+                </form>
 
                 <p className="mt-3 text-center text-xs text-muted-foreground">
-                  O pagamento é finalizado com segurança no checkout da Shopify.
+                  O pagamento é feito com segurança na página da Stripe.
                 </p>
               </div>
             </div>

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StorePageContent from "@/components/store-page/StorePageContent";
-import { getStoreProducts } from "@/lib/shopify";
-import { mapShopifyProducts, type SortOption, type StoreCatalog } from "@/lib/store-data";
+import { getStoreProducts } from "@/lib/stripe";
+import { mapStripeProducts, type SortOption, type StoreCatalog } from "@/lib/store-data";
 import { getCurrentCart } from "@/lib/cart-actions";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
@@ -56,10 +56,9 @@ export default async function StorePage({
   let loadError = false;
 
   try {
-    const shopifyProducts = await getStoreProducts();
-    catalog = mapShopifyProducts(shopifyProducts);
+    catalog = mapStripeProducts(await getStoreProducts());
   } catch (error) {
-    console.error("Falha ao buscar produtos da Shopify:", error);
+    console.error("Falha ao buscar produtos no Stripe:", error);
     loadError = true;
   }
 

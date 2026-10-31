@@ -1,4 +1,5 @@
-import type { ShopifyStoreProduct } from "@/lib/shopify";
+import type { StripeStoreProduct } from "@/lib/stripe";
+import { opcoesDoPreco } from "@/lib/stripe-opcoes";
 
 export type ProductBadge = "novo" | "promocao" | "mais-vendido";
 
@@ -37,22 +38,17 @@ export type Product = {
   options: ProductOption[];
 };
 
-// Coleção "vitrine" que a Shopify cria automaticamente pra loja online —
-// não é uma categoria de verdade, então ignoramos ela na hora de mapear.
-const IGNORED_COLLECTION_HANDLES = new Set(["frontpage"]);
-
-// Categoria usada quando um produto ainda não foi colocado em nenhuma
-// coleção real no admin da Shopify.
+// Categoria usada quando o produto ainda não tem a metadata "categoria" no
+// painel do Stripe.
 const FALLBACK_CATEGORY = "Outros";
 
 const NEW_PRODUCT_WINDOW_DAYS = 30;
 
-// Espécie do pet é derivada das tags do produto no Shopify. Duas formas:
-// 1) tag no formato "animal:nome" (ex: "animal:hamster") — o que vier depois
-//    dos dois-pontos vira categoria automaticamente, sem precisar mexer em
-//    código. É a forma recomendada pra cliente marcar espécies novas.
-// 2) palavras-chave já usadas nos produtos que ela importou (ex: tag solta
-//    "cão") — mantidas por compatibilidade com o que já está cadastrado.
+// Espécie do pet: vem da metadata "animal" do produto no Stripe, separada por
+// vírgulas (ex: "cão, gato"). Cada valor passa por aqui como uma "tag":
+// 1) palavras conhecidas (cão, gato, peixe…) viram as espécies de sempre;
+// 2) qualquer outra palavra (ex: "hamster") vira uma espécie nova sozinha,
+//    sem precisar mexer em código.
 const SPECIES_KEYWORDS: { label: string; keywords: string[] }[] = [
   { label: "Cães", keywords: ["cão", "cao", "cachorro", "dog"] },
   { label: "Gatos", keywords: ["gato", "felino", "cat"] },
@@ -71,19 +67,12 @@ function deriveSpecies(tags: string[]): string[] {
   const normalizedTags = tags.map((tag) => tag.trim().toLowerCase());
   const speciesSet = new Set<string>();
 
-  // 1) tags explícitas "animal:xxx"
-  for (const tag of normalizedTags) {
-    if (tag.startsWith("animal:")) {
-      const value = tag.slice("animal:".length).trim();
-      if (value) speciesSet.add(value.split(/\s+/).map(capitalize).join(" "));
-    }
-  }
-
-  // 2) palavras-chave conhecidas em tags soltas
-  for (const { label, keywords } of SPECIES_KEYWORDS) {
-    if (keywords.some((keyword) => normalizedTags.some((tag) => tag.includes(keyword)))) {
-      speciesSet.add(label);
-    }
+  for (const raw of normalizedTags) {
+    const tag = raw.startsWith("animal:") ? raw.slice("animal:".length).trim() : raw;
+    if (!tag) continue;
+    const conhecida = SPECIES_KEYWORDS.find(({ keywords }) => keywords.some((k) => tag.includes(k)));
+    if (conhecida) speciesSet.add(conhecida.label);
+    else speciesSet.add(tag.split(/\s+/).map(capitalize).join(" "));
   }
 
   return Array.from(speciesSet);
@@ -98,57 +87,60 @@ export type StoreCatalog = {
 };
 
 /**
- * Converte os produtos vindos da Storefront API pro formato que o resto do
- * site (ProductCard, filtros, etc.) já sabe renderizar. As categorias e
- * marcas são derivadas dos dados reais (coleções e vendor), então qualquer
- * coleção nova criada na Shopify aparece automaticamente aqui — sem precisar
- * mexer em código.
+ * Converte os produtos do Stripe pro formato que o resto do site
+ * (ProductCard, filtros, etc.) já sabe renderizar. Categorias, marcas e
+ * espécies saem da metadata de cada produto, então qualquer categoria nova
+ * criada no painel aparece aqui sozinha — sem mexer em código.
  */
-export function mapShopifyProducts(shopifyProducts: ShopifyStoreProduct[]): StoreCatalog {
+export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCatalog {
   const categorySet = new Set<string>();
   const brandSet = new Set<string>();
   const speciesSet = new Set<string>();
 
-  const products: Product[] = shopifyProducts.map((sp) => {
-    const realCollections = sp.collections.edges
-      .map((edge) => edge.node)
-      .filter((collection) => !IGNORED_COLLECTION_HANDLES.has(collection.handle));
+  const products: Product[] = stripeProducts.map(({ product: sp, prices }) => {
+    const meta = sp.metadata ?? {};
 
-    const category = realCollections[0]?.title.trim() || FALLBACK_CATEGORY;
+    const category = meta.categoria?.trim() || FALLBACK_CATEGORY;
     categorySet.add(category);
 
-    const brand = sp.vendor.trim() || "Sem marca";
+    const brand = meta.marca?.trim() || "Sem marca";
     brandSet.add(brand);
 
-    const species = deriveSpecies(sp.tags);
+    const species = deriveSpecies((meta.animal ?? "").split(","));
     species.forEach((label) => speciesSet.add(label));
 
-    const price = Number(sp.priceRange.minVariantPrice.amount);
-    const compareAtAmount = sp.compareAtPriceRange.minVariantPrice.amount;
-    const compareAtPrice = compareAtAmount ? Number(compareAtAmount) : undefined;
-    const oldPrice = compareAtPrice && compareAtPrice > price ? compareAtPrice : undefined;
+    const esgotado = meta.esgotado?.trim().toLowerCase() === "true";
 
-    const isNew =
-      Date.now() - new Date(sp.createdAt).getTime() <
-      NEW_PRODUCT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
-    const badge: ProductBadge | undefined = oldPrice ? "promocao" : isNew ? "novo" : undefined;
-
-    const variants: ProductVariant[] = sp.variants.edges.map((edge) => ({
-      id: edge.node.id,
-      title: edge.node.title,
-      availableForSale: edge.node.availableForSale,
-      price: Number(edge.node.price.amount),
-      selectedOptions: edge.node.selectedOptions,
+    const variants: ProductVariant[] = prices.map((pr) => ({
+      id: pr.id,
+      title: pr.nickname ?? sp.name,
+      availableForSale: !esgotado && pr.metadata?.esgotado?.trim().toLowerCase() !== "true",
+      price: (pr.unit_amount ?? 0) / 100,
+      selectedOptions: opcoesDoPreco(pr),
     }));
 
-    // A Shopify sempre cria pelo menos uma opção ("Title"/"Default Title")
-    // mesmo em produtos sem variação real — por isso o critério de "tem
-    // escolha de verdade" é ter mais de uma variante, não só ter `options`.
-    const hasVariants = variants.length > 1;
+    const price = Math.min(...variants.map((v) => v.price));
+    const compareAt = Number(String(meta.preco_antigo ?? "").replace(",", "."));
+    const oldPrice = compareAt && compareAt > price ? compareAt : undefined;
+
+    const createdAt = new Date(sp.created * 1000).toISOString();
+    const isNew = Date.now() - sp.created * 1000 < NEW_PRODUCT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+    const badge: ProductBadge | undefined = oldPrice ? "promocao" : isNew ? "novo" : undefined;
+
+    // Opções (Tamanho: P, M, G…) juntadas a partir das variantes.
+    const optionMap = new Map<string, string[]>();
+    for (const v of variants) {
+      for (const o of v.selectedOptions) {
+        const values = optionMap.get(o.name) ?? [];
+        if (!values.includes(o.value)) values.push(o.value);
+        optionMap.set(o.name, values);
+      }
+    }
+    const options: ProductOption[] = Array.from(optionMap, ([name, values]) => ({ name, values }));
 
     return {
       id: sp.id,
-      name: sp.title,
+      name: sp.name,
       category,
       brand,
       price,
@@ -156,14 +148,14 @@ export function mapShopifyProducts(shopifyProducts: ShopifyStoreProduct[]): Stor
       rating: 0,
       reviewsCount: 0,
       badge,
-      inStock: sp.availableForSale,
-      image: sp.featuredImage?.url ?? null,
-      createdAt: sp.createdAt,
+      inStock: !esgotado && variants.some((v) => v.availableForSale),
+      image: sp.images?.[0] ?? null,
+      createdAt,
       species,
       variantId: variants[0]?.id ?? null,
-      hasVariants,
+      hasVariants: variants.length > 1,
       variants,
-      options: sp.options,
+      options,
     };
   });
 

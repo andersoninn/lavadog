@@ -102,10 +102,10 @@ export default function RootLayout({
   return (
     <html lang="pt-PT" className={`${manrope.variable} h-full scroll-smooth antialiased`}>
       <head>
-        {/* Conexão antecipada com o CDN da Shopify — as imagens dos produtos
-            vêm de lá, então isso corta alguns ms do LCP na /store. */}
-        <link rel="preconnect" href="https://cdn.shopify.com" />
-        <link rel="dns-prefetch" href="https://cdn.shopify.com" />
+        {/* Conexão antecipada com o Stripe — as fotos dos produtos vêm de lá,
+            então isso corta alguns ms do LCP na /store. */}
+        <link rel="preconnect" href="https://files.stripe.com" />
+        <link rel="dns-prefetch" href="https://files.stripe.com" />
         <SiteJsonLd />
         <script
           dangerouslySetInnerHTML={{

@@ -2,17 +2,16 @@ import StoreHighlights from "@/components/StoreHighlights";
 import StoreCategories from "@/components/StoreCategories";
 import StoreMarquee from "@/components/StoreMarquee";
 import { ScrollReveal } from "@/components/animations/scroll-reveal";
-import { getStoreProducts } from "@/lib/shopify";
-import { mapShopifyProducts } from "@/lib/store-data";
+import { getStoreProducts } from "@/lib/stripe";
+import { mapStripeProducts } from "@/lib/store-data";
 
 export default async function Store() {
   let species: string[] = [];
 
   try {
-    const shopifyProducts = await getStoreProducts();
-    species = mapShopifyProducts(shopifyProducts).species;
+    species = mapStripeProducts(await getStoreProducts()).species;
   } catch (error) {
-    console.error("Falha ao buscar espécies da Shopify:", error);
+    console.error("Falha ao buscar espécies no Stripe:", error);
   }
 
   return (

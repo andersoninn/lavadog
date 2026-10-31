@@ -1,13 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
-import { getStoreProducts } from "@/lib/shopify";
-import { mapShopifyProducts } from "@/lib/store-data";
+import { getStoreProducts } from "@/lib/stripe";
+import { mapStripeProducts } from "@/lib/store-data";
 
 /**
  * Gera o /sitemap.xml automaticamente (padrão nativo do Next.js App Router).
  *
  * As rotas fixas entram sempre. As páginas de categoria e de espécie são lidas
- * do catálogo real da Shopify, então quando a cliente cria uma categoria nova
+ * do catálogo real no Stripe, então quando a cliente cria uma categoria nova
  * ela aparece no sitemap sozinha — sem ninguém precisar editar código.
  *
  * Revalida de hora em hora.
@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    const catalog = mapShopifyProducts(await getStoreProducts());
+    const catalog = mapStripeProducts(await getStoreProducts());
 
     const categoryRoutes: MetadataRoute.Sitemap = catalog.categories.map((categoria) => ({
       url: `${SITE_URL}/store?categoria=${encodeURIComponent(categoria)}`,
@@ -51,9 +51,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return [...staticRoutes, ...categoryRoutes, ...speciesRoutes];
   } catch (error) {
-    // Se a Shopify estiver fora do ar, o sitemap ainda sai com as rotas fixas
+    // Se o Stripe estiver fora do ar, o sitemap ainda sai com as rotas fixas
     // em vez de quebrar o build.
-    console.error("Sitemap: falha ao buscar catálogo da Shopify:", error);
+    console.error("Sitemap: falha ao buscar catálogo no Stripe:", error);
     return staticRoutes;
   }
 }

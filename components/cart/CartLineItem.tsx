@@ -5,14 +5,12 @@ import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { removeCartLine, updateCartLine } from "@/lib/cart-actions";
 import { formatPrice } from "@/lib/store-data";
-import type { ShopifyCart } from "@/lib/shopify";
-
-type CartLine = ShopifyCart["lines"]["edges"][number]["node"];
+import type { CartLine } from "@/lib/cart-actions";
 
 export default function CartLineItem({ line }: { line: CartLine }) {
   const [isPending, startTransition] = useTransition();
-  const price = Number(line.merchandise.price.amount);
-  const lineTotal = Number(line.cost.totalAmount.amount);
+  const price = line.unitPrice;
+  const lineTotal = line.total;
 
   function changeQuantity(nextQuantity: number) {
     startTransition(async () => {
@@ -29,10 +27,10 @@ export default function CartLineItem({ line }: { line: CartLine }) {
   return (
     <div className="flex items-center gap-4 rounded-2xl bg-card p-3 transition-opacity" style={{ opacity: isPending ? 0.6 : 1 }}>
       <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-muted">
-        {line.merchandise.product.featuredImage ? (
+        {line.image ? (
           <Image
-            src={line.merchandise.product.featuredImage.url}
-            alt={line.merchandise.product.featuredImage.altText ?? line.merchandise.product.title}
+            src={line.image.url}
+            alt={line.image.altText ?? line.title}
             fill
             sizes="80px"
             className="object-cover"
@@ -46,8 +44,9 @@ export default function CartLineItem({ line }: { line: CartLine }) {
 
       <div className="min-w-0 flex-1">
         <h3 className="line-clamp-2 text-sm font-semibold text-foreground">
-          {line.merchandise.product.title}
+          {line.title}
         </h3>
+        {line.variantTitle && <p className="text-xs text-muted-foreground">{line.variantTitle}</p>}
         <p className="mt-1 text-xs text-muted-foreground">{formatPrice(price)} / un.</p>
 
         <div className="mt-2 flex items-center gap-2">
