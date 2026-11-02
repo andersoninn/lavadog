@@ -16,7 +16,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default async function CarrinhoPage() {
+export default async function CarrinhoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ erro?: string }>;
+}) {
+  const { erro } = await searchParams;
   const cart = await getCurrentCart().catch(() => null);
   const lines = cart?.lines ?? [];
   const isEmpty = lines.length === 0;
@@ -27,6 +32,12 @@ export default async function CarrinhoPage() {
       <main className="flex-1">
         <div className="mx-auto w-full max-w-5xl px-6 pt-32 pb-24 sm:px-10 lg:px-16">
           <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Seu Carrinho</h1>
+
+          {erro === "pagamento" && !isEmpty && (
+            <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              Não foi possível abrir o pagamento agora. Tente novamente em instantes ou fale connosco pelo WhatsApp.
+            </p>
+          )}
 
           {isEmpty ? (
             <div className="mt-10 flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border py-24 text-center">

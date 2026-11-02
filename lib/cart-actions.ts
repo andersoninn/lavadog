@@ -157,7 +157,9 @@ export async function finalizarCompra(): Promise<void> {
     .map((t) => t.trim())
     .filter(Boolean);
 
-  const sessao = await stripe().checkout.sessions.create({
+  let url: string | null = null;
+  try {
+    const sessao = await stripe().checkout.sessions.create({
     mode: "payment",
     line_items: cart.lines.map((l) => ({ price: l.id, quantity: l.quantity })),
     locale: "pt",
@@ -166,9 +168,15 @@ export async function finalizarCompra(): Promise<void> {
     shipping_address_collection: { allowed_countries: ["PT"] },
     phone_number_collection: { enabled: true },
     billing_address_collection: "auto",
-    ...(tarifas.length ? { shipping_options: tarifas.map((shipping_rate) => ({ shipping_rate })) } : {}),
-  });
+      ...(tarifas.length ? { shipping_options: tarifas.map((shipping_rate) => ({ shipping_rate })) } : {}),
+    });
+    url = sessao.url;
+  } catch (error) {
+    // Ex.: a conta do Stripe sem métodos de pagamento ativos. O cliente volta
+    // ao carrinho com um aviso, em vez de ver uma página de erro.
+    console.error("Checkout: não foi possível criar a sessão no Stripe", error);
+  }
 
-  if (!sessao.url) throw new Error("O Stripe não devolveu o link do checkout.");
-  redirect(sessao.url);
+  // O redirect fica fora do try: no Next.js ele funciona lançando um erro.
+  redirect(url ?? "/carrinho?erro=pagamento");
 }
