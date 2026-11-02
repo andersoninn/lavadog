@@ -62,7 +62,7 @@ export default function Footer() {
           <ul className="mt-4 space-y-2 text-sm text-background/70">
             <li> Rua 16 de Maio 41 Santiago e Bougado, 4785-607 Trofa</li>
             <li>+351 926 777 360</li>
-            {/* <li>contato@lavadogstore.com</li> */}
+            {/* <li>contato@lavadogstore.pt</li> */}
           </ul>
           <div className="mt-4 flex gap-3">
             <Link
