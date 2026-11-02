@@ -1,5 +1,6 @@
 import "server-only";
 import Stripe from "stripe";
+import type { Promocao } from "@/lib/promocoes";
 
 /**
  * Ligação ao Stripe — o catálogo e o checkout da loja.
@@ -81,5 +82,54 @@ export async function getPrices(ids: string[]): Promise<Stripe.Price[]> {
     if (!p || !p.active || p.unit_amount == null || typeof p.product === "string") return false;
     const produto = p.product;
     return !("deleted" in produto && produto.deleted) && (produto as Stripe.Product).active;
+  });
+}
+
+const euros = (centimos: number) =>
+  (centimos / 100).toLocaleString("pt-PT", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: centimos % 100 ? 2 : 0,
+  });
+
+/**
+ * Os códigos promocionais ATIVOS do Stripe, para o banner da home.
+ *
+ * A Carol cria-os no painel (Catálogo de produtos → Cupões → código
+ * promocional). Entram todos os que estão ativos, dentro da validade e com
+ * utilizações disponíveis. Para criar um código que NÃO aparece no site (ex.:
+ * só para um cliente), basta pôr no código a metadata `mostrar_no_site` = `nao`.
+ *
+ * A chave do site precisa de permissão de leitura em Promotion Codes e
+ * Coupons; sem isso, devolve [] e o banner mostra o texto alternativo.
+ */
+export async function getPromocoes(): Promise<Promocao[]> {
+  const agora = Date.now() / 1000;
+  const codigos = await stripe()
+    .promotionCodes.list({ active: true, limit: 20, expand: ["data.promotion.coupon"] })
+    .autoPagingToArray({ limit: 20 });
+
+  return codigos.flatMap((pc): Promocao[] => {
+    const cupao = pc.promotion?.coupon;
+    if (!cupao || typeof cupao === "string" || !cupao.valid) return [];
+    if (pc.metadata?.mostrar_no_site?.trim().toLowerCase() === "nao") return [];
+    if (pc.expires_at && pc.expires_at < agora) return [];
+    if (pc.max_redemptions && pc.times_redeemed >= pc.max_redemptions) return [];
+
+    let desconto: string;
+    if (cupao.percent_off) desconto = `${cupao.percent_off.toLocaleString("pt-PT")}% off`;
+    else if (cupao.amount_off && (cupao.currency ?? "eur") === "eur") desconto = `${euros(cupao.amount_off)} off`;
+    else return [];
+
+    const minimo = pc.restrictions?.minimum_amount;
+    const condicao = pc.restrictions?.first_time_transaction
+      ? "Na sua primeira compra usando o"
+      : minimo && (pc.restrictions.minimum_amount_currency ?? "eur") === "eur"
+        ? `Em compras acima de ${euros(minimo)} usando o`
+        : cupao.applies_to?.products?.length
+          ? "Em produtos selecionados usando o"
+          : "Em toda a loja usando o";
+
+    return [{ codigo: pc.code, desconto, condicao }];
   });
 }

@@ -55,6 +55,7 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - Depois do pagamento: `/carrinho/concluido` (confirma no Stripe e esvazia o carrinho) → `/carrinho/obrigado`.
 - Variáveis: `STRIPE_SECRET_KEY` (obrigatória) e `STRIPE_SHIPPING_RATES` (ids das tarifas de envio, separados por vírgulas; opcional).
 - O Stripe não controla stock: a cliente marca `esgotado` à mão.
+- Cupões: o banner da home (`StorePromoBanner` → `PromoCartao`) mostra os códigos promocionais ativos do Stripe (`getPromocoes`); vários rodam em carrossel, nenhum mostra o convite "Explore". Código escondido do site: metadata `mostrar_no_site` = `nao`. O checkout aceita códigos (`allow_promotion_codes`). A chave precisa de Promotion Codes: Read e Coupons: Read.
 
 - [x] Código da troca Shopify → Stripe (branch `stripe`)
 - [x] Acesso do Anderson à sandbox do Stripe (out/2026)

@@ -160,14 +160,16 @@ export async function finalizarCompra(): Promise<void> {
   let url: string | null = null;
   try {
     const sessao = await stripe().checkout.sessions.create({
-    mode: "payment",
-    line_items: cart.lines.map((l) => ({ price: l.id, quantity: l.quantity })),
-    locale: "pt",
-    success_url: `${origem}/carrinho/concluido?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origem}/carrinho`,
-    shipping_address_collection: { allowed_countries: ["PT"] },
-    phone_number_collection: { enabled: true },
-    billing_address_collection: "auto",
+      mode: "payment",
+      line_items: cart.lines.map((l) => ({ price: l.id, quantity: l.quantity })),
+      locale: "pt",
+      success_url: `${origem}/carrinho/concluido?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origem}/carrinho`,
+      shipping_address_collection: { allowed_countries: ["PT"] },
+      phone_number_collection: { enabled: true },
+      billing_address_collection: "auto",
+      // Deixa o cliente escrever o código do cupão na página de pagamento.
+      allow_promotion_codes: true,
       ...(tarifas.length ? { shipping_options: tarifas.map((shipping_rate) => ({ shipping_rate })) } : {}),
     });
     url = sessao.url;

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import PromoCartao from '@/components/PromoCartao';
+import type { Promocao } from '@/lib/promocoes';
 
 const tabs = [
   {
@@ -20,12 +22,12 @@ const tabs = [
   },
 ];
 
-// TODO: trocar pelo código real do cupom de 10%. No Stripe, o cupom é criado
-// em Catálogo de produtos → Cupões, com um "código promocional" (é esse código
-// que vai aqui). O checkout já aceita códigos promocionais.
-const DISCOUNT_CODE = 'LAVADOG10';
-
-export default function StorePromoBanner() {
+/**
+ * Os cupões do cartão amarelo vêm do Stripe (getPromocoes em lib/stripe.ts,
+ * lido em app/page.tsx). Sem cupões ativos, o cartão mostra um convite para a
+ * loja — ver components/PromoCartao.tsx.
+ */
+export default function StorePromoBanner({ promocoes = [] }: { promocoes?: Promocao[] }) {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
@@ -93,44 +95,14 @@ export default function StorePromoBanner() {
       </div>
 
       {/* Floating Card */}
-      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 items-center justify-between rounded-lg bg-[#F4E7C7]  px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-89  bg-[url('/images/bgCtaStoreLight.png')]">
-        <div className="flex items-center gap-8">
-          <p className="shrink-0 text-6xl font-black leading-none whitespace-nowrap text-[#5B371F]">
-            10% off
-          </p>
-
-          <div className="mt-2 flex flex-col text-xl font-semibold text-[#6D4B31]">
-            <span className="whitespace-nowrap">Em toda a loja usando o</span>
-            <span className="whitespace-nowrap font-black tracking-wide">
-              cupom {DISCOUNT_CODE}
-            </span>
-          </div>
-        </div>
-
-        <Button
-          asChild
-          className="rounded-full bg-primary px-10 py-6 text-base font-bold text-[#3A2C22] shadow-[0_10px_25px_rgba(245,191,95,0.45)] transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-[0_14px_30px_rgba(245,191,95,0.55)]"
-        >
-          <Link href="/store">Comprar Agora</Link>
-        </Button>
+      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 rounded-lg bg-[#F4E7C7] px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-89 bg-[url('/images/bgCtaStoreLight.png')]">
+        <PromoCartao promocoes={promocoes} variante="desktop" />
       </div>
 
       {/* Mobile Card */}
       <div className="absolute bottom-0 left-1/2 z-20 w-[90vw] max-w-sm -translate-x-1/2 translate-y-1/2 lg:hidden">
-        <div className="rounded-xl bg-[#F4E7C7] bg-[url('/images/bgCtaStoreLight.png')] p-5 text-[#5B371F] shadow-xl flex flex-col items-center justify-center text-center gap-2">
-          <p className="text-4xl font-black ">10% OFF</p>
-
-          <p className="mt-1 text-sm">
-            Em toda a loja usando o cupom{' '}
-            <span className="font-black">{DISCOUNT_CODE}</span>
-          </p>
-
-          <Button
-            asChild
-            className="mt-4 w-full rounded-xl bg-primary py-6 font-black text-[#3A2C22] shadow-[0_10px_25px_rgba(245,191,95,0.45)] transition-all hover:bg-primary-hover active:scale-[0.98]"
-          >
-            <Link href="/store">Comprar Agora</Link>
-          </Button>
+        <div className="rounded-xl bg-[#F4E7C7] bg-[url('/images/bgCtaStoreLight.png')] p-5 text-[#5B371F] shadow-xl">
+          <PromoCartao promocoes={promocoes} variante="mobile" />
         </div>
       </div>
     </section>

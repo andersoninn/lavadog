@@ -6,6 +6,7 @@ import StorePromoBanner from "@/components/StorePromoBanner";
 import Contatos from "@/components/Contatos";
 import Footer from "@/components/Footer";
 import { getCurrentCart } from "@/lib/cart-actions";
+import { getPromocoes } from "@/lib/stripe";
 import { SITE_TAGLINE } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -13,7 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const cart = await getCurrentCart().catch(() => null);
+  const [cart, promocoes] = await Promise.all([
+    getCurrentCart().catch(() => null),
+    // Sem permissão ou sem cupões: o banner mostra o convite para a loja.
+    getPromocoes().catch((error) => {
+      console.error("Banner: não foi possível ler os cupões do Stripe", error);
+      return [];
+    }),
+  ]);
 
   return (
     <>
@@ -27,7 +35,7 @@ export default async function Home() {
         <h1 className="sr-only">LavaDog Store — Pet Shop Online em Portugal. {SITE_TAGLINE}.</h1>
         <Hero />
         <Store />
-        <StorePromoBanner />
+        <StorePromoBanner promocoes={promocoes} />
         <Contatos />
       </main>
       <Footer />
