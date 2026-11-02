@@ -81,13 +81,13 @@ export default function PromoCartao({
       onMouseLeave={() => setPausa(false)}
       className={cn('flex flex-col gap-4', desktop ? 'w-full' : 'items-center text-center')}
     >
-      <div className={cn(desktop ? 'flex items-center justify-between gap-8' : 'flex flex-col items-center gap-2')}>
+      <div className={cn(desktop ? 'flex items-center justify-between gap-6' : 'flex flex-col items-center gap-2')}>
         {/* key: ao mudar de cupão, o conteúdo entra com fade */}
         <div
           key={atual?.codigo ?? 'sem-cupao'}
           className={cn(
             'animate-in fade-in duration-500',
-            desktop ? 'flex items-center gap-8' : 'flex flex-col items-center gap-2',
+            desktop ? 'flex min-w-0 flex-1 items-center gap-6' : 'flex flex-col items-center gap-2',
           )}
         >
           <p
@@ -100,9 +100,9 @@ export default function PromoCartao({
           </p>
 
           {desktop ? (
-            <div className="mt-2 flex flex-col text-xl font-semibold text-[#6D4B31]">
-              <span className="whitespace-nowrap">{atual ? atual.condicao : SEM_CUPAO.linha1}</span>
-              <span className={cn('whitespace-nowrap', atual && 'font-black tracking-wide')}>
+            <div className="mt-2 flex min-w-0 flex-col text-xl leading-snug font-semibold text-[#6D4B31]">
+              <span>{atual ? atual.condicao : SEM_CUPAO.linha1}</span>
+              <span className={cn(atual && 'font-black tracking-wide')}>
                 {atual ? `cupom ${atual.codigo}` : SEM_CUPAO.linha2}
               </span>
             </div>
