@@ -8,6 +8,6 @@ export type Promocao = {
   codigo: string;
   /** O destaque grande: "10% off" ou "5 € off". */
   desconto: string;
-  /** A frase por cima do código: "Em toda a loja usando o", "Em compras acima de 30 € com o"… */
+  /** Onde vale o desconto: "Em toda a loja", "Em compras acima de 30 €"… (o cartão acrescenta "com o cupom CÓDIGO"). */
   condicao: string;
 };

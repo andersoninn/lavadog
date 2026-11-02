@@ -32,7 +32,7 @@ export default function StorePromoBanner({ promocoes = [] }: { promocoes?: Promo
 
   return (
     <section
-      className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen bg-[#3A2C22] text-white mt-10 sm:mt-24 lg:mt-[84px] pb-24"
+      className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen overflow-x-clip bg-[#3A2C22] text-white mt-10 sm:mt-24 lg:mt-[84px] pb-24"
       id="store-promo-banner"
     >
       {/* Background */}
@@ -95,7 +95,7 @@ export default function StorePromoBanner({ promocoes = [] }: { promocoes?: Promo
       </div>
 
       {/* Floating Card */}
-      <div className="absolute bottom-[-55px] left-1/2 hidden w-[760px] max-w-[90vw] -translate-x-1/2 rounded-lg bg-[#F4E7C7] px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-89 bg-[url('/images/bgCtaStoreLight.png')]">
+      <div className="absolute bottom-[-55px] left-1/2 hidden w-[860px] max-w-[90vw] -translate-x-1/2 rounded-lg bg-[#F4E7C7] px-10 py-12 shadow-[0_25px_60px_rgba(0,0,0,.18)] lg:flex z-89 bg-[url('/images/bgCtaStoreLight.png')]">
         <PromoCartao promocoes={promocoes} variante="desktop" />
       </div>
 

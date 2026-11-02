@@ -100,17 +100,23 @@ export default function PromoCartao({
           </p>
 
           {desktop ? (
-            <div className="mt-2 flex min-w-0 flex-col text-xl leading-snug font-semibold text-[#6D4B31]">
-              <span>{atual ? atual.condicao : SEM_CUPAO.linha1}</span>
-              <span className={cn(atual && 'font-black tracking-wide')}>
-                {atual ? `cupom ${atual.codigo}` : SEM_CUPAO.linha2}
+            <div className="flex min-w-0 flex-col gap-1 text-[#6D4B31]">
+              <span className="text-lg leading-snug font-semibold">
+                {atual ? atual.condicao : SEM_CUPAO.linha1}
               </span>
+              {atual ? (
+                <span className="text-lg leading-snug whitespace-nowrap">
+                  com o cupom <span className="font-black tracking-wide">{atual.codigo}</span>
+                </span>
+              ) : (
+                <span className="text-lg leading-snug font-semibold">{SEM_CUPAO.linha2}</span>
+              )}
             </div>
           ) : (
             <p className="mt-1 text-sm text-[#5B371F]">
               {atual ? (
                 <>
-                  {atual.condicao} cupom <span className="font-black">{atual.codigo}</span>
+                  {atual.condicao} com o cupom <span className="font-black">{atual.codigo}</span>
                 </>
               ) : (
                 `${SEM_CUPAO.linha1} ${SEM_CUPAO.linha2}`

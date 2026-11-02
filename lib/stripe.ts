@@ -123,12 +123,12 @@ export async function getPromocoes(): Promise<Promocao[]> {
 
     const minimo = pc.restrictions?.minimum_amount;
     const condicao = pc.restrictions?.first_time_transaction
-      ? "Na sua primeira compra usando o"
+      ? "Na sua primeira compra"
       : minimo && (pc.restrictions.minimum_amount_currency ?? "eur") === "eur"
-        ? `Em compras acima de ${euros(minimo)} usando o`
+        ? `Em compras acima de ${euros(minimo)}`
         : cupao.applies_to?.products?.length
-          ? "Em produtos selecionados usando o"
-          : "Em toda a loja usando o";
+          ? "Em produtos selecionados"
+          : "Em toda a loja";
 
     return [{ codigo: pc.code, desconto, condicao }];
   });
