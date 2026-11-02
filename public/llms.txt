@@ -15,9 +15,9 @@ pagamento da Stripe. O atendimento é feito por WhatsApp.
 
 ## Páginas principais
 
-- [Home](https://lavadogstore.pt/): apresentação da marca, banners em destaque, categorias por espécie de animal e promoções em vigor.
-- [Store](https://lavadogstore.pt/store): catálogo completo com filtros por categoria, marca, espécie, faixa de preço, avaliação e disponibilidade.
-- [Carrinho](https://lavadogstore.pt/carrinho): resumo do pedido antes de seguir para o pagamento na Stripe.
+- [Home](https://www.lavadogstore.pt/): apresentação da marca, banners em destaque, categorias por espécie de animal e promoções em vigor.
+- [Store](https://www.lavadogstore.pt/store): catálogo completo com filtros por categoria, marca, espécie, faixa de preço, avaliação e disponibilidade.
+- [Carrinho](https://www.lavadogstore.pt/carrinho): resumo do pedido antes de seguir para o pagamento na Stripe.
 
 ## Categorias de produtos
 

@@ -6,7 +6,7 @@
  * define a env `NEXT_PUBLIC_SITE_URL` na Vercel e nem precisa mexer no código.
  */
 
-const FALLBACK_SITE_URL = "https://lavadogstore.pt";
+const FALLBACK_SITE_URL = "https://www.lavadogstore.pt";
 
 /** URL absoluta do site, sem barra no final. */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? FALLBACK_SITE_URL).replace(/\/+$/, "");
