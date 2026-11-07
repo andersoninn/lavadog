@@ -5,7 +5,6 @@ import CategoryFilter from "@/components/store-page/CategoryFilter";
 import SpeciesFilter from "@/components/store-page/SpeciesFilter";
 import BrandFilter from "@/components/store-page/BrandFilter";
 import PriceFilter from "@/components/store-page/PriceFilter";
-import RatingFilter from "@/components/store-page/RatingFilter";
 import AvailabilityFilter from "@/components/store-page/AvailabilityFilter";
 
 import type { Product } from "@/lib/store-data";
@@ -26,8 +25,6 @@ export type StoreFiltersProps = {
   onToggleBrand: (brand: string) => void;
   maxPrice: number;
   onMaxPriceChange: (value: number) => void;
-  minRating: number;
-  onMinRatingChange: (value: number) => void;
   inStockOnly: boolean;
   onInStockChange: (value: boolean) => void;
   promoOnly: boolean;
@@ -51,8 +48,6 @@ export default function StoreFilters({
   onToggleBrand,
   maxPrice,
   onMaxPriceChange,
-  minRating,
-  onMinRatingChange,
   inStockOnly,
   onInStockChange,
   promoOnly,
@@ -100,10 +95,6 @@ export default function StoreFilters({
           promoOnly={promoOnly}
           onPromoChange={onPromoChange}
         />
-      </FilterCard>
-
-      <FilterCard title="Avaliação">
-        <RatingFilter value={minRating} onChange={onMinRatingChange} />
       </FilterCard>
 
       <Button variant="outline" className="w-full" onClick={onClear}>

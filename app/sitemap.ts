@@ -30,6 +30,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 0.9,
     },
+    ...["/termos", "/privacidade", "/devolucoes", "/envios"].map((rota) => ({
+      url: `${SITE_URL}${rota}`,
+      lastModified: now,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
   ];
 
   try {
@@ -49,7 +55,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-    return [...staticRoutes, ...categoryRoutes, ...speciesRoutes];
+    const productRoutes: MetadataRoute.Sitemap = catalog.products.map((produto) => ({
+      url: `${SITE_URL}/produto/${produto.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+      images: produto.images.slice(0, 1),
+    }));
+
+    return [...staticRoutes, ...productRoutes, ...categoryRoutes, ...speciesRoutes];
   } catch (error) {
     // Se o Stripe estiver fora do ar, o sitemap ainda sai com as rotas fixas
     // em vez de quebrar o build.

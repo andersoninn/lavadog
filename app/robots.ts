@@ -17,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/carrinho", // página pessoal, não tem valor de busca
           "/api/",
+          "/admin", // painel interno das encomendas
           "/_next/",
         ],
       },

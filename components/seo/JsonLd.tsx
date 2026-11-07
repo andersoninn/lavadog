@@ -72,7 +72,8 @@ function Schema({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      // "<" escapado: um texto com "</script>" não consegue sair do bloco.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
     />
   );
 }
@@ -100,6 +101,34 @@ export function BreadcrumbJsonLd({ items }: { items: { name: string; path: strin
           name: item.name,
           item: absoluteUrl(item.path),
         })),
+      }}
+    />
+  );
+}
+
+/** Produto: preço, disponibilidade e imagens para o Google (rich results). */
+export function ProductJsonLd({
+  produto,
+}: {
+  produto: { name: string; slug: string; description: string | null; images: string[]; brand: string; price: number; inStock: boolean };
+}) {
+  return (
+    <Schema
+      data={{
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: produto.name,
+        description: produto.description ?? undefined,
+        image: produto.images.length ? produto.images : undefined,
+        brand: produto.brand !== "Sem marca" ? { "@type": "Brand", name: produto.brand } : undefined,
+        offers: {
+          "@type": "Offer",
+          url: absoluteUrl(`/produto/${produto.slug}`),
+          priceCurrency: "EUR",
+          price: produto.price.toFixed(2),
+          availability: produto.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+          seller: { "@id": `${SITE_URL}/#organization` },
+        },
       }}
     />
   );

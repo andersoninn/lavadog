@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Star } from "lucide-react";
 import ProductBadge from "@/components/store-page/ProductBadge";
 import ProductPrice from "@/components/store-page/ProductPrice";
@@ -60,17 +61,26 @@ export default function ProductCard({
     </div>
   );
 
+  const href = `/produto/${product.slug}`;
+  const imageLink = (
+    <Link href={href} aria-label={product.name} className="shrink-0">
+      {image}
+    </Link>
+  );
+
   if (layout === "list") {
     return (
       <article className="group flex items-center gap-3 rounded-2xl bg-card p-3 transition-all duration-300 hover:shadow-lg sm:gap-4">
-        {image}
+        {imageLink}
 
         <div className="min-w-0 flex-1">
           <span className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
             {product.category}
           </span>
           <h3 className="mt-0.5 line-clamp-1 text-sm font-semibold text-foreground sm:line-clamp-2">
-            {product.name}
+            <Link href={href} className="hover:underline">
+              {product.name}
+            </Link>
           </h3>
           {rating}
           <ProductPrice price={product.price} oldPrice={product.oldPrice} />
@@ -83,13 +93,17 @@ export default function ProductCard({
 
   return (
     <article className="group flex flex-col rounded-2xl bg-card p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-      {image}
+      {imageLink}
 
       <div className="mt-3 flex flex-1 flex-col">
         <span className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
           {product.category}
         </span>
-        <h3 className="mt-1 line-clamp-2 text-sm font-semibold text-foreground">{product.name}</h3>
+        <h3 className="mt-1 line-clamp-2 text-sm font-semibold text-foreground">
+          <Link href={href} className="hover:underline">
+            {product.name}
+          </Link>
+        </h3>
 
         {rating}
 

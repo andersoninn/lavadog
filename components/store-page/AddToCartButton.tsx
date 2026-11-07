@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import Image from "next/image";
 import { Check, Minus, Plus, ShoppingCart } from "lucide-react";
 import {
@@ -12,6 +12,7 @@ import {
 import { addToCart } from "@/lib/cart-actions";
 import { formatPrice, type Product } from "@/lib/store-data";
 import { cn } from "@/lib/utils";
+import { useVariante } from "@/lib/use-variante";
 
 type AddToCartProduct = Pick<
   Product,
@@ -119,22 +120,8 @@ function VariantPickerDialog({
   onConfirm: (variantId: string, quantity: number) => void;
   isPending: boolean;
 }) {
-  const firstAvailable = product.variants.find((v) => v.availableForSale) ?? product.variants[0];
+  const { selected, escolher, quantity, setQuantity, matchedVariant, canAdd, varianteCom } = useVariante(product);
 
-  const [selected, setSelected] = useState<Record<string, string>>(() =>
-    Object.fromEntries((firstAvailable?.selectedOptions ?? []).map((o) => [o.name, o.value])),
-  );
-  const [quantity, setQuantity] = useState(1);
-
-  const matchedVariant = useMemo(
-    () =>
-      product.variants.find((variant) =>
-        variant.selectedOptions.every((option) => selected[option.name] === option.value),
-      ),
-    [product.variants, selected],
-  );
-
-  const canAdd = Boolean(matchedVariant?.availableForSale);
   const showOldPrice = product.oldPrice && matchedVariant && product.oldPrice > matchedVariant.price;
 
   return (
@@ -197,11 +184,7 @@ function VariantPickerDialog({
                   <div className="flex flex-wrap gap-2">
                     {option.values.map((value) => {
                       const isSelected = selected[option.name] === value;
-                      const wouldMatch = product.variants.find((variant) =>
-                        variant.selectedOptions.every(
-                          (o) => (o.name === option.name ? value : selected[o.name]) === o.value,
-                        ),
-                      );
+                      const wouldMatch = varianteCom(option.name, value);
                       const isAvailable = wouldMatch?.availableForSale ?? false;
 
                       return (
@@ -209,7 +192,7 @@ function VariantPickerDialog({
                           key={value}
                           type="button"
                           disabled={!wouldMatch}
-                          onClick={() => setSelected((prev) => ({ ...prev, [option.name]: value }))}
+                          onClick={() => escolher(option.name, value)}
                           className={cn(
                             "flex h-10 min-w-10 items-center justify-center rounded-lg border px-3 text-sm font-semibold transition-colors",
                             isSelected

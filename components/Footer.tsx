@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ArrowUp, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { WHATSAPP_HREF, INSTAGRAM_HREF } from '@/lib/constants';
+import { EMPRESA, LIVRO_RECLAMACOES_HREF } from '@/lib/empresa';
 
 const companyLinks = [
   { label: 'Home', href: '/' },
@@ -12,13 +13,20 @@ const companyLinks = [
   { label: 'Central de ajuda', href: WHATSAPP_HREF, external: true },
 ];
 
+const legalLinks = [
+  { label: 'Termos e Condições', href: '/termos' },
+  { label: 'Política de Privacidade', href: '/privacidade' },
+  { label: 'Trocas e Devoluções', href: '/devolucoes' },
+  { label: 'Envios e Portes', href: '/envios' },
+];
+
 export default function Footer() {
   return (
     <footer
       id="footer"
       className="relative w-full bg-foreground px-6 py-16 text-background sm:px-12 lg:px-20 lg:py-20"
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
           <p className="text-xl font-bold">LavaDog Store</p>
           <p className="mt-3 max-w-xs text-sm text-background/70">
@@ -58,11 +66,38 @@ export default function Footer() {
         </div>
 
         <div>
+          <p className="text-sm font-semibold">Informações</p>
+          <ul className="mt-4 space-y-2 text-sm text-background/70">
+            {legalLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="transition-colors hover:text-background">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <a
+                href={LIVRO_RECLAMACOES_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center rounded-md border border-background/30 px-3 py-1.5 text-xs font-semibold text-background transition-colors hover:border-background"
+              >
+                Livro de Reclamações
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
           <p className="text-sm font-semibold">Contato</p>
           <ul className="mt-4 space-y-2 text-sm text-background/70">
             <li> Rua 16 de Maio 41 Santiago e Bougado, 4785-607 Trofa</li>
             <li>+351 926 777 360</li>
-            {/* <li>contato@lavadogstore.pt</li> */}
+            <li>
+              <a href={`mailto:${EMPRESA.email}`} className="transition-colors hover:text-background">
+                {EMPRESA.email}
+              </a>
+            </li>
           </ul>
           <div className="mt-4 flex gap-3">
             <Link
@@ -93,7 +128,9 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-12 flex w-full max-w-6xl flex-col items-center gap-2 border-t border-background/20 pt-6 text-xs text-background/60 sm:flex-row sm:justify-between">
-        <p>© {new Date().getFullYear()} LavaDog Store. Todos os direitos reservados.</p>
+        <p className="text-center sm:text-left">
+          © {new Date().getFullYear()} LavaDog Store · {EMPRESA.titular} · NIF {EMPRESA.nif}
+        </p>
         <p>
           Desenvolvido por{' '}
           <a

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import type Stripe from "stripe";
 import { getPrices, stripe } from "@/lib/stripe";
 import { opcoesDoPreco } from "@/lib/stripe-opcoes";
+import { stockDoPreco } from "@/lib/stock";
 
 /**
  * O carrinho vive num cookie do próprio site: uma lista de { preço, quantidade }.
@@ -147,6 +148,10 @@ export async function finalizarCompra(): Promise<void> {
   const cart = await getCurrentCart();
   if (!cart) redirect("/carrinho");
 
+  // Stock: não deixa pagar mais unidades do que as que existem. O stock de um
+  // produto (sem stock por variante) é partilhado pelas variantes dele.
+  if (await faltaStock(cart)) redirect("/carrinho?erro=stock");
+
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host");
   const proto = h.get("x-forwarded-proto") ?? (host?.startsWith("localhost") ? "http" : "https");
@@ -170,6 +175,18 @@ export async function finalizarCompra(): Promise<void> {
       billing_address_collection: "auto",
       // Deixa o cliente escrever o código do cupão na página de pagamento.
       allow_promotion_codes: true,
+      // A Carol emite a fatura à mão: o NIF fica no pagamento, no painel.
+      custom_fields: [
+        {
+          key: "nif",
+          label: { type: "custom", custom: "NIF para fatura (opcional)" },
+          type: "numeric",
+          optional: true,
+          numeric: { minimum_length: 9, maximum_length: 9 },
+        },
+      ],
+      // Guarda o cliente no Stripe (nome, email, morada) para as próximas compras.
+      customer_creation: "always",
       ...(tarifas.length ? { shipping_options: tarifas.map((shipping_rate) => ({ shipping_rate })) } : {}),
     });
     url = sessao.url;
@@ -181,4 +198,21 @@ export async function finalizarCompra(): Promise<void> {
 
   // O redirect fica fora do try: no Next.js ele funciona lançando um erro.
   redirect(url ?? "/carrinho?erro=pagamento");
+}
+
+async function faltaStock(cart: Cart): Promise<boolean> {
+  const precos = await getPrices(cart.lines.map((l) => l.id));
+  const pedido = new Map<string, { stock: number; quantidade: number }>();
+  for (const linha of cart.lines) {
+    const preco = precos.find((p) => p.id === linha.id);
+    if (!preco) continue;
+    const produto = preco.product as Stripe.Product;
+    const { valor, onde } = stockDoPreco(preco, produto);
+    if (valor === null) continue;
+    const chave = onde === "preco" ? preco.id : produto.id;
+    const atual = pedido.get(chave) ?? { stock: valor, quantidade: 0 };
+    atual.quantidade += linha.quantity;
+    pedido.set(chave, atual);
+  }
+  return [...pedido.values()].some((p) => p.quantidade > p.stock);
 }

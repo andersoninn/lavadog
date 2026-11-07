@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { stripe } from "@/lib/stripe";
+import { numeroEncomenda } from "@/lib/encomendas";
 
 /**
  * O Stripe manda o cliente para aqui depois do pagamento
@@ -17,7 +18,8 @@ export async function GET(req: NextRequest) {
     try {
       const sessao = await stripe().checkout.sessions.retrieve(id);
       if (sessao.status === "complete") {
-        if (sessao.payment_status !== "paid") destino.searchParams.set("pendente", "1");
+        destino.searchParams.set("encomenda", numeroEncomenda(sessao));
+        if (sessao.payment_status === "unpaid") destino.searchParams.set("pendente", "1");
         const resposta = NextResponse.redirect(destino);
         resposta.cookies.delete("carrinho");
         return resposta;

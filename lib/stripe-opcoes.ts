@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { CHAVES_DE_CONTROLO } from "@/lib/stock";
 
 /**
  * Fica num ficheiro à parte de lib/stripe.ts porque é usado por
@@ -8,8 +9,10 @@ import type Stripe from "stripe";
 
 /** Opções escolhidas de um preço (variante): metadata do preço ou o apelido. */
 export function opcoesDoPreco(preco: Stripe.Price): { name: string; value: string }[] {
-  // "esgotado" é uma marca de stock, não uma opção.
-  const meta = Object.entries(preco.metadata ?? {}).filter(([k, v]) => k !== "esgotado" && v && v.trim());
+  // "esgotado" e "stock" são de controlo, não opções.
+  const meta = Object.entries(preco.metadata ?? {}).filter(
+    ([k, v]) => !CHAVES_DE_CONTROLO.includes(k) && v && v.trim(),
+  );
   if (meta.length > 0) {
     return meta.map(([k, v]) => ({ name: k.charAt(0).toUpperCase() + k.slice(1), value: v.trim() }));
   }

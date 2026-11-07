@@ -34,7 +34,6 @@ export default function StorePageContent({
   );
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState(priceBounds.max);
-  const [minRating, setMinRating] = useState(0);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [promoOnly, setPromoOnly] = useState(initialPromoOnly ?? false);
   const [sort, setSort] = useState<SortOption>(initialSort ?? "recentes");
@@ -53,7 +52,6 @@ export default function StorePageContent({
         return false;
       if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand)) return false;
       if (product.price > maxPrice) return false;
-      if (minRating > 0 && product.rating < minRating) return false;
       if (inStockOnly && !product.inStock) return false;
       if (promoOnly && !product.oldPrice) return false;
       return true;
@@ -84,7 +82,6 @@ export default function StorePageContent({
     selectedSpecies,
     selectedBrands,
     maxPrice,
-    minRating,
     inStockOnly,
     promoOnly,
     sort,
@@ -92,7 +89,7 @@ export default function StorePageContent({
 
   useEffect(() => {
     setPage(1);
-  }, [search, selectedCategories, selectedSpecies, selectedBrands, maxPrice, minRating, inStockOnly, promoOnly, sort]);
+  }, [search, selectedCategories, selectedSpecies, selectedBrands, maxPrice, inStockOnly, promoOnly, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
@@ -125,7 +122,6 @@ export default function StorePageContent({
     setSelectedSpecies([]);
     setSelectedBrands([]);
     setMaxPrice(priceBounds.max);
-    setMinRating(0);
     setInStockOnly(false);
     setPromoOnly(false);
   }
@@ -146,8 +142,6 @@ export default function StorePageContent({
     onToggleBrand: toggleBrand,
     maxPrice,
     onMaxPriceChange: setMaxPrice,
-    minRating,
-    onMinRatingChange: setMinRating,
     inStockOnly,
     onInStockChange: setInStockOnly,
     promoOnly,

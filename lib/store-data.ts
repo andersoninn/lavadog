@@ -1,5 +1,6 @@
 import type { StripeStoreProduct } from "@/lib/stripe";
 import { opcoesDoPreco } from "@/lib/stripe-opcoes";
+import { stockDoPreco } from "@/lib/stock";
 
 export type ProductBadge = "novo" | "promocao" | "mais-vendido";
 
@@ -18,7 +19,11 @@ export type ProductOption = {
 
 export type Product = {
   id: string;
+  /** Endereço da página do produto: /produto/<slug>. */
+  slug: string;
   name: string;
+  description: string | null;
+  images: string[];
   category: string;
   brand: string;
   price: number;
@@ -78,6 +83,17 @@ function deriveSpecies(tags: string[]): string[] {
   return Array.from(speciesSet);
 }
 
+/** "Ração Premium Cão 3kg" → "racao-premium-cao-3kg" */
+export function slugify(texto: string): string {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
 export type StoreCatalog = {
   products: Product[];
   categories: string[];
@@ -114,7 +130,10 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
     const variants: ProductVariant[] = prices.map((pr) => ({
       id: pr.id,
       title: pr.nickname ?? sp.name,
-      availableForSale: !esgotado && pr.metadata?.esgotado?.trim().toLowerCase() !== "true",
+      availableForSale:
+        !esgotado &&
+        pr.metadata?.esgotado?.trim().toLowerCase() !== "true" &&
+        stockDoPreco(pr, sp).valor !== 0,
       price: (pr.unit_amount ?? 0) / 100,
       selectedOptions: opcoesDoPreco(pr),
     }));
@@ -140,7 +159,11 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
 
     return {
       id: sp.id,
+      // A Carol pode fixar o endereço com a metadata "slug"; senão vem do nome.
+      slug: slugify(meta.slug?.trim() || sp.name) || sp.id,
       name: sp.name,
+      description: sp.description ?? null,
+      images: sp.images ?? [],
       category,
       brand,
       price,
@@ -158,6 +181,13 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
       options,
     };
   });
+
+  // Dois produtos com o mesmo nome: o segundo leva o fim do id no endereço.
+  const usados = new Set<string>();
+  for (const p of products) {
+    if (usados.has(p.slug)) p.slug = `${p.slug}-${p.id.slice(-6).toLowerCase()}`;
+    usados.add(p.slug);
+  }
 
   const prices = products.map((p) => p.price).filter((p) => p > 0);
 
