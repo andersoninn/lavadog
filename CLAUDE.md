@@ -74,12 +74,14 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - [ ] Chave de teste da sandbox na Vercel (Preview) e testar a compra
 - [ ] Produtos no Stripe (importar do CSV do Shopify, se houver)
 - [ ] Tarifas de envio no painel + `STRIPE_SHIPPING_RATES` — **pendente: a Carol ainda está a definir os portes** (atualizar também `/envios`)
+- [x] Permissões novas na chave restrita (Customers, PaymentIntents, Products, Prices: Write) — 7/nov
 - [ ] Webhook no painel do Stripe + `STRIPE_WEBHOOK_SECRET`
 - [ ] Resend: conta, domínio lavadogstore.pt verificado (DNS na dominios.pt) + `RESEND_API_KEY`
 - [ ] `ADMIN_PASSWORD` para o painel de encomendas
 - [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
 - [ ] Migrar alojamento da Vercel para a Cloudflare (conta, Workers Builds ligado ao GitHub, variáveis, DNS)
-- [ ] Carol rever os textos legais e confirmar prazos (preparação em 2 dias úteis, exceções de devolução)
+- [ ] Carol rever os textos legais e confirmar prazos (preparação em 2 dias úteis, exceções de devolução) e saber que o NIF dela aparece no rodapé e nos termos
+- [ ] Anderson: `git pull --rebase` + `git push` no PC (commit da imagem `dogCtaStore` só está local)
 - [ ] Métodos de pagamento (cartão, MB WAY, Multibanco) e marca no checkout
 - [ ] Acesso Developer na conta real, chave live na Vercel (Production) e juntar ao `master`
 
