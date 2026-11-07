@@ -1,0 +1,32 @@
+{
+	// Alojamento na Cloudflare (plano grátis, permite uso comercial).
+	// Build e deploy: npm run deploy (ou Workers Builds ligado ao GitHub).
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "lavadog",
+	"compatibility_date": "2026-11-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Tem de ter o mesmo nome do worker. Ver https://opennext.js.org/cloudflare/caching
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "lavadog"
+		}
+	],
+	"kv_namespaces": [
+		{
+			// Cache do Next (sitemap, avaliações do Google). KV é grátis e não pede cartão.
+			// O wrangler cria o namespace no primeiro deploy.
+			"binding": "NEXT_INC_CACHE_KV"
+		}
+	],
+	"images": {
+		// Otimização das imagens do next/image. Ver https://opennext.js.org/cloudflare/howtos/image
+		"binding": "IMAGES"
+	},
+	"observability": { "enabled": true }
+}

@@ -56,12 +56,30 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - Variáveis: `STRIPE_SECRET_KEY` (obrigatória) e `STRIPE_SHIPPING_RATES` (ids das tarifas de envio, separados por vírgulas; opcional).
 - O Stripe não controla stock: a cliente marca `esgotado` à mão.
 - Cupões: o banner da home (`StorePromoBanner` → `PromoCartao`) mostra os códigos promocionais ativos do Stripe (`getPromocoes`); vários rodam em carrossel, nenhum mostra o convite "Explore". Código escondido do site: metadata `mostrar_no_site` = `nao`. O checkout aceita códigos (`allow_promotion_codes`). A chave precisa de Promotion Codes: Read e Coupons: Read.
+- NIF: campo opcional "NIF para fatura" no checkout (`custom_fields`). A Carol emite a fatura à mão em cada venda (vê o NIF no email da encomenda e no painel).
+- Encomendas (sem base de dados, tudo no Stripe): webhook `app/api/stripe/webhook` → `lib/processar-encomenda.ts`. Número `LD-AAMMDD-XXXXX` calculado da sessão (`numeroEncomenda`); estado na metadata do PaymentIntent (`encomenda`, `processado`, `aviso_pendente`, `enviado_em`, `seguimento`) e descrição "Encomenda LD-…".
+- Emails (Resend, `lib/email.ts` + `lib/emails-encomenda.ts`): confirmação, aguarda pagamento (Multibanco), enviada, e aviso de nova encomenda para a loja. Sem `RESEND_API_KEY` só regista no log.
+- Stock automático: metadata `stock` no preço (variante) ou no produto (partilhado). Cada venda paga desconta; 0 = esgotado. Sem `stock`, continua o `esgotado` manual. O checkout recusa mais unidades do que o stock.
+- Painel interno `/admin/encomendas` (palavra-passe `ADMIN_PASSWORD`): lista as últimas encomendas, NIF, morada, e "Marcar como enviada" (com código de seguimento) → email ao cliente.
+- Página de produto `/produto/[slug]` (slug do nome, ou metadata `slug`), com galeria, opções, descrição (do Stripe) e JSON-LD Product.
+- Depoimentos: avaliações reais do Google Business (Places API New, `lib/google-avaliacoes.ts`, cache 24 h). Sem chave, a secção não aparece. O filtro de avaliação da loja foi removido (não havia dados).
+- Páginas legais: `/termos`, `/privacidade`, `/devolucoes`, `/envios`; identificação do vendedor em `lib/empresa.ts`; rodapé com Livro de Reclamações.
+- Só português (decisão da cliente). Sem newsletter.
+- Alojamento: a Vercel Hobby não permite uso comercial e o Pro é custo. Preparado para **Cloudflare Workers** (grátis, uso comercial permitido) com `@opennextjs/cloudflare`: `wrangler.jsonc`, `open-next.config.ts` (cache em KV), `npm run deploy`. Next atualizado para 16.4.5 (exigido pelo adaptador e patch de segurança de nov/2026).
+- Variáveis: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_SHIPPING_RATES` (opcional), `RESEND_API_KEY`, `EMAIL_REMETENTE` (opcional), `ADMIN_PASSWORD`, `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID`.
+- Permissões da chave restrita do Stripe: Products Write, Prices Write (stock), Checkout Sessions Write, PaymentIntents Write, Customers Write, Shipping Rates Read, Promotion Codes Read, Coupons Read, Webhook Endpoints (não precisa — o webhook é criado no painel).
 
 - [x] Código da troca Shopify → Stripe (branch `stripe`)
 - [x] Acesso do Anderson à sandbox do Stripe (out/2026)
 - [ ] Chave de teste da sandbox na Vercel (Preview) e testar a compra
 - [ ] Produtos no Stripe (importar do CSV do Shopify, se houver)
-- [ ] Tarifas de envio no painel + `STRIPE_SHIPPING_RATES`
+- [ ] Tarifas de envio no painel + `STRIPE_SHIPPING_RATES` — **pendente: a Carol ainda está a definir os portes** (atualizar também `/envios`)
+- [ ] Webhook no painel do Stripe + `STRIPE_WEBHOOK_SECRET`
+- [ ] Resend: conta, domínio lavadogstore.pt verificado (DNS na dominios.pt) + `RESEND_API_KEY`
+- [ ] `ADMIN_PASSWORD` para o painel de encomendas
+- [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
+- [ ] Migrar alojamento da Vercel para a Cloudflare (conta, Workers Builds ligado ao GitHub, variáveis, DNS)
+- [ ] Carol rever os textos legais e confirmar prazos (preparação em 2 dias úteis, exceções de devolução)
 - [ ] Métodos de pagamento (cartão, MB WAY, Multibanco) e marca no checkout
 - [ ] Acesso Developer na conta real, chave live na Vercel (Production) e juntar ao `master`
 

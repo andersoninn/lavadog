@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   let evento: Stripe.Event;
   try {
-    evento = stripe().webhooks.constructEvent(await req.text(), assinatura, segredo);
+    evento = await stripe().webhooks.constructEventAsync(await req.text(), assinatura, segredo);
   } catch (error) {
     console.error("Webhook: assinatura inválida", error);
     return new Response("Assinatura inválida", { status: 400 });
