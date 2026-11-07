@@ -81,7 +81,8 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
 - [ ] Migrar alojamento da Vercel para a Cloudflare (conta, Workers Builds ligado ao GitHub, variáveis, DNS)
 - [ ] Carol rever os textos legais e confirmar prazos (preparação em 2 dias úteis, exceções de devolução) e saber que o NIF dela aparece no rodapé e nos termos
-- [ ] Anderson: `git pull --rebase` + `git push` no PC (commit da imagem `dogCtaStore` só está local)
+- [ ] Anderson: `git pull --rebase` no PC (a imagem `dogCtaStore` e o favicon já estão no GitHub) e apagar `favico.ico` da raiz
+- [ ] Área de login do cliente com Neon (plano grátis): login por email, dados (nome, morada de entrega/faturação, NIF), pré-preencher checkout, "As minhas encomendas" — layout a definir pelo Anderson
 - [ ] Métodos de pagamento (cartão, MB WAY, Multibanco) e marca no checkout
 - [ ] Acesso Developer na conta real, chave live na Vercel (Production) e juntar ao `master`
 
