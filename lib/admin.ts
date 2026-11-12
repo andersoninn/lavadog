@@ -14,8 +14,11 @@ import { emailEnviada } from "@/lib/emails-encomenda";
 
 const COOKIE = "admin_lavadog";
 
+// Espaços no início/fim (comuns ao copiar e colar) não contam.
+const senhaConfigurada = () => process.env.ADMIN_PASSWORD?.trim() || null;
+
 function token(): string | null {
-  const senha = process.env.ADMIN_PASSWORD;
+  const senha = senhaConfigurada();
   return senha ? createHash("sha256").update(`lavadog-admin:${senha}`).digest("hex") : null;
 }
 
@@ -27,9 +30,9 @@ export async function estaAutenticado(): Promise<boolean> {
 }
 
 export async function entrarAdmin(formData: FormData) {
-  const senha = String(formData.get("senha") ?? "");
+  const senha = String(formData.get("senha") ?? "").trim();
   const esperado = token();
-  if (!esperado || !process.env.ADMIN_PASSWORD || senha !== process.env.ADMIN_PASSWORD) {
+  if (!esperado || senha !== senhaConfigurada()) {
     redirect("/admin/encomendas?erro=1");
   }
   (await cookies()).set(COOKIE, esperado, {
