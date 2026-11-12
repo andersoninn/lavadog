@@ -2,78 +2,212 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PaginaLegal, { Seccao } from "@/components/legal/PaginaLegal";
 import IdentificacaoVendedor from "@/components/legal/IdentificacaoVendedor";
-import { ENTIDADES_RAL, LISTA_RAL_HREF, LIVRO_RECLAMACOES_HREF } from "@/lib/empresa";
+import {
+  EMPRESA,
+  ENTIDADES_RAL,
+  LISTA_RAL_HREF,
+  LIVRO_RECLAMACOES_HREF,
+} from "@/lib/empresa";
 
 export const metadata: Metadata = {
   title: "Termos e Condições",
-  description: "Termos e condições de venda da loja online LavaDog Store.",
+  description:
+    "Condições gerais de venda da loja online LavaDog Store: encomendas, preços, portes, pagamento, entrega, devoluções e reclamações.",
   alternates: { canonical: "/termos" },
 };
+
+const email = <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>;
 
 export default function TermosPage() {
   return (
     <PaginaLegal titulo="Termos e Condições" atualizado="novembro de 2026">
-      <Seccao titulo="1. Quem somos">
-        <p>Estes termos regulam as compras feitas na loja online www.lavadogstore.pt, explorada por:</p>
+      <p>
+        Estas condições gerais regulam as compras feitas na loja online
+        www.lavadogstore.pt. Ao concluir uma encomenda declara que leu e aceita
+        estes termos. Recomendamos que os guarde ou imprima.
+      </p>
+
+      <Seccao titulo="1. Identificação do vendedor">
         <IdentificacaoVendedor />
       </Seccao>
 
-      <Seccao titulo="2. Encomendas">
+      <Seccao titulo="2. Âmbito">
         <p>
-          Ao finalizar a compra, o cliente é encaminhado para a página de pagamento segura do Stripe, onde indica os
-          dados de entrega e de contacto. A encomenda fica confirmada quando o pagamento é aceite; nesse momento
-          enviamos um email com o número da encomenda e o resumo da compra.
-        </p>
-        <p>
-          Se um produto ficar indisponível depois da encomenda, contactamos o cliente e devolvemos o valor pago por
-          esse produto no prazo máximo de 14 dias.
+          A loja destina-se à venda de produtos para animais de companhia a
+          consumidores e empresas com morada de entrega em Portugal (continente
+          e ilhas). As compras podem ser feitas sem criar conta.
         </p>
       </Seccao>
 
-      <Seccao titulo="3. Preços e pagamento">
+      <Seccao titulo="3. Produtos e informação">
+        <ul>
+          <li>
+            Procuramos descrever cada produto com rigor (composição, tamanho,
+            peso, características). As fotografias são ilustrativas e as cores
+            podem variar ligeiramente consoante o ecrã.
+          </li>
+          <li>
+            A disponibilidade é indicada em cada produto. Os produtos sem stock
+            aparecem como “Esgotado” e não podem ser encomendados.
+          </li>
+          <li>
+            As informações sobre alimentação e cuidados não substituem o
+            aconselhamento de um médico veterinário.
+          </li>
+        </ul>
+      </Seccao>
+
+      <Seccao titulo="4. Preços">
+        <ul>
+          <li>Os preços estão em euros e incluem IVA à taxa legal em vigor.</li>
+          <li>
+            Os portes de envio não estão incluídos no preço dos produtos. São
+            calculados automaticamente a partir da morada e do código postal de
+            entrega indicados pelo cliente e do peso da encomenda, e
+            apresentados no pagamento antes da confirmação (ver{" "}
+            <Link href="/envios">Envios e Portes</Link>).
+          </li>
+          <li>
+            O preço aplicável é o que está indicado no momento da encomenda. Em
+            caso de erro manifesto de preço, informamos o cliente, que pode
+            confirmar a encomenda ao preço correto ou cancelá-la, com reembolso
+            integral.
+          </li>
+        </ul>
+      </Seccao>
+
+      <Seccao titulo="5. Como encomendar">
+        <ol>
+          <li>
+            Escolha os produtos (e, quando existir, o tamanho ou peso) e
+            adicione-os ao carrinho.
+          </li>
+          <li>
+            No carrinho, reveja os produtos e as quantidades e carregue em
+            “Finalizar compra”.
+          </li>
+          <li>
+            Na página de pagamento segura do Stripe, indique o email, o nome, a
+            morada de entrega com código postal, o telefone e, se quiser, o NIF
+            para a fatura e um código de desconto.
+          </li>
+          <li>
+            Confira o resumo final — produtos, portes calculados para a sua
+            morada, descontos e total — e confirme o pagamento.
+          </li>
+        </ol>
         <p>
-          Os preços estão em euros (€) e incluem IVA à taxa legal em vigor. Os portes de envio são apresentados na
-          página de pagamento, antes de o cliente confirmar a compra.
-        </p>
-        <p>
-          Aceitamos os métodos de pagamento disponíveis na página de pagamento (por exemplo cartão, MB WAY ou
-          referência Multibanco). Os dados de pagamento são tratados diretamente pelo Stripe; a LavaDog Store não tem
-          acesso aos dados do cartão.
+          O contrato considera-se celebrado quando o pagamento é confirmado.
+          Nesse momento recebe um email com o número da encomenda e o respetivo
+          resumo. Se, por motivo excecional, um produto deixar de estar
+          disponível depois da encomenda, informamos o cliente e reembolsamos o
+          valor correspondente no prazo máximo de 14 dias.
         </p>
       </Seccao>
 
-      <Seccao titulo="4. Fatura">
+      <Seccao titulo="6. Pagamento">
+        <ul>
+          <li>
+            Aceitamos os meios de pagamento apresentados na página de pagamento
+            (por exemplo, cartão de crédito ou débito, MB WAY e referência
+            Multibanco).
+          </li>
+          <li>
+            O pagamento é processado pelo Stripe, em ambiente seguro. A{" "}
+            {EMPRESA.nomeComercial} não tem acesso aos dados completos do meio
+            de pagamento.
+          </li>
+          <li>
+            No pagamento por referência Multibanco, a encomenda fica registada e
+            só é preparada depois de o pagamento ser confirmado. Se a referência
+            não for paga dentro do prazo indicado, a encomenda é cancelada
+            automaticamente.
+          </li>
+        </ul>
+      </Seccao>
+
+      <Seccao titulo="7. Códigos de desconto">
         <p>
-          Emitimos fatura de todas as compras. Para fatura com NIF, indique o número no campo “NIF para fatura” da
-          página de pagamento.
+          Os códigos promocionais são introduzidos na página de pagamento e
+          aplicam-se segundo as condições de cada campanha (validade, valor
+          mínimo, produtos abrangidos ou primeira compra). Salvo indicação em
+          contrário, não são acumuláveis, não podem ser trocados por dinheiro e
+          só podem ser usados uma vez por encomenda.
         </p>
       </Seccao>
 
-      <Seccao titulo="5. Entrega">
+      <Seccao titulo="8. Fatura">
         <p>
-          Os prazos e custos de entrega estão descritos na página <Link href="/envios">Envios e Portes</Link>.
+          Emitimos fatura de todas as compras, enviada para o email indicado na
+          encomenda. Para fatura com contribuinte, indique o NIF no campo “NIF
+          para fatura” da página de pagamento. Depois de emitida, a fatura não
+          pode ser alterada para outro NIF.
         </p>
       </Seccao>
 
-      <Seccao titulo="6. Devoluções e garantia">
+      <Seccao titulo="9. Entrega">
         <p>
-          O cliente pode desistir da compra no prazo de 14 dias, nos termos da página{" "}
-          <Link href="/devolucoes">Trocas e Devoluções</Link>. Os produtos têm a garantia legal de conformidade
-          prevista na lei portuguesa.
+          Entregamos na morada indicada pelo cliente, nos prazos e condições
+          descritos em <Link href="/envios">Envios e Portes</Link>. O risco de
+          perda ou dano dos produtos passa para o cliente no momento da entrega.
         </p>
       </Seccao>
 
-      <Seccao titulo="7. Reclamações e resolução de litígios">
+      <Seccao titulo="10. Livre resolução, trocas e garantia">
         <p>
-          Pode apresentar reclamação através do{" "}
-          <a href={LIVRO_RECLAMACOES_HREF} target="_blank" rel="noopener noreferrer">
+          O consumidor pode desistir da compra no prazo de 14 dias após a
+          receção, sem indicar motivo, e todos os produtos têm a garantia legal
+          de conformidade de 3 anos. As condições, exceções e o formulário de
+          livre resolução estão em{" "}
+          <Link href="/devolucoes">Trocas e Devoluções</Link>.
+        </p>
+      </Seccao>
+
+      <Seccao titulo="11. Responsabilidade">
+        <p>
+          Não nos responsabilizamos por danos resultantes de uma utilização dos
+          produtos contrária às instruções do fabricante ou ao seu fim normal,
+          nem por atrasos ou falhas causados por situações de força maior (por
+          exemplo, greves, catástrofes naturais ou falhas gerais de
+          comunicações). Nada nestes termos limita os direitos que a lei
+          reconhece aos consumidores.
+        </p>
+      </Seccao>
+
+      <Seccao titulo="12. Propriedade intelectual">
+        <p>
+          Os textos, fotografias, logótipo e restantes conteúdos do site
+          pertencem à {EMPRESA.nomeComercial} ou aos respetivos titulares e não
+          podem ser reproduzidos sem autorização. As marcas dos produtos
+          pertencem aos seus fabricantes.
+        </p>
+      </Seccao>
+
+      <Seccao titulo="13. Dados pessoais">
+        <p>
+          Os dados indicados na encomenda são tratados apenas para a processar,
+          entregar e faturar, como explicado na{" "}
+          <Link href="/privacidade">Política de Privacidade</Link>.
+        </p>
+      </Seccao>
+
+      <Seccao titulo="14. Reclamações e resolução de litígios">
+        <p>
+          Se tiver algum problema, contacte-nos primeiro por {email} ou WhatsApp
+          ({EMPRESA.telefone}): respondemos o mais depressa possível. Pode
+          também apresentar reclamação no{" "}
+          <a
+            href={LIVRO_RECLAMACOES_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Livro de Reclamações Eletrónico
-          </a>{" "}
-          ou contactar-nos diretamente pelo email ou telefone acima.
+          </a>
+          .
         </p>
         <p>
-          Em caso de litígio de consumo, o consumidor pode recorrer a uma entidade de Resolução Alternativa de
-          Litígios de consumo:
+          Em caso de litígio de consumo, pode recorrer a uma das seguintes
+          entidades de Resolução Alternativa de Litígios:
         </p>
         <ul>
           {ENTIDADES_RAL.map((e) => (
@@ -93,14 +227,14 @@ export default function TermosPage() {
         </p>
       </Seccao>
 
-      <Seccao titulo="8. Dados pessoais">
+      <Seccao titulo="15. Alterações e lei aplicável">
         <p>
-          O tratamento dos dados pessoais está descrito na <Link href="/privacidade">Política de Privacidade</Link>.
+          Podemos atualizar estes termos a qualquer momento; a cada encomenda
+          aplicam-se os que estavam em vigor na data em que foi feita. Estes
+          termos regem-se pela lei portuguesa, sem prejuízo das normas
+          imperativas de proteção do consumidor e do direito de recorrer aos
+          tribunais do seu domicílio.
         </p>
-      </Seccao>
-
-      <Seccao titulo="9. Lei aplicável">
-        <p>Estes termos regem-se pela lei portuguesa.</p>
       </Seccao>
     </PaginaLegal>
   );

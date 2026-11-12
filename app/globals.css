@@ -84,12 +84,14 @@ body {
 .fundo-paginas {
   background-color: var(--background);
   background-image: url("/images/fundo-paginas.webp");
-  background-size: cover;
+  /* telemóvel: a imagem ocupa só a largura, no topo (não estica em páginas longas) */
+  background-size: 100% auto;
   background-position: center top;
   background-repeat: no-repeat;
 }
 @media (min-width: 1024px) {
   .fundo-paginas {
+    background-size: cover;
     background-attachment: fixed;
   }
 }
