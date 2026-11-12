@@ -33,7 +33,7 @@ export default function Hero2() {
       aria-label="Destaques da loja"
       onMouseEnter={() => setPausado(true)}
       onMouseLeave={() => setPausado(false)}
-      className="relative aspect-[887/1774] max-h-[calc(100svh-9.5rem)] w-full overflow-hidden bg-primary-soft md:aspect-[1681/935] md:max-h-[calc(100svh-7rem)]"
+      className="relative aspect-[887/1774] max-h-[calc(100svh-10rem)] w-full overflow-hidden bg-primary-soft md:aspect-[1681/935] md:max-h-[calc(100svh-10rem)]"
     >
       {SLIDES_HERO.map((slide, i) => (
         <BannerHero2 key={slide.desktop} slide={slide} ativo={i === ativo} primeiro={i === 0} />
@@ -50,7 +50,7 @@ export default function Hero2() {
         href="/store"
         className="absolute bottom-14 left-1/2 z-10 inline-flex h-12 -translate-x-1/2 items-center gap-2 rounded-full bg-primary px-7 text-base font-bold whitespace-nowrap text-primary-foreground shadow-lg transition-colors hover:bg-primary-hover md:right-8 md:bottom-12 md:left-auto md:translate-x-0 lg:right-14"
       >
-        Comprar agora <ArrowRight className="size-4" />
+        Conheça nossa loja <ArrowRight className="size-4" />
       </Link>
 
       <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">

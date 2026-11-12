@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Cabecalho2 from "@/components/home2/Cabecalho2";
+import Navbar from "@/components/Navbar";
 import Hero2 from "@/components/home2/Hero2";
 import FaixaVantagens2 from "@/components/home2/FaixaVantagens2";
 import Store from "@/components/Store";
@@ -24,8 +24,8 @@ export default async function Home2() {
 
   return (
     <>
-      <Cabecalho2 cartCount={cart?.totalQuantity ?? 0} />
-      <main className="flex-1">
+      <Navbar cartCount={cart?.totalQuantity ?? 0} />
+      <main className="flex-1 pt-20 md:pt-16">
         <h1 className="sr-only">LavaDog Store — Pet Shop Online em Portugal. {SITE_TAGLINE}.</h1>
         <Hero2 />
         <FaixaVantagens2 />
