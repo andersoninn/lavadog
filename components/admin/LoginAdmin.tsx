@@ -2,8 +2,11 @@ import { entrarAdmin } from "@/lib/admin";
 
 export default function LoginAdmin({ erro }: { erro: boolean }) {
   return (
-    <form action={entrarAdmin} className="mx-auto mt-24 flex w-full max-w-sm flex-col gap-4 rounded-2xl bg-card p-6">
-      <h1 className="text-xl font-bold text-foreground">Encomendas · LavaDog</h1>
+    <form action={entrarAdmin} className="mx-auto flex w-full max-w-sm flex-col gap-4 rounded-2xl border border-border bg-card p-6">
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Encomendas</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Área reservada da LavaDog Store.</p>
+      </div>
       <label className="flex flex-col gap-1.5 text-sm font-medium text-foreground">
         Palavra-passe
         <input

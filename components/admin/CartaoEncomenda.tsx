@@ -14,7 +14,7 @@ function Estado({ enc }: { enc: Encomenda }) {
 
 export default function CartaoEncomenda({ enc }: { enc: Encomenda }) {
   return (
-    <article className="rounded-2xl bg-card p-5">
+    <article className="rounded-2xl border border-border bg-card p-5">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="font-bold tracking-wide text-foreground">{enc.numero}</p>

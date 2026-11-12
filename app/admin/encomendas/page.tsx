@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { Package } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import LoginAdmin from "@/components/admin/LoginAdmin";
 import CartaoEncomenda from "@/components/admin/CartaoEncomenda";
+import ResumoEncomendas from "@/components/admin/ResumoEncomendas";
 import { estaAutenticado, sairAdmin } from "@/lib/admin";
+import { getCurrentCart } from "@/lib/cart-actions";
 import { listarEncomendas } from "@/lib/lista-encomendas";
 import type { Encomenda } from "@/lib/encomendas";
 
@@ -10,42 +15,63 @@ export const dynamic = "force-dynamic";
 
 export default async function EncomendasAdminPage({ searchParams }: { searchParams: Promise<{ erro?: string }> }) {
   const { erro } = await searchParams;
-  if (!(await estaAutenticado())) return <LoginAdmin erro={erro === "1"} />;
+  const [autenticado, cart] = await Promise.all([estaAutenticado(), getCurrentCart().catch(() => null)]);
 
   let encomendas: Encomenda[] = [];
   let falhou = false;
-  try {
-    encomendas = await listarEncomendas();
-  } catch (error) {
-    console.error("Admin: falha ao listar encomendas", error);
-    falhou = true;
+  if (autenticado) {
+    try {
+      encomendas = await listarEncomendas();
+    } catch (error) {
+      console.error("Admin: falha ao listar encomendas", error);
+      falhou = true;
+    }
   }
-  const porEnviar = encomendas.filter((e) => e.pago && !e.enviadoEm).length;
 
   return (
-    <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Encomendas</h1>
-          <p className="text-sm text-muted-foreground">
-            {porEnviar} por enviar · últimas {encomendas.length}
-          </p>
+    <>
+      <Navbar cartCount={cart?.totalQuantity ?? 0} />
+      <main className="flex-1">
+        <div className="mx-auto w-full max-w-5xl px-6 pt-32 pb-24 sm:px-10 lg:px-16">
+          {!autenticado ? (
+            <LoginAdmin erro={erro === "1"} />
+          ) : (
+            <>
+              <div className="flex items-center justify-between gap-4">
+                <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Encomendas</h1>
+                <form action={sairAdmin}>
+                  <button type="submit" className="text-sm font-medium text-muted-foreground underline underline-offset-2 hover:text-foreground">
+                    Sair
+                  </button>
+                </form>
+              </div>
+
+              <ResumoEncomendas encomendas={encomendas} />
+
+              {falhou && (
+                <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  Não foi possível ler as encomendas do Stripe. Tente novamente em instantes.
+                </p>
+              )}
+
+              {!falhou && encomendas.length === 0 ? (
+                <div className="mt-8 flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border py-24 text-center">
+                  <Package className="size-10 text-muted-foreground" />
+                  <p className="font-semibold text-foreground">Ainda não há encomendas</p>
+                  <p className="text-sm text-muted-foreground">As novas encomendas pagas aparecem aqui.</p>
+                </div>
+              ) : (
+                <div className="mt-8 flex flex-col gap-3">
+                  {encomendas.map((e) => (
+                    <CartaoEncomenda key={e.sessaoId} enc={e} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
-        <form action={sairAdmin}>
-          <button type="submit" className="text-sm text-muted-foreground underline underline-offset-2">
-            Sair
-          </button>
-        </form>
-      </div>
-
-      {falhou && <p className="mt-6 text-sm text-red-600">Não foi possível ler as encomendas do Stripe.</p>}
-      {!falhou && encomendas.length === 0 && <p className="mt-6 text-sm text-muted-foreground">Ainda não há encomendas.</p>}
-
-      <div className="mt-6 flex flex-col gap-4">
-        {encomendas.map((e) => (
-          <CartaoEncomenda key={e.sessaoId} enc={e} />
-        ))}
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
