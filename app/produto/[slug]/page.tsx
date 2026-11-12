@@ -89,7 +89,7 @@ export default async function ProdutoPage({ params }: Props) {
             <CaixaEntrega />
           </div>
 
-          <ProdutosRelacionados produto={produto} todos={catalogo.products} />
+          <ProdutosRelacionados todos={catalogo.products} categorias={[produto.category]} excluir={[produto.id]} />
         </div>
       </main>
       <Footer />

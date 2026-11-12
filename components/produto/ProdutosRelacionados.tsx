@@ -4,12 +4,22 @@ import type { Product } from "@/lib/store-data";
 
 const QUANTOS = 4;
 
-/** Sugestões: primeiro produtos da mesma categoria; se faltarem, completa com outros. */
-export default function ProdutosRelacionados({ produto, todos }: { produto: Product; todos: Product[] }) {
-  const outros = todos.filter((p) => p.id !== produto.id && p.inStock);
-  const mesmaCategoria = outros.filter((p) => p.category === produto.category);
-  const resto = outros.filter((p) => p.category !== produto.category);
+type Props = {
+  todos: Product[];
+  /** Categorias a sugerir primeiro (a do produto, ou as do carrinho). */
+  categorias: string[];
+  /** Produtos a não sugerir (o próprio, ou os que já estão no carrinho). */
+  excluir: string[];
+  titulo?: string;
+};
+
+/** Sugestões: primeiro produtos das mesmas categorias; se faltarem, completa com outros. */
+export default function ProdutosRelacionados({ todos, categorias, excluir, titulo }: Props) {
+  const outros = todos.filter((p) => !excluir.includes(p.id) && p.inStock);
+  const mesmaCategoria = outros.filter((p) => categorias.includes(p.category));
+  const resto = outros.filter((p) => !categorias.includes(p.category));
   const sugestoes = [...mesmaCategoria, ...resto].slice(0, QUANTOS);
+  const categoria = categorias.length === 1 ? categorias[0] : null;
 
   if (sugestoes.length === 0) return null;
 
@@ -17,10 +27,10 @@ export default function ProdutosRelacionados({ produto, todos }: { produto: Prod
     <section className="mt-16">
       <div className="flex items-baseline justify-between gap-4">
         <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-          {mesmaCategoria.length > 0 ? `Mais em ${produto.category}` : "Também pode gostar"}
+          {titulo ?? (categoria && mesmaCategoria.length > 0 ? `Mais em ${categoria}` : "Também pode gostar")}
         </h2>
         <Link
-          href={`/store?categoria=${encodeURIComponent(produto.category)}`}
+          href={categoria ? `/store?categoria=${encodeURIComponent(categoria)}` : "/store"}
           className="text-sm font-semibold text-blue-strong underline underline-offset-2"
         >
           Ver todos

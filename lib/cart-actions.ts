@@ -26,6 +26,8 @@ type LinhaGuardada = { p: string; q: number };
 export type CartLine = {
   /** O id do preço no Stripe (é também o id da linha). */
   id: string;
+  /** O id do produto no Stripe (para ligar à página do produto). */
+  productId: string;
   quantity: number;
   title: string;
   /** "Tamanho: M" quando o produto tem variantes. */
@@ -88,6 +90,7 @@ export async function getCurrentCart(): Promise<Cart | null> {
     return [
       {
         id: preco.id,
+        productId: produto.id,
         quantity: l.q,
         title: produto.name,
         variantTitle: opcoes.length ? opcoes.map((o) => `${o.name}: ${o.value}`).join(" · ") : null,
