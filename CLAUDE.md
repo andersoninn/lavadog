@@ -49,7 +49,7 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O Next.js mostra o catálogo; o pagamento acontece no **Stripe Checkout** (página da Stripe).
 
 - Catálogo: produtos e preços ativos do painel do Stripe (`lib/stripe.ts`), convertidos em `lib/store-data.ts` (`mapStripeProducts`).
-- Metadata do produto no Stripe: `categoria`, `marca`, `animal` (vírgulas), `preco_antigo`, `esgotado` (`true`).
+- Metadata do produto no Stripe: `categoria`, `marca`, `animal` (vírgulas), `preco_antigo`, `esgotado` (`true`), `stock` (número), `slug`, `destaque` (`mais vendido` → selo), `beneficios` (separados por `;`), `composicao`, `info_nutricional` — todos opcionais. Metadata do Stripe aceita até 500 caracteres por valor.
 - Variantes: cada preço do produto é uma variante; a opção vem da metadata do preço (ex.: `tamanho` = `M`) ou do apelido (`Tamanho: M`).
 - Carrinho: cookie `carrinho` no próprio site (`lib/cart-actions.ts`); `finalizarCompra` cria a sessão de checkout.
 - Depois do pagamento: `/carrinho/concluido` (confirma no Stripe e esvazia o carrinho) → `/carrinho/obrigado`.
