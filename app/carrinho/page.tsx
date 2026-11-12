@@ -39,7 +39,7 @@ export default async function CarrinhoPage({ searchParams }: { searchParams: Pro
   return (
     <>
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
-      <main className="flex-1">
+      <main className="fundo-paginas flex-1">
         <div className="mx-auto w-full max-w-6xl px-6 pt-28 pb-24 sm:px-10">
           <nav aria-label="Trilho" className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Link href="/" className="flex items-center gap-1.5 hover:text-foreground">

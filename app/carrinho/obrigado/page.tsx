@@ -21,7 +21,7 @@ export default async function ObrigadoPage({
   return (
     <>
       <Navbar cartCount={0} />
-      <main className="flex-1">
+      <main className="fundo-paginas flex-1">
         <div className="mx-auto flex w-full max-w-xl flex-col items-center px-6 pt-36 pb-24 text-center">
           <CheckCircle2 className="size-12 text-primary" />
           <h1 className="mt-5 text-2xl font-bold text-foreground sm:text-3xl">Obrigado pela sua compra!</h1>

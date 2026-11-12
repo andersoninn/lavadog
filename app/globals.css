@@ -78,3 +78,18 @@ body {
     transform: translateX(-50%);
   }
 }
+
+/* Fundo das páginas internas (loja, produto, carrinho, legais…):
+   creme com patinhas, coração e ondas azul/amarelo nos cantos. */
+.fundo-paginas {
+  background-color: var(--background);
+  background-image: url("/images/fundo-paginas.webp");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+@media (min-width: 1024px) {
+  .fundo-paginas {
+    background-attachment: fixed;
+  }
+}

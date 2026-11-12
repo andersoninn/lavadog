@@ -18,7 +18,7 @@ export default async function PaginaLegal({
   return (
     <>
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
-      <main className="flex-1">
+      <main className="fundo-paginas flex-1">
         <article className="mx-auto w-full max-w-3xl px-6 pt-32 pb-24 sm:px-10">
           <h1 className="text-3xl font-bold text-foreground sm:text-4xl">{titulo}</h1>
           <p className="mt-2 text-sm text-muted-foreground">Última atualização: {atualizado}</p>

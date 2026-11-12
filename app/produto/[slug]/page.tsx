@@ -64,7 +64,7 @@ export default async function ProdutoPage({ params, searchParams }: Props) {
           { name: produto.name, path: `/produto/${produto.slug}` },
         ]}
       />
-      <main className="flex-1">
+      <main className="fundo-paginas flex-1">
         <div className="mx-auto w-full max-w-6xl px-6 pt-28 pb-24 sm:px-10">
           <TrilhoProduto categoria={produto.category} nome={produto.name} />
 

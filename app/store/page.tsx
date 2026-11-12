@@ -100,7 +100,7 @@ export default async function StorePage({
         ]}
       />
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
-      <main className="flex-1 pt-20 sm:pt-24">
+      <main className="fundo-paginas flex-1 pt-20 sm:pt-24">
         <FaixaBeneficios />
         {loadError && (
           <p className="mx-auto mt-6 w-full max-w-7xl px-6 text-sm text-red-600 sm:px-10 lg:px-16">

@@ -31,7 +31,7 @@ export default async function EncomendasAdminPage({ searchParams }: { searchPara
   return (
     <>
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
-      <main className="flex-1">
+      <main className="fundo-paginas flex-1">
         <div className="mx-auto w-full max-w-5xl px-6 pt-32 pb-24 sm:px-10 lg:px-16">
           {!autenticado ? (
             <LoginAdmin erro={erro === "1"} />
