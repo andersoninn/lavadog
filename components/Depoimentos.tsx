@@ -1,5 +1,5 @@
 import { PawPrint } from "lucide-react";
-import CartaoDepoimento from "@/components/depoimentos/CartaoDepoimento";
+import CarrosselDepoimentos from "@/components/depoimentos/CarrosselDepoimentos";
 import BarraConfianca from "@/components/depoimentos/BarraConfianca";
 import {
   DEPOIMENTOS_EXEMPLO,
@@ -45,17 +45,7 @@ export default function Depoimentos({
         </p>
       </div>
 
-      {/* 3 por linha no computador; no telemóvel desliza para o lado */}
-      <div className="-mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0">
-        {depoimentos.slice(0, 6).map((d) => (
-          <div
-            key={d.nome + d.texto.slice(0, 12)}
-            className="w-[85%] shrink-0 snap-center sm:w-[60%] lg:w-auto"
-          >
-            <CartaoDepoimento d={d} />
-          </div>
-        ))}
-      </div>
+      <CarrosselDepoimentos depoimentos={depoimentos} />
 
       <BarraConfianca nota={dados?.nota ?? null} total={dados?.total ?? null} />
     </div>

@@ -38,4 +38,28 @@ export const DEPOIMENTOS_EXEMPLO: Depoimento[] = [
     texto:
       "Atendimento impecável, sempre prontos a tirar dúvidas. Os acessórios têm muita qualidade e nota-se a preocupação com o bem-estar dos animais. Recomendo a 100%!",
   },
+  {
+    nome: "João Pereira",
+    legenda: "Tutor do Max",
+    estrelas: 5,
+    foto: null,
+    texto:
+      "Encontrei tudo o que precisava para o Max num só sítio. Ótimos conselhos na loja e a compra online foi rápida e sem complicações.",
+  },
+  {
+    nome: "Sofia Almeida",
+    legenda: "Tutora da Mia",
+    estrelas: 5,
+    foto: null,
+    texto:
+      "A Mia é muito esquisita com a comida e aqui encontrei a ração certa para ela. Preços justos e um cuidado enorme em cada encomenda.",
+  },
+  {
+    nome: "Carlos Nunes",
+    legenda: "Tutor do Rocky",
+    estrelas: 5,
+    foto: null,
+    texto:
+      "Equipa simpática e que percebe mesmo de animais. A cama e os brinquedos que comprei são de ótima qualidade. Vou continuar a comprar!",
+  },
 ];

@@ -11,7 +11,7 @@ const iniciais = (nome: string) =>
 /** Cartão de um depoimento: foto (ou iniciais), nome, estrelas, legenda e texto. */
 export default function CartaoDepoimento({ d }: { d: Depoimento }) {
   return (
-    <article className="flex h-full flex-col rounded-xl border border-border bg-card/95 p-6 shadow-[0_8px_30px_rgba(34,27,20,0.06)]">
+    <article className="flex h-full flex-col rounded-md border border-border bg-card/95 p-6 shadow-[0_8px_30px_rgba(34,27,20,0.06)]">
       <div className="flex items-center gap-4">
         {d.foto ? (
           // Foto vinda do Google (domínio externo): <img> simples.
