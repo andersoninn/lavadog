@@ -1,12 +1,5 @@
 import Image from "next/image";
-import {
-  Lock,
-  ShieldCheck,
-  Smartphone,
-  Truck,
-  Wallet,
-  type LucideIcon,
-} from "lucide-react";
+import { Lock, ShieldCheck, Truck, type LucideIcon } from "lucide-react";
 
 const SELOS = [
   {
@@ -46,8 +39,14 @@ const PAGAMENTOS: Pagamento[] = [
     nome: "Multibanco",
     logo: { src: "/images/pagamentos/multibanco.webp", largura: 84 },
   },
-  { nome: "Apple Pay", icone: Wallet },
-  { nome: "Google Pay", icone: Smartphone },
+  {
+    nome: "Apple Pay",
+    logo: { src: "/images/pagamentos/applepay.webp", largura: 58 },
+  },
+  {
+    nome: "Google Pay",
+    logo: { src: "/images/pagamentos/googlepay.svg", largura: 60 },
+  },
 ];
 
 /** Linha de garantias e formas de pagamento do rodapé. */
