@@ -91,7 +91,7 @@ export default function ProductCard({
       <article className="group flex items-center gap-4 rounded-md border border-border bg-card p-3 transition-shadow hover:shadow-md">
         {imagem}
         <div className="min-w-0 flex-1">{textos}</div>
-        <div className="hidden w-48 shrink-0 sm:block">
+        <div className="@container hidden w-52 shrink-0 sm:block">
           <AddToCartButton product={product} destaque />
         </div>
       </article>
@@ -104,7 +104,7 @@ export default function ProductCard({
       {imagem}
       <div className="mt-3 flex flex-1 flex-col">
         {textos}
-        <div className="mt-auto pt-3">
+        <div className="@container mt-auto pt-3">
           <AddToCartButton product={product} destaque />
         </div>
       </div>

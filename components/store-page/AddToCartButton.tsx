@@ -86,7 +86,7 @@ export default function AddToCartButton({
         className={
           destaque
             ? cn(
-                "flex h-10 w-full items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-[13px] font-bold whitespace-nowrap sm:text-sm text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40",
+                "flex h-10 w-full items-center justify-center gap-1.5 rounded-md bg-primary px-4 text-sm font-bold whitespace-nowrap text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40",
                 className,
               )
             : cn(
@@ -112,8 +112,8 @@ export default function AddToCartButton({
             "Escolher Opção"
           ) : destaque ? (
             <>
-              <span className="sm:hidden">Adicionar</span>
-              <span className="hidden sm:inline">Adicionar ao carrinho</span>
+              <span className="@min-[200px]:hidden">Adicionar</span>
+              <span className="hidden @min-[200px]:inline">Adicionar ao carrinho</span>
             </>
           ) : (
             "Adicionar ao Carrinho"
