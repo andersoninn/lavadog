@@ -1,138 +1,67 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { ArrowUp, Facebook, Instagram, Linkedin } from 'lucide-react';
-import { WHATSAPP_HREF, INSTAGRAM_HREF } from '@/lib/constants';
-import { EMPRESA, LIVRO_RECLAMACOES_HREF } from '@/lib/empresa';
+import { ArrowUp } from "lucide-react";
+import ColunaLinks from "@/components/rodape/ColunaLinks";
+import SelosRodape from "@/components/rodape/SelosRodape";
+import MarcaRodape from "@/components/rodape/MarcaRodape";
+import ContactoRodape from "@/components/rodape/ContactoRodape";
+import { WHATSAPP_HREF, INSTAGRAM_HREF } from "@/lib/constants";
+import { EMPRESA, LIVRO_RECLAMACOES_HREF } from "@/lib/empresa";
 
-const companyLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Nossos Produtos', href: '/store' },
-  { label: 'Promoções', href: '/store?promo=true' },
-  { label: 'Novidades', href: INSTAGRAM_HREF, external: true },
-  { label: 'Central de ajuda', href: WHATSAPP_HREF, external: true },
+const EMPRESA_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Nossos Produtos", href: "/store" },
+  { label: "Promoções", href: "/store?promo=true" },
+  { label: "Novidades", href: INSTAGRAM_HREF, external: true },
+  { label: "Central de ajuda", href: WHATSAPP_HREF, external: true },
 ];
-
-const legalLinks = [
-  { label: 'Termos e Condições', href: '/termos' },
-  { label: 'Política de Privacidade', href: '/privacidade' },
-  { label: 'Trocas e Devoluções', href: '/devolucoes' },
-  { label: 'Envios e Portes', href: '/envios' },
+const LEGAIS = [
+  { label: "Termos e Condições", href: "/termos" },
+  { label: "Política de Privacidade", href: "/privacidade" },
+  { label: "Trocas e Devoluções", href: "/devolucoes" },
+  { label: "Envios e Portes", href: "/envios" },
 ];
+const CATEGORIAS = ["Ração", "Acessórios", "Brinquedos", "Higiene"].map(
+  (c) => ({
+    label: c,
+    href: `/store?categoria=${encodeURIComponent(c)}`,
+  }),
+);
 
 export default function Footer() {
   return (
     <footer
       id="footer"
-      className="relative w-full bg-foreground px-6 py-16 text-background sm:px-12 lg:px-20 lg:py-20"
+      className="relative w-full bg-foreground px-6 pt-16 pb-8 text-background sm:px-12 lg:px-20"
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
-        <div>
-          <p className="text-xl font-bold">LavaDog Store</p>
-          <p className="mt-3 max-w-xs text-sm text-background/70">
-            Mais que um pet shop, um lugar de amor e cuidado.
-          </p>
-          {/* <div className="mt-6 flex max-w-xs items-center gap-2 border-b border-background/30 pb-2">
-            <input
-              type="email"
-              placeholder="Seu e-mail"
-              className="w-full bg-transparent text-sm text-background placeholder:text-background/50 focus:outline-none"
-            />
-            <button
-              type="button"
-              className="shrink-0 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground"
-            >
-              Inscrever-se
-            </button>
-          </div> */}
-        </div>
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[1.4fr_1fr_1.1fr_0.9fr_1.4fr]">
+        <MarcaRodape />
 
-        <div>
-          <p className="text-sm font-semibold">Empresa</p>
-          <ul className="mt-4 space-y-2 text-sm text-background/70">
-            {companyLinks.map((link) => (
-              <li key={link.label}>
-                <Link
-                  href={link.href}
-                  target={link.external ? '_blank' : undefined}
-                  rel={link.external ? 'noopener noreferrer' : undefined}
-                  className="transition-colors hover:text-background"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ColunaLinks titulo="Empresa" links={EMPRESA_LINKS} />
+        <ColunaLinks titulo="Informações" links={LEGAIS}>
+          <a
+            href={LIVRO_RECLAMACOES_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex rounded-md border border-background/40 px-3 py-1.5 text-xs font-semibold transition-colors hover:border-background"
+          >
+            Livro de Reclamações
+          </a>
+        </ColunaLinks>
+        <ColunaLinks titulo="Categorias" links={CATEGORIAS} />
 
-        <div>
-          <p className="text-sm font-semibold">Informações</p>
-          <ul className="mt-4 space-y-2 text-sm text-background/70">
-            {legalLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="transition-colors hover:text-background">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <a
-                href={LIVRO_RECLAMACOES_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center rounded-md border border-background/30 px-3 py-1.5 text-xs font-semibold text-background transition-colors hover:border-background"
-              >
-                Livro de Reclamações
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <p className="text-sm font-semibold">Contato</p>
-          <ul className="mt-4 space-y-2 text-sm text-background/70">
-            <li> Rua 16 de Maio 41 Santiago e Bougado, 4785-607 Trofa</li>
-            <li>+351 926 777 360</li>
-            <li>
-              <a href={`mailto:${EMPRESA.email}`} className="transition-colors hover:text-background">
-                {EMPRESA.email}
-              </a>
-            </li>
-          </ul>
-          <div className="mt-4 flex gap-3">
-            <Link
-              href="https://www.facebook.com/lavadogtere"
-              aria-label="Facebook"
-              className="text-background/70 hover:text-background"
-              target="_blank"
-            >
-              <Facebook className="size-4" />
-            </Link>
-            {/* <Link
-              href="#"
-              aria-label="LinkedIn"
-              className="text-background/70 hover:text-background"
-            >
-              <Linkedin className="size-4" />
-            </Link> */}
-            <Link
-              href={INSTAGRAM_HREF}
-              aria-label="Instagram"
-              className="text-background/70 hover:text-background"
-              target="_blank"
-            >
-              <Instagram className="size-4" />
-            </Link>
-          </div>
-        </div>
+        <ContactoRodape />
       </div>
 
-      <div className="mx-auto mt-12 flex w-full max-w-6xl flex-col items-center gap-2 border-t border-background/20 pt-6 text-xs text-background/60 sm:flex-row sm:justify-between">
+      <SelosRodape />
+
+      <div className="mx-auto mt-8 flex w-full max-w-6xl flex-col items-center gap-2 border-t border-background/15 pt-6 text-xs text-background/60 sm:flex-row sm:justify-between">
         <p className="text-center sm:text-left">
-          © {new Date().getFullYear()} LavaDog Store · {EMPRESA.titular} · NIF {EMPRESA.nif}
+          © {new Date().getFullYear()} {EMPRESA.nomeComercial} ·{" "}
+          {EMPRESA.titular} · NIF {EMPRESA.nif}
         </p>
         <p>
-          Desenvolvido por{' '}
+          Desenvolvido por{" "}
           <a
             href="https://oaktechnologies.pt/"
             target="_blank"
@@ -147,10 +76,10 @@ export default function Footer() {
       <button
         type="button"
         aria-label="Voltar ao topo"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="absolute right-6 bottom-6 flex size-10 items-center justify-center rounded-full bg-primary text-primary-foreground"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="absolute right-6 bottom-6 flex size-11 items-center justify-center rounded-full bg-primary text-foreground shadow-md"
       >
-        <ArrowUp className="size-4" />
+        <ArrowUp className="size-5" />
       </button>
     </footer>
   );

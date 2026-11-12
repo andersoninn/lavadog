@@ -62,7 +62,8 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - Stock automático: metadata `stock` no preço (variante) ou no produto (partilhado). Cada venda paga desconta; 0 = esgotado. Sem `stock`, continua o `esgotado` manual. O checkout recusa mais unidades do que o stock.
 - Painel interno `/admin/encomendas` (palavra-passe `ADMIN_PASSWORD`): lista as últimas encomendas, NIF, morada, e "Marcar como enviada" (com código de seguimento) → email ao cliente.
 - Página de produto `/produto/[slug]` (slug do nome, ou metadata `slug`), com galeria, opções, descrição (do Stripe) e JSON-LD Product.
-- Depoimentos: avaliações reais do Google Business (Places API New, `lib/google-avaliacoes.ts`, cache 24 h). Sem chave, a secção não aparece. O filtro de avaliação da loja foi removido (não havia dados).
+- Depoimentos ("O que nossos clientes dizem": 3 cartões + barra de confiança, fundo com patinhas): avaliações reais do Google Business (Places API New, `lib/google-avaliacoes.ts`, cache 24 h). Sem chave, mostra os exemplos de `lib/depoimentos-exemplo.ts`.
+- Rodapé (`components/Footer.tsx` + `components/rodape/*`): logótipo, redes, Empresa, Informações (+ Livro de Reclamações), Categorias, Contacto, selos e formas de pagamento escritas (sem logótipos de marcas). Sem newsletter. O filtro de avaliação da loja foi removido (não havia dados).
 - Páginas legais: `/termos`, `/privacidade`, `/devolucoes`, `/envios`; identificação do vendedor em `lib/empresa.ts`; rodapé com Livro de Reclamações.
 - Loja `/store` no estilo do wireframe (faixa de vantagens, painel "Filtrar resultados", banner com o cupão ativo, cartões com desconto, favorito, €/kg e botão amarelo). **`/store?demo=1`** mostra 30 produtos fictícios (`lib/demo-catalogo.ts`) só para ver o visual, sem tocar no Stripe; as páginas de produto abertas daí também ficam em demo.
 - Só português (decisão da cliente). Sem newsletter.

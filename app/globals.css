@@ -95,3 +95,9 @@ body {
     background-attachment: fixed;
   }
 }
+
+/* Mesma imagem como fundo de uma secção (ex.: depoimentos da home): cobre a secção toda. */
+.fundo-paginas.fundo-secao {
+  background-size: cover;
+  background-attachment: scroll;
+}
