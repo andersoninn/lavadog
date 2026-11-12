@@ -1,4 +1,12 @@
-import { Lock, ShieldCheck, Truck } from "lucide-react";
+import {
+  CreditCard,
+  Landmark,
+  Lock,
+  ShieldCheck,
+  Smartphone,
+  Truck,
+  Wallet,
+} from "lucide-react";
 
 const SELOS = [
   {
@@ -18,8 +26,13 @@ const SELOS = [
   },
 ];
 
-// Formas de pagamento escritas (sem logótipos de marcas).
-const PAGAMENTOS = ["Cartão", "MB WAY", "Multibanco", "Apple Pay"];
+// Formas de pagamento com ícones genéricos (sem logótipos de marcas).
+const PAGAMENTOS = [
+  { nome: "Cartão", icone: CreditCard },
+  { nome: "MB WAY", icone: Smartphone },
+  { nome: "Multibanco", icone: Landmark },
+  { nome: "Apple Pay", icone: Wallet },
+];
 
 /** Linha de garantias e formas de pagamento do rodapé. */
 export default function SelosRodape() {
@@ -43,12 +56,13 @@ export default function SelosRodape() {
         className="mt-8 flex flex-wrap justify-center gap-3"
         aria-label="Formas de pagamento"
       >
-        {PAGAMENTOS.map((p) => (
+        {PAGAMENTOS.map(({ nome, icone: Icone }) => (
           <li
-            key={p}
-            className="rounded-md bg-background px-4 py-2 text-sm font-extrabold text-foreground"
+            key={nome}
+            className="flex items-center gap-2 rounded-md bg-background px-4 py-2 text-sm font-extrabold text-foreground"
           >
-            {p}
+            <Icone className="size-5 text-primary-hover" strokeWidth={2} />
+            {nome}
           </li>
         ))}
       </ul>
