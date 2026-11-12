@@ -4,6 +4,7 @@ import {
   Landmark,
   Lock,
   ShieldCheck,
+  Smartphone,
   Truck,
   Wallet,
   type LucideIcon,
@@ -41,6 +42,7 @@ const PAGAMENTOS: Pagamento[] = [
   },
   { nome: "Multibanco", icone: Landmark },
   { nome: "Apple Pay", icone: Wallet },
+  { nome: "Google Pay", icone: Smartphone },
 ];
 
 /** Linha de garantias e formas de pagamento do rodapé. */
