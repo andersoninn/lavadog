@@ -75,7 +75,7 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - [ ] Produtos no Stripe (importar do CSV do Shopify, se houver)
 - [ ] Tarifas de envio no painel + `STRIPE_SHIPPING_RATES` — **pendente: a Carol ainda está a definir os portes** (atualizar também `/envios`)
 - [x] Permissões novas na chave restrita (Customers, PaymentIntents, Products, Prices: Write) — 7/nov
-- [ ] Webhook no painel do Stripe + `STRIPE_WEBHOOK_SECRET`
+- [x] Webhook no painel do Stripe ("Encomendas site", 2 eventos) + `STRIPE_WEBHOOK_SECRET` na Vercel — 12/nov
 - [ ] Resend: conta, domínio lavadogstore.pt verificado (DNS na dominios.pt) + `RESEND_API_KEY`
 - [ ] `ADMIN_PASSWORD` para o painel de encomendas
 - [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
