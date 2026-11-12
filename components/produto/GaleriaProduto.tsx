@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ImageIcon, PawPrint, Trophy } from "lucide-react";
+import { ImageIcon, PawPrint, Sparkles, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Props = { imagens: string[]; nome: string; selo?: string | null };
@@ -70,7 +70,7 @@ export default function GaleriaProduto({ imagens, nome, selo }: Props) {
 
           {selo && (
             <span className="absolute top-4 left-4 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-foreground shadow-sm">
-              <Trophy className="size-4" />
+              {selo === "Novidade" ? <Sparkles className="size-4" /> : <Trophy className="size-4" />}
               {selo}
             </span>
           )}

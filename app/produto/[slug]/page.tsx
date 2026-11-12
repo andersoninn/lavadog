@@ -77,7 +77,9 @@ export default async function ProdutoPage({ params }: Props) {
 
           <div className="mt-16 grid gap-10 lg:grid-cols-[1fr_380px]">
             <AbasProduto descricao={produto.description} detalhes={produto.detalhes} />
-            <CaixaEntrega />
+            <div className="lg:col-start-2 lg:row-start-1">
+              <CaixaEntrega />
+            </div>
           </div>
         </div>
       </main>
