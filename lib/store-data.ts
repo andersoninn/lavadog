@@ -41,6 +41,17 @@ export type Product = {
   hasVariants: boolean;
   variants: ProductVariant[];
   options: ProductOption[];
+  /** Textos extra da página do produto (metadata no Stripe; todos opcionais). */
+  detalhes: ProductDetalhes;
+};
+
+export type ProductDetalhes = {
+  /** metadata "beneficios": lista separada por ";" */
+  beneficios: string[];
+  /** metadata "composicao" */
+  composicao: string | null;
+  /** metadata "info_nutricional" */
+  nutricao: string | null;
 };
 
 // Categoria usada quando o produto ainda não tem a metadata "categoria" no
@@ -144,7 +155,15 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
 
     const createdAt = new Date(sp.created * 1000).toISOString();
     const isNew = Date.now() - sp.created * 1000 < NEW_PRODUCT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
-    const badge: ProductBadge | undefined = oldPrice ? "promocao" : isNew ? "novo" : undefined;
+    // metadata "destaque" = "mais vendido" mostra o selo "Mais vendido".
+    const maisVendido = /mais.?vendido/i.test(meta.destaque ?? "");
+    const badge: ProductBadge | undefined = maisVendido
+      ? "mais-vendido"
+      : oldPrice
+        ? "promocao"
+        : isNew
+          ? "novo"
+          : undefined;
 
     // Opções (Tamanho: P, M, G…) juntadas a partir das variantes.
     const optionMap = new Map<string, string[]>();
@@ -163,6 +182,14 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
       slug: slugify(meta.slug?.trim() || sp.name) || sp.id,
       name: sp.name,
       description: sp.description ?? null,
+      detalhes: {
+        beneficios: (meta.beneficios ?? "")
+          .split(";")
+          .map((b) => b.trim())
+          .filter(Boolean),
+        composicao: meta.composicao?.trim() || null,
+        nutricao: meta.info_nutricional?.trim() || null,
+      },
       images: sp.images ?? [],
       category,
       brand,

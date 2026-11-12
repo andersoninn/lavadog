@@ -216,3 +216,9 @@ async function faltaStock(cart: Cart): Promise<boolean> {
   }
   return [...pedido.values()].some((p) => p.quantidade > p.stock);
 }
+
+/** "Comprar agora" da página do produto: junta ao carrinho e vai direto para o pagamento. */
+export async function comprarAgora(priceId: string, quantity = 1): Promise<void> {
+  await addToCart(priceId, quantity);
+  await finalizarCompra();
+}

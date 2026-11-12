@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GaleriaProduto from "@/components/produto/GaleriaProduto";
 import CompraProduto from "@/components/produto/CompraProduto";
-import ProductBadge from "@/components/store-page/ProductBadge";
+import SelosConfianca from "@/components/produto/SelosConfianca";
+import AbasProduto from "@/components/produto/AbasProduto";
+import CaixaEntrega from "@/components/produto/CaixaEntrega";
+import TrilhoProduto from "@/components/produto/TrilhoProduto";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/seo/JsonLd";
 import { getProdutoPorSlug } from "@/lib/catalogo";
 import { getCurrentCart } from "@/lib/cart-actions";
@@ -40,6 +41,9 @@ export default async function ProdutoPage({ params }: Props) {
   ]);
   if (!produto) notFound();
 
+  const selo = produto.badge === "mais-vendido" ? "Mais vendido" : produto.badge === "novo" ? "Novidade" : null;
+  const resumo = produto.description ? produto.description.split("\n")[0].slice(0, 220) : null;
+
   return (
     <>
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
@@ -52,42 +56,28 @@ export default async function ProdutoPage({ params }: Props) {
       />
       <main className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-6 pt-28 pb-24 sm:px-10 lg:px-16">
-          <Link href="/store" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-            <ChevronLeft className="size-4" /> Voltar à loja
-          </Link>
+          <TrilhoProduto categoria={produto.category} nome={produto.name} />
 
-          <div className="mt-6 grid gap-10 md:grid-cols-2 md:gap-14">
-            <div className="relative">
-              <GaleriaProduto imagens={produto.images} nome={produto.name} />
-              {produto.badge && <ProductBadge badge={produto.badge} />}
-            </div>
+          <div className="mt-6 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
+            <GaleriaProduto imagens={produto.images} nome={produto.name} selo={selo} />
 
-            <div className="flex flex-col">
-              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                {[produto.category, produto.brand !== "Sem marca" ? produto.brand : null].filter(Boolean).join(" · ")}
-              </p>
-              <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">{produto.name}</h1>
-
-              <div className="mt-6">
-                <CompraProduto product={produto} />
+            <div className="flex flex-col gap-6">
+              <div>
+                {produto.brand !== "Sem marca" && (
+                  <p className="text-sm font-bold text-blue-strong">{produto.brand}</p>
+                )}
+                <h1 className="mt-1 text-3xl leading-tight font-bold text-foreground sm:text-4xl">{produto.name}</h1>
+                {resumo && <p className="mt-3 text-[15px] leading-relaxed text-foreground/75">{resumo}</p>}
               </div>
 
-              {produto.description && (
-                <div className="mt-10 border-t border-border pt-6">
-                  <h2 className="text-sm font-semibold text-foreground">Descrição</h2>
-                  <p className="mt-2 text-[15px] leading-relaxed whitespace-pre-line text-foreground/80">
-                    {produto.description}
-                  </p>
-                </div>
-              )}
-
-              <p className="mt-8 text-xs text-muted-foreground">
-                Portes calculados no pagamento ·{" "}
-                <Link href="/devolucoes" className="underline underline-offset-2">
-                  14 dias para devolver
-                </Link>
-              </p>
+              <CompraProduto product={produto} />
+              <SelosConfianca />
             </div>
+          </div>
+
+          <div className="mt-16 grid gap-10 lg:grid-cols-[1fr_380px]">
+            <AbasProduto descricao={produto.description} detalhes={produto.detalhes} />
+            <CaixaEntrega />
           </div>
         </div>
       </main>
