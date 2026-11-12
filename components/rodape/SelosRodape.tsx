@@ -1,7 +1,5 @@
 import Image from "next/image";
 import {
-  CreditCard,
-  Landmark,
   Lock,
   ShieldCheck,
   Smartphone,
@@ -35,12 +33,19 @@ type Pagamento = {
   logo?: { src: string; largura: number };
 };
 const PAGAMENTOS: Pagamento[] = [
-  { nome: "Cartão", icone: CreditCard },
+  { nome: "Visa", logo: { src: "/images/pagamentos/visa.webp", largura: 40 } },
+  {
+    nome: "Mastercard",
+    logo: { src: "/images/pagamentos/mastercard.svg", largura: 39 },
+  },
   {
     nome: "MB WAY",
-    logo: { src: "/images/pagamentos/mbway.webp", largura: 58 },
+    logo: { src: "/images/pagamentos/mbway.webp", largura: 50 },
   },
-  { nome: "Multibanco", icone: Landmark },
+  {
+    nome: "Multibanco",
+    logo: { src: "/images/pagamentos/multibanco.webp", largura: 84 },
+  },
   { nome: "Apple Pay", icone: Wallet },
   { nome: "Google Pay", icone: Smartphone },
 ];
@@ -70,7 +75,7 @@ export default function SelosRodape() {
         {PAGAMENTOS.map(({ nome, icone: Icone, logo }) => (
           <li
             key={nome}
-            className="flex h-10 items-center gap-2 rounded-md bg-background px-4 text-sm font-extrabold text-foreground"
+            className="flex h-10 items-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-foreground"
           >
             {logo ? (
               <Image
@@ -79,6 +84,7 @@ export default function SelosRodape() {
                 width={logo.largura}
                 height={28}
                 className="h-6 w-auto"
+                unoptimized={logo.src.endsWith(".svg")}
               />
             ) : (
               <>
