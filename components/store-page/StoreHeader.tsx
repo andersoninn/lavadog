@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight, Home, PawPrint } from "lucide-react";
 import type { Promocao } from "@/lib/promocoes";
 
@@ -58,7 +57,7 @@ export default function StoreHeader({
         </div>
 
         <div className="relative flex h-36 items-center overflow-hidden rounded-md border border-border bg-primary-soft px-6">
-          <div className="relative z-10 max-w-[62%] sm:max-w-[55%]">
+          <div className="relative z-10 max-w-[65%]">
             <p className="text-lg font-bold text-foreground">Cuidado que</p>
             <p className="mt-0.5 inline-block rounded-md bg-primary px-2.5 py-0.5 text-xl font-extrabold text-foreground">
               faz a diferença
@@ -67,13 +66,6 @@ export default function StoreHeader({
               As melhores marcas para o seu pet, com preços especiais.
             </p>
           </div>
-          <Image
-            src="/images/dogCtaStore.png"
-            alt=""
-            width={220}
-            height={147}
-            className="absolute right-16 bottom-0 hidden h-36 w-auto object-contain sm:block"
-          />
           {promocao && (
             <div className="absolute top-1/2 right-3 z-10 flex size-24 -translate-y-1/2 rotate-6 flex-col items-center justify-center rounded-full bg-primary text-center shadow-md">
               <span className="text-[11px] font-bold text-foreground">
