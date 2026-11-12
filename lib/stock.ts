@@ -14,7 +14,7 @@ import type Stripe from "stripe";
  */
 
 /** Chaves de metadata que são de controlo, não opções de variante. */
-export const CHAVES_DE_CONTROLO = ["esgotado", "stock"];
+export const CHAVES_DE_CONTROLO = ["esgotado", "stock", "peso"];
 
 export function lerStock(meta: Stripe.Metadata | null | undefined): number | null {
   const bruto = meta?.stock?.trim();

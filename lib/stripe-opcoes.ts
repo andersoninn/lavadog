@@ -9,7 +9,7 @@ import { CHAVES_DE_CONTROLO } from "@/lib/stock";
 
 /** Opções escolhidas de um preço (variante): metadata do preço ou o apelido. */
 export function opcoesDoPreco(preco: Stripe.Price): { name: string; value: string }[] {
-  // "esgotado" e "stock" são de controlo, não opções.
+  // "esgotado", "stock" e "peso" são de controlo, não opções.
   const meta = Object.entries(preco.metadata ?? {}).filter(
     ([k, v]) => !CHAVES_DE_CONTROLO.includes(k) && v && v.trim(),
   );
