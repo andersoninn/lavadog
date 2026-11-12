@@ -16,7 +16,7 @@ export default function CartaoAnimal({ animal }: { animal: Animal }) {
         <span className="absolute -bottom-16 left-1/3 size-40 rounded-full bg-background/10" />
         <span className="absolute -top-10 -right-6 size-28 rounded-full bg-background/10" />
       </span>
-      <span className="absolute bottom-0 left-4 h-[125%] w-[45%] lg:left-8">
+      <span className="absolute bottom-0 left-4 h-[125%] w-[40%] lg:left-8">
         {animal.imagem ? (
           <Image src={animal.imagem} alt="" fill sizes="(min-width: 640px) 15vw, 45vw" className="object-contain object-bottom" />
         ) : (
