@@ -64,6 +64,7 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - Página de produto `/produto/[slug]` (slug do nome, ou metadata `slug`), com galeria, opções, descrição (do Stripe) e JSON-LD Product.
 - Depoimentos: avaliações reais do Google Business (Places API New, `lib/google-avaliacoes.ts`, cache 24 h). Sem chave, a secção não aparece. O filtro de avaliação da loja foi removido (não havia dados).
 - Páginas legais: `/termos`, `/privacidade`, `/devolucoes`, `/envios`; identificação do vendedor em `lib/empresa.ts`; rodapé com Livro de Reclamações.
+- Loja `/store` no estilo do wireframe (faixa de vantagens, painel "Filtrar resultados", banner com o cupão ativo, cartões com desconto, favorito, €/kg e botão amarelo). **`/store?demo=1`** mostra 30 produtos fictícios (`lib/demo-catalogo.ts`) só para ver o visual, sem tocar no Stripe; as páginas de produto abertas daí também ficam em demo.
 - Só português (decisão da cliente). Sem newsletter.
 - Alojamento: a Vercel Hobby não permite uso comercial e o Pro é custo. Preparado para **Cloudflare Workers** (grátis, uso comercial permitido) com `@opennextjs/cloudflare`: `wrangler.jsonc`, `open-next.config.ts` (cache em KV), `npm run deploy`. Next atualizado para 16.4.5 (exigido pelo adaptador e patch de segurança de nov/2026).
 - Variáveis: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_SHIPPING_RATES` (opcional), `RESEND_API_KEY`, `EMAIL_REMETENTE` (opcional), `ADMIN_PASSWORD`, `GOOGLE_PLACES_API_KEY`, `GOOGLE_PLACE_ID`.

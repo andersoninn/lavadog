@@ -21,9 +21,9 @@ export default function PriceFilter({
         className="w-full accent-primary"
         aria-label="Preço máximo"
       />
-      <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="mt-2 flex items-center justify-between text-sm text-foreground">
         <span>{formatPrice(priceBounds.min)}</span>
-        <span className="font-semibold text-foreground">até {formatPrice(value)}</span>
+        <span className="font-semibold">até {formatPrice(value)}</span>
       </div>
     </div>
   );

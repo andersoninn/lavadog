@@ -1,40 +1,30 @@
+import ListaCheckbox from "@/components/store-page/ListaCheckbox";
 import type { Product } from "@/lib/store-data";
-import { cn } from "@/lib/utils";
+
+type Props = {
+  categories: string[];
+  products: Product[];
+  selected: string[];
+  onToggle: (category: string) => void;
+};
 
 export default function CategoryFilter({
   categories,
   products,
   selected,
   onToggle,
-}: {
-  categories: string[];
-  products: Product[];
-  selected: string[];
-  onToggle: (category: string) => void;
-}) {
+}: Props) {
+  const opcoes = categories.map((valor) => ({
+    valor,
+    total: products.filter((p) => p.category === valor).length,
+  }));
   return (
-    <ul className="space-y-2">
-      {categories.map((category) => {
-        const count = products.filter((product) => product.category === category).length;
-        const active = selected.includes(category);
-
-        return (
-          <li key={category}>
-            <button
-              type="button"
-              onClick={() => onToggle(category)}
-              aria-pressed={active}
-              className={cn(
-                "flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
-                active ? "font-semibold text-foreground" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <span>{category}</span>
-              <span className="text-xs text-muted-foreground">({count})</span>
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+    <ListaCheckbox
+      opcoes={opcoes}
+      selecionadas={selected}
+      onAlternar={onToggle}
+      visiveis={6}
+      verMais="Ver mais categorias"
+    />
   );
 }

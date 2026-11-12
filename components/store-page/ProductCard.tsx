@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Package } from "lucide-react";
 import ProductBadge from "@/components/store-page/ProductBadge";
 import ProductPrice from "@/components/store-page/ProductPrice";
 import AddToCartButton from "@/components/store-page/AddToCartButton";
+import BotaoFavorito from "@/components/store-page/BotaoFavorito";
+import { formatPrice, type Product } from "@/lib/store-data";
+import { precoPorKg } from "@/lib/preco-kg";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/lib/store-data";
 
+/** Cartão de produto da loja (grelha como no wireframe, ou lista). */
 export default function ProductCard({
   product,
   layout = "grid",
@@ -14,25 +17,24 @@ export default function ProductCard({
   product: Product;
   layout?: "grid" | "list";
 }) {
-  const rating = product.reviewsCount > 0 && (
-    <div className="mt-1.5 flex items-center gap-1">
-      <div className="flex gap-0.5">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn("size-3", i < product.rating ? "fill-primary text-primary" : "text-border")}
-          />
-        ))}
-      </div>
-      <span className="text-[11px] text-muted-foreground">({product.reviewsCount})</span>
-    </div>
-  );
+  const href = `/produto/${product.slug}`;
+  const opcao = product.variants[0]?.selectedOptions ?? [];
+  const subtitulo = [product.category, opcao[0]?.value]
+    .filter(Boolean)
+    .join(" · ");
+  const porKg = precoPorKg(product.price, opcao);
+  const desconto = product.oldPrice
+    ? Math.round((1 - product.price / product.oldPrice) * 100)
+    : 0;
+  const lista = layout === "list";
 
-  const image = (
-    <div
+  const imagem = (
+    <Link
+      href={href}
+      aria-label={product.name}
       className={cn(
-        "relative shrink-0 overflow-hidden rounded-xl bg-muted",
-        layout === "list" ? "size-20 sm:size-28" : "aspect-square",
+        "relative block shrink-0 overflow-hidden rounded-md bg-white",
+        lista ? "size-24 sm:size-28" : "aspect-square",
       )}
     >
       {product.image ? (
@@ -40,76 +42,71 @@ export default function ProductCard({
           src={product.image}
           alt={product.name}
           fill
-          sizes={layout === "list" ? "112px" : "(min-width: 1024px) 240px, 45vw"}
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          sizes={lista ? "112px" : "(min-width: 1024px) 240px, 45vw"}
+          className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
         />
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-primary-soft text-center text-[10px] font-medium text-muted-foreground">
-          Sem imagem
-        </div>
+        <span className="absolute inset-0 flex items-center justify-center bg-primary-soft/60">
+          <Package className="size-10 text-primary-hover" strokeWidth={1.25} />
+        </span>
       )}
-
-      {product.badge && <ProductBadge badge={product.badge} />}
-
+      {desconto > 0 ? (
+        <span className="absolute top-2.5 left-2.5 rounded-full bg-primary px-2.5 py-0.5 text-sm font-bold text-foreground">
+          -{desconto}%
+        </span>
+      ) : (
+        product.badge && <ProductBadge badge={product.badge} />
+      )}
       {!product.inStock && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/60 backdrop-blur-[1px]">
-          <span className="rounded-full bg-foreground px-2 py-1 text-[9px] font-bold tracking-wide text-background uppercase">
+        <span className="absolute inset-0 flex items-center justify-center bg-background/60">
+          <span className="rounded-full bg-foreground px-2.5 py-1 text-[10px] font-bold text-background uppercase">
             Esgotado
           </span>
-        </div>
+        </span>
       )}
-    </div>
-  );
-
-  const href = `/produto/${product.slug}`;
-  const imageLink = (
-    <Link href={href} aria-label={product.name} className="shrink-0">
-      {image}
     </Link>
   );
 
-  if (layout === "list") {
-    return (
-      <article className="group flex items-center gap-3 rounded-2xl bg-card p-3 transition-all duration-300 hover:shadow-lg sm:gap-4">
-        {imageLink}
-
-        <div className="min-w-0 flex-1">
-          <span className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-            {product.category}
+  const textos = (
+    <>
+      <h3 className="line-clamp-2 font-bold leading-snug text-foreground">
+        <Link href={href} className="hover:underline">
+          {product.name}
+        </Link>
+      </h3>
+      <p className="mt-0.5 text-sm text-muted-foreground">{subtitulo}</p>
+      <div className="mt-2 flex flex-wrap items-end justify-between gap-x-2">
+        <ProductPrice price={product.price} oldPrice={product.oldPrice} />
+        {porKg && (
+          <span className="pb-1 text-xs whitespace-nowrap text-muted-foreground">
+            {formatPrice(porKg)} / kg
           </span>
-          <h3 className="mt-0.5 line-clamp-1 text-sm font-semibold text-foreground sm:line-clamp-2">
-            <Link href={href} className="hover:underline">
-              {product.name}
-            </Link>
-          </h3>
-          {rating}
-          <ProductPrice price={product.price} oldPrice={product.oldPrice} />
-        </div>
+        )}
+      </div>
+    </>
+  );
 
-        <AddToCartButton product={product} iconOnlyBelowSm />
+  if (lista) {
+    return (
+      <article className="group flex items-center gap-4 rounded-md border border-border bg-card p-3 transition-shadow hover:shadow-md">
+        {imagem}
+        <div className="min-w-0 flex-1">{textos}</div>
+        <div className="hidden w-48 shrink-0 sm:block">
+          <AddToCartButton product={product} destaque />
+        </div>
       </article>
     );
   }
 
   return (
-    <article className="group flex flex-col rounded-2xl bg-card p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-      {imageLink}
-
+    <article className="group relative flex flex-col rounded-md border border-border bg-card p-3 transition-shadow hover:shadow-md">
+      <BotaoFavorito id={product.id} nome={product.name} />
+      {imagem}
       <div className="mt-3 flex flex-1 flex-col">
-        <span className="text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
-          {product.category}
-        </span>
-        <h3 className="mt-1 line-clamp-2 text-sm font-semibold text-foreground">
-          <Link href={href} className="hover:underline">
-            {product.name}
-          </Link>
-        </h3>
-
-        {rating}
-
-        <ProductPrice price={product.price} oldPrice={product.oldPrice} />
-
-        <AddToCartButton product={product} className="mt-3" />
+        {textos}
+        <div className="mt-auto pt-3">
+          <AddToCartButton product={product} destaque />
+        </div>
       </div>
     </article>
   );

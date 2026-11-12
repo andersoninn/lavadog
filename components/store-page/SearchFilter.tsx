@@ -14,8 +14,8 @@ export default function SearchFilter({
         type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Buscar produtos..."
-        className="h-10 w-full rounded-full border border-border bg-background pr-4 pl-9 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+        placeholder="Procurar produtos, marcas…"
+        className="h-10 w-full rounded-md border border-border bg-background pr-4 pl-9 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
       />
     </div>
   );

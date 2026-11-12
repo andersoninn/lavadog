@@ -8,6 +8,7 @@ import StoreFilters from "@/components/store-page/StoreFilters";
 import ProductGrid from "@/components/store-page/ProductGrid";
 import StorePagination from "@/components/store-page/StorePagination";
 import type { SortOption, StoreCatalog } from "@/lib/store-data";
+import type { Promocao } from "@/lib/promocoes";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -17,8 +18,10 @@ export default function StorePageContent({
   initialSpecies,
   initialPromoOnly,
   initialSort,
+  promocao = null,
 }: {
   catalog: StoreCatalog;
+  promocao?: Promocao | null;
   initialCategory?: string;
   initialSpecies?: string;
   initialPromoOnly?: boolean;
@@ -43,14 +46,26 @@ export default function StorePageContent({
 
   const filteredProducts = useMemo(() => {
     const filtered = products.filter((product) => {
-      if (search && !product.name.toLowerCase().includes(search.toLowerCase())) return false;
-      if (selectedCategories.length > 0 && !selectedCategories.includes(product.category)) return false;
+      const termo = search.trim().toLowerCase();
+      if (
+        termo &&
+        !`${product.name} ${product.brand} ${product.category}`
+          .toLowerCase()
+          .includes(termo)
+      )
+        return false;
+      if (
+        selectedCategories.length > 0 &&
+        !selectedCategories.includes(product.category)
+      )
+        return false;
       if (
         selectedSpecies.length > 0 &&
         !selectedSpecies.some((s) => product.species.includes(s))
       )
         return false;
-      if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand)) return false;
+      if (selectedBrands.length > 0 && !selectedBrands.includes(product.brand))
+        return false;
       if (product.price > maxPrice) return false;
       if (inStockOnly && !product.inStock) return false;
       if (promoOnly && !product.oldPrice) return false;
@@ -63,15 +78,22 @@ export default function StorePageContent({
       case "preco-desc":
         return [...filtered].sort((a, b) => b.price - a.price);
       case "nome":
-        return [...filtered].sort((a, b) => a.name.localeCompare(b.name, "pt-PT"));
+        return [...filtered].sort((a, b) =>
+          a.name.localeCompare(b.name, "pt-PT"),
+        );
       case "recentes":
         return [...filtered].sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
       case "mais-vendidos":
-        // O Stripe não sabe quais são os mais vendidos: fica a ordem em que
-        // os produtos chegam (os mais recentes primeiro).
-        return filtered;
+        // O Stripe não conta vendas: primeiro os marcados com destaque
+        // "mais vendido", depois os restantes na ordem em que chegam.
+        return [...filtered].sort(
+          (a, b) =>
+            Number(b.badge === "mais-vendido") -
+            Number(a.badge === "mais-vendido"),
+        );
       default:
         return filtered;
     }
@@ -89,31 +111,53 @@ export default function StorePageContent({
 
   useEffect(() => {
     setPage(1);
-  }, [search, selectedCategories, selectedSpecies, selectedBrands, maxPrice, inStockOnly, promoOnly, sort]);
+  }, [
+    search,
+    selectedCategories,
+    selectedSpecies,
+    selectedBrands,
+    maxPrice,
+    inStockOnly,
+    promoOnly,
+    sort,
+  ]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / ITEMS_PER_PAGE),
+  );
   const safePage = Math.min(page, totalPages);
   const paginatedProducts = filteredProducts.slice(
     (safePage - 1) * ITEMS_PER_PAGE,
     safePage * ITEMS_PER_PAGE,
   );
-  const showingFrom = filteredProducts.length === 0 ? 0 : (safePage - 1) * ITEMS_PER_PAGE + 1;
-  const showingTo = Math.min(safePage * ITEMS_PER_PAGE, filteredProducts.length);
+  const showingFrom =
+    filteredProducts.length === 0 ? 0 : (safePage - 1) * ITEMS_PER_PAGE + 1;
+  const showingTo = Math.min(
+    safePage * ITEMS_PER_PAGE,
+    filteredProducts.length,
+  );
 
   function toggleCategory(category: string) {
     setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category],
     );
   }
 
   function toggleSpecies(speciesLabel: string) {
     setSelectedSpecies((prev) =>
-      prev.includes(speciesLabel) ? prev.filter((s) => s !== speciesLabel) : [...prev, speciesLabel],
+      prev.includes(speciesLabel)
+        ? prev.filter((s) => s !== speciesLabel)
+        : [...prev, speciesLabel],
     );
   }
 
   function toggleBrand(brand: string) {
-    setSelectedBrands((prev) => (prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]));
+    setSelectedBrands((prev) =>
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand],
+    );
   }
 
   function clearFilters() {
@@ -149,39 +193,54 @@ export default function StorePageContent({
     onClear: clearFilters,
   };
 
+  const categoriaUnica =
+    selectedCategories.length === 1 ? selectedCategories[0] : null;
+
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16">
-      <StoreHeader />
-
-      <StoreToolbar
-        showingFrom={showingFrom}
-        showingTo={showingTo}
-        total={filteredProducts.length}
-        search={search}
-        onSearchChange={setSearch}
-        sort={sort}
-        onSortChange={setSort}
-        view={view}
-        onViewChange={setView}
-        onOpenFilters={() => setMobileFiltersOpen(true)}
-      />
-
-      <div className="mt-6 flex gap-8 pb-24 lg:gap-10">
+    <div className="mx-auto w-full max-w-7xl px-6 pt-6 sm:px-10 lg:px-16">
+      <div className="flex gap-8 pb-24 lg:gap-10">
         <aside className="hidden w-[280px] shrink-0 lg:block">
           <div className="sticky top-28">
             <StoreFilters {...filtersProps} />
           </div>
         </aside>
 
-        <div className="min-w-0 flex-1">
-          <ProductGrid products={paginatedProducts} view={view} />
-          <StorePagination currentPage={safePage} totalPages={totalPages} onPageChange={setPage} />
+        <div className="flex min-w-0 flex-1 flex-col gap-6">
+          <StoreHeader
+            titulo={categoriaUnica ?? "Loja"}
+            descricao={
+              categoriaUnica
+                ? `Os melhores produtos de ${categoriaUnica.toLowerCase()} para o seu pet, com entrega em todo Portugal.`
+                : "Rações, snacks, brinquedos, higiene e acessórios para cães, gatos e outros animais."
+            }
+            categoria={categoriaUnica}
+            promocao={promocao}
+          />
+          <StoreToolbar
+            showingFrom={showingFrom}
+            showingTo={showingTo}
+            total={filteredProducts.length}
+            search={search}
+            onSearchChange={setSearch}
+            sort={sort}
+            onSortChange={setSort}
+            view={view}
+            onViewChange={setView}
+            onOpenFilters={() => setMobileFiltersOpen(true)}
+          />
+          <div>
+            <ProductGrid products={paginatedProducts} view={view} />
+            <StorePagination
+              currentPage={safePage}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
+          </div>
         </div>
       </div>
 
       <Sheet open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-        <SheetContent side="left" className="overflow-y-auto">
-          <h2 className="text-lg font-bold text-foreground">Filtros</h2>
+        <SheetContent side="left" className="overflow-y-auto p-4">
           <StoreFilters {...filtersProps} />
         </SheetContent>
       </Sheet>

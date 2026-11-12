@@ -16,7 +16,15 @@ import { useVariante } from "@/lib/use-variante";
 
 type AddToCartProduct = Pick<
   Product,
-  "name" | "image" | "price" | "oldPrice" | "inStock" | "variantId" | "hasVariants" | "variants" | "options"
+  | "name"
+  | "image"
+  | "price"
+  | "oldPrice"
+  | "inStock"
+  | "variantId"
+  | "hasVariants"
+  | "variants"
+  | "options"
 >;
 
 const TRIGGER_CLASSES = {
@@ -33,10 +41,13 @@ export default function AddToCartButton({
   product,
   className,
   iconOnlyBelowSm = false,
+  destaque = false,
 }: {
   product: AddToCartProduct;
   className?: string;
   iconOnlyBelowSm?: boolean;
+  /** Botão amarelo cheio, com texto sempre visível (cartões da loja). */
+  destaque?: boolean;
 }) {
   const [isPending, startTransition] = useTransition();
   const [justAdded, setJustAdded] = useState(false);
@@ -59,7 +70,10 @@ export default function AddToCartButton({
     addVariant(product.variantId, 1);
   }
 
-  const disabled = !product.inStock || (!product.hasVariants && !product.variantId) || isPending;
+  const disabled =
+    !product.inStock ||
+    (!product.hasVariants && !product.variantId) ||
+    isPending;
 
   const iconSize = iconOnlyBelowSm ? "size-4 sm:size-3.5" : "size-3.5";
 
@@ -69,25 +83,41 @@ export default function AddToCartButton({
         type="button"
         onClick={handleClick}
         disabled={disabled}
-        className={cn(
-          iconOnlyBelowSm ? TRIGGER_CLASSES.iconOnly : TRIGGER_CLASSES.full,
-          "text-foreground transition-colors duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-40 disabled:group-hover:border-border disabled:group-hover:bg-transparent disabled:group-hover:text-foreground",
-          className,
-        )}
+        className={
+          destaque
+            ? cn(
+                "flex h-10 w-full items-center justify-center gap-2 rounded-md bg-primary text-sm font-bold text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40",
+                className,
+              )
+            : cn(
+                iconOnlyBelowSm
+                  ? TRIGGER_CLASSES.iconOnly
+                  : TRIGGER_CLASSES.full,
+                "text-foreground transition-colors duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-40 disabled:group-hover:border-border disabled:group-hover:bg-transparent disabled:group-hover:text-foreground",
+                className,
+              )
+        }
       >
         {justAdded ? (
           <Check className={cn("shrink-0", iconSize)} />
         ) : (
           <ShoppingCart className={cn("shrink-0", iconSize)} />
         )}
-        <span className="hidden sm:inline">
-          {justAdded
-            ? "Adicionado"
-            : isPending
-              ? "Adicionando..."
-              : product.hasVariants
-                ? "Escolher Opção"
-                : "Adicionar ao Carrinho"}
+        <span className={destaque ? "" : "hidden sm:inline"}>
+          {justAdded ? (
+            "Adicionado"
+          ) : isPending ? (
+            "Adicionando..."
+          ) : product.hasVariants && !destaque ? (
+            "Escolher Opção"
+          ) : destaque ? (
+            <>
+              <span className="sm:hidden">Adicionar</span>
+              <span className="hidden sm:inline">Adicionar ao carrinho</span>
+            </>
+          ) : (
+            "Adicionar ao Carrinho"
+          )}
         </span>
       </button>
 
@@ -120,9 +150,20 @@ function VariantPickerDialog({
   onConfirm: (variantId: string, quantity: number) => void;
   isPending: boolean;
 }) {
-  const { selected, escolher, quantity, setQuantity, matchedVariant, canAdd, varianteCom } = useVariante(product);
+  const {
+    selected,
+    escolher,
+    quantity,
+    setQuantity,
+    matchedVariant,
+    canAdd,
+    varianteCom,
+  } = useVariante(product);
 
-  const showOldPrice = product.oldPrice && matchedVariant && product.oldPrice > matchedVariant.price;
+  const showOldPrice =
+    product.oldPrice &&
+    matchedVariant &&
+    product.oldPrice > matchedVariant.price;
 
   return (
     <Dialog
@@ -140,7 +181,12 @@ function VariantPickerDialog({
         <div className="flex items-start gap-4">
           <div className="relative size-24 shrink-0 overflow-hidden rounded-xl bg-muted">
             {product.image ? (
-              <Image src={product.image} alt={product.name} fill className="object-cover" />
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-cover"
+              />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-primary-soft text-[10px] text-muted-foreground">
                 Sem imagem
@@ -149,7 +195,9 @@ function VariantPickerDialog({
           </div>
 
           <div className="min-w-0 flex-1 pt-1">
-            <h3 className="line-clamp-2 text-base font-bold text-foreground">{product.name}</h3>
+            <h3 className="line-clamp-2 text-base font-bold text-foreground">
+              {product.name}
+            </h3>
             <p className="mt-1 flex items-baseline gap-2">
               {showOldPrice && (
                 <span className="text-sm text-muted-foreground line-through">
@@ -157,7 +205,9 @@ function VariantPickerDialog({
                 </span>
               )}
               <span className="text-xl font-bold text-foreground">
-                {matchedVariant ? formatPrice(matchedVariant.price) : formatPrice(product.price)}
+                {matchedVariant
+                  ? formatPrice(matchedVariant.price)
+                  : formatPrice(product.price)}
               </span>
             </p>
           </div>
@@ -168,7 +218,13 @@ function VariantPickerDialog({
             const singleValue = option.values.length <= 1;
 
             return (
-              <div key={option.name} className={cn("flex", singleValue ? "items-center gap-2" : "flex-col")}>
+              <div
+                key={option.name}
+                className={cn(
+                  "flex",
+                  singleValue ? "items-center gap-2" : "flex-col",
+                )}
+              >
                 <p
                   className={cn(
                     "font-semibold text-foreground",
@@ -179,7 +235,9 @@ function VariantPickerDialog({
                 </p>
 
                 {singleValue ? (
-                  <span className="text-sm text-muted-foreground">{option.values[0]}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {option.values[0]}
+                  </span>
                 ) : (
                   <div className="flex flex-wrap gap-2">
                     {option.values.map((value) => {
@@ -199,7 +257,10 @@ function VariantPickerDialog({
                               ? "border-foreground bg-foreground text-background"
                               : "border-border text-foreground hover:border-foreground",
                             !wouldMatch && "pointer-events-none opacity-30",
-                            wouldMatch && !isAvailable && !isSelected && "text-muted-foreground line-through",
+                            wouldMatch &&
+                              !isAvailable &&
+                              !isSelected &&
+                              "text-muted-foreground line-through",
                           )}
                         >
                           {value}
@@ -213,7 +274,9 @@ function VariantPickerDialog({
           })}
 
           {!canAdd && matchedVariant && (
-            <p className="text-xs text-red-600">Essa combinação está esgotada.</p>
+            <p className="text-xs text-red-600">
+              Essa combinação está esgotada.
+            </p>
           )}
         </div>
 
@@ -227,7 +290,9 @@ function VariantPickerDialog({
             >
               <Minus className="size-3.5" />
             </button>
-            <span className="w-6 text-center text-sm font-semibold text-foreground">{quantity}</span>
+            <span className="w-6 text-center text-sm font-semibold text-foreground">
+              {quantity}
+            </span>
             <button
               type="button"
               onClick={() => setQuantity((q) => q + 1)}
@@ -241,7 +306,9 @@ function VariantPickerDialog({
           <button
             type="button"
             disabled={!canAdd || isPending}
-            onClick={() => matchedVariant && onConfirm(matchedVariant.id, quantity)}
+            onClick={() =>
+              matchedVariant && onConfirm(matchedVariant.id, quantity)
+            }
             className="flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-primary text-sm font-bold text-[#3A2C22] transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40"
           >
             <ShoppingCart className="size-4" />

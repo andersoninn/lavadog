@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import FilterCard from "@/components/store-page/FilterCard";
 import SearchFilter from "@/components/store-page/SearchFilter";
 import CategoryFilter from "@/components/store-page/CategoryFilter";
@@ -55,13 +54,35 @@ export default function StoreFilters({
   onClear,
 }: StoreFiltersProps) {
   return (
-    <div className="space-y-4">
-      <FilterCard title="Busca">
+    <div className="rounded-md border border-border bg-card p-5">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-bold text-foreground">
+          Filtrar resultados
+        </h2>
+        <button
+          type="button"
+          onClick={onClear}
+          className="text-xs font-semibold text-blue-strong underline underline-offset-2"
+        >
+          Limpar
+        </button>
+      </div>
+
+      <FilterCard title="Pesquisar">
         <SearchFilter value={search} onChange={onSearchChange} />
       </FilterCard>
 
+      <FilterCard title="Marca">
+        <BrandFilter
+          brands={brands}
+          products={products}
+          selected={selectedBrands}
+          onToggle={onToggleBrand}
+        />
+      </FilterCard>
+
       {species.length > 0 && (
-        <FilterCard title="Espécie">
+        <FilterCard title="Animal">
           <SpeciesFilter
             species={species}
             products={products}
@@ -71,7 +92,7 @@ export default function StoreFilters({
         </FilterCard>
       )}
 
-      <FilterCard title="Categorias">
+      <FilterCard title="Categoria">
         <CategoryFilter
           categories={categories}
           products={products}
@@ -80,12 +101,12 @@ export default function StoreFilters({
         />
       </FilterCard>
 
-      <FilterCard title="Faixa de Preço">
-        <PriceFilter priceBounds={priceBounds} value={maxPrice} onChange={onMaxPriceChange} />
-      </FilterCard>
-
-      <FilterCard title="Marcas">
-        <BrandFilter brands={brands} selected={selectedBrands} onToggle={onToggleBrand} />
+      <FilterCard title="Preço">
+        <PriceFilter
+          priceBounds={priceBounds}
+          value={maxPrice}
+          onChange={onMaxPriceChange}
+        />
       </FilterCard>
 
       <FilterCard title="Disponibilidade">
@@ -96,10 +117,6 @@ export default function StoreFilters({
           onPromoChange={onPromoChange}
         />
       </FilterCard>
-
-      <Button variant="outline" className="w-full" onClick={onClear}>
-        Limpar Filtros
-      </Button>
     </div>
   );
 }

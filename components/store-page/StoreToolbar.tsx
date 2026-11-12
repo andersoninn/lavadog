@@ -16,65 +16,69 @@ export type StoreToolbarProps = {
   onOpenFilters: () => void;
 };
 
-export default function StoreToolbar({
-  showingFrom,
-  showingTo,
-  total,
-  search,
-  onSearchChange,
-  sort,
-  onSortChange,
-  view,
-  onViewChange,
-  onOpenFilters,
-}: StoreToolbarProps) {
+/** "Mostrando 1–12 de 30 produtos" · Ordenar por · grelha/lista (no telemóvel: Filtros + pesquisa). */
+export default function StoreToolbar(props: StoreToolbarProps) {
+  const {
+    showingFrom,
+    showingTo,
+    total,
+    sort,
+    onSortChange,
+    view,
+    onViewChange,
+  } = props;
+  const vista = (ativa: boolean) =>
+    cn(
+      "flex size-10 items-center justify-center rounded-md border transition-colors",
+      ativa
+        ? "border-primary bg-primary text-foreground"
+        : "border-border bg-card text-muted-foreground hover:text-foreground",
+    );
+
   return (
-    <div className="flex flex-col gap-3 border-b border-border pb-5 md:flex-row md:items-center md:justify-between md:gap-6">
+    <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3 lg:hidden">
         <button
           type="button"
-          onClick={onOpenFilters}
-          className="flex shrink-0 items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground"
+          onClick={props.onOpenFilters}
+          className="flex h-10 shrink-0 items-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-semibold text-foreground"
         >
-          <SlidersHorizontal className="size-4" />
-          Filtros
+          <SlidersHorizontal className="size-4" /> Filtros
         </button>
-        <div className="flex-1 md:hidden">
-          <SearchFilter value={search} onChange={onSearchChange} />
+        <div className="flex-1">
+          <SearchFilter value={props.search} onChange={props.onSearchChange} />
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground">
-        Mostrando {showingFrom}–{showingTo} de {total} produtos
-      </p>
-
-      <div className="hidden max-w-sm flex-1 md:block">
-        <SearchFilter value={search} onChange={onSearchChange} />
-      </div>
-
-      <div className="flex items-center gap-2">
-        <select
-          value={sort}
-          onChange={(e) => onSortChange(e.target.value as SortOption)}
-          className="h-10 rounded-full border border-border bg-background px-4 text-sm text-foreground outline-none focus:border-primary"
-        >
-          {sortOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-
-        <div className="flex items-center gap-1 rounded-full border border-border p-1">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          Mostrando {showingFrom}–{showingTo} de {total} produtos
+        </p>
+        <div className="flex items-center gap-2">
+          <label
+            className="hidden text-sm text-foreground sm:block"
+            htmlFor="ordenar"
+          >
+            Ordenar por:
+          </label>
+          <select
+            id="ordenar"
+            value={sort}
+            onChange={(e) => onSortChange(e.target.value as SortOption)}
+            className="h-10 rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none focus:border-primary"
+          >
+            {sortOptions.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
           <button
             type="button"
-            aria-label="Ver em grade"
+            aria-label="Ver em grelha"
             aria-pressed={view === "grid"}
             onClick={() => onViewChange("grid")}
-            className={cn(
-              "flex size-8 items-center justify-center rounded-full transition-colors",
-              view === "grid" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
-            )}
+            className={vista(view === "grid")}
           >
             <LayoutGrid className="size-4" />
           </button>
@@ -83,10 +87,7 @@ export default function StoreToolbar({
             aria-label="Ver em lista"
             aria-pressed={view === "list"}
             onClick={() => onViewChange("list")}
-            className={cn(
-              "flex size-8 items-center justify-center rounded-full transition-colors",
-              view === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
-            )}
+            className={vista(view === "list")}
           >
             <List className="size-4" />
           </button>

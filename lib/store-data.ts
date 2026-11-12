@@ -153,7 +153,8 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
       selectedOptions: opcoesDoPreco(pr),
     }));
 
-    const price = Math.min(...variants.map((v) => v.price));
+    // Preço mostrado = o da variante principal (a primeira: o preço predefinido no Stripe).
+    const price = variants[0]?.price ?? 0;
     const compareAt = Number(String(meta.preco_antigo ?? "").replace(",", "."));
     const oldPrice = compareAt && compareAt > price ? compareAt : undefined;
 
@@ -259,9 +260,9 @@ export type SortOption =
 export const sortOptions: { value: SortOption; label: string }[] = [
   { value: "recentes", label: "Mais recentes" },
   { value: "mais-vendidos", label: "Mais vendidos" },
-  { value: "preco-asc", label: "Preço ↑" },
-  { value: "preco-desc", label: "Preço ↓" },
-  { value: "nome", label: "Nome" },
+  { value: "preco-asc", label: "Menor preço" },
+  { value: "preco-desc", label: "Maior preço" },
+  { value: "nome", label: "Nome (A–Z)" },
 ];
 
 export function formatPrice(value: number) {

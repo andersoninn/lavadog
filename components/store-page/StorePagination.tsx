@@ -38,7 +38,10 @@ export default function StorePagination({
   const pages = getPageList(currentPage, totalPages);
 
   return (
-    <nav aria-label="Paginação" className="mt-10 flex items-center justify-center gap-2">
+    <nav
+      aria-label="Paginação"
+      className="mt-10 flex items-center justify-center gap-2"
+    >
       <button
         type="button"
         aria-label="Página anterior"
@@ -51,7 +54,10 @@ export default function StorePagination({
 
       {pages.map((page, i) =>
         page === "ellipsis" ? (
-          <span key={`ellipsis-${i}`} className="px-1 text-sm text-muted-foreground">
+          <span
+            key={`ellipsis-${i}`}
+            className="px-1 text-sm text-muted-foreground"
+          >
             …
           </span>
         ) : (

@@ -14,9 +14,11 @@ import { conteudoAbas } from "@/components/produto/ConteudoAbas";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/seo/JsonLd";
 import { getCatalogo, getProdutoPorSlug } from "@/lib/catalogo";
 import { getAvaliacoesGoogle } from "@/lib/google-avaliacoes";
+import { catalogoDemo } from "@/lib/demo-catalogo";
+import { mapStripeProducts } from "@/lib/store-data";
 import { getCurrentCart } from "@/lib/cart-actions";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ demo?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -37,15 +39,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProdutoPage({ params }: Props) {
+export default async function ProdutoPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const demo = (await searchParams).demo === "1"; // produtos fictícios de /store?demo=1
   const [catalogo, cart, avaliacoes] = await Promise.all([
-    getCatalogo().catch(() => null),
+    demo ? mapStripeProducts(catalogoDemo()) : getCatalogo().catch(() => null),
     getCurrentCart().catch(() => null),
     getAvaliacoesGoogle(),
   ]);
   const produto = catalogo?.products.find((p) => p.slug === slug);
   if (!catalogo || !produto) notFound();
+  if (demo) for (const p of catalogo.products) if (p !== produto) p.slug = `${p.slug}?demo=1`;
 
   const selo = produto.badge === "mais-vendido" ? "Mais vendido" : produto.badge === "novo" ? "Novidade" : null;
   const resumo = produto.description ? produto.description.split("\n")[0].slice(0, 200) : null;
