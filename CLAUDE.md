@@ -79,7 +79,7 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - [x] Permissões novas na chave restrita (Customers, PaymentIntents, Products, Prices: Write) — 7/nov
 - [x] Webhook no painel do Stripe ("Encomendas site", 2 eventos) + `STRIPE_WEBHOOK_SECRET` na Vercel — 12/nov
 - [ ] Resend: conta, domínio lavadogstore.pt verificado (DNS na dominios.pt) + `RESEND_API_KEY`
-- [ ] `ADMIN_PASSWORD` para o painel de encomendas
+- [x] `ADMIN_PASSWORD` para o painel de encomendas — 12/nov
 - [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
 - [ ] Migrar alojamento da Vercel para a Cloudflare (conta, Workers Builds ligado ao GitHub, variáveis, DNS)
 - [ ] Confirmar com a Carol os prazos de entrega por zona (`PRAZOS_ENTREGA` em `lib/empresa.ts`: continente 2–4, ilhas 4–7 dias úteis) e se há levantamento na loja (caixa da página de produto)
