@@ -3,7 +3,9 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import SlideHero2 from "./SlideHero2";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import BannerHero2 from "./BannerHero2";
 import { SLIDES_HERO } from "./slides-hero";
 
 const INTERVALO = 6000;
@@ -31,10 +33,10 @@ export default function Hero2() {
       aria-label="Destaques da loja"
       onMouseEnter={() => setPausado(true)}
       onMouseLeave={() => setPausado(false)}
-      className="relative h-[560px] w-full overflow-hidden sm:h-[600px] md:h-[520px] lg:h-[560px]"
+      className="relative aspect-[887/1774] max-h-[calc(100svh-9.5rem)] w-full overflow-hidden bg-primary-soft md:aspect-[1681/935] md:max-h-[calc(100svh-7rem)]"
     >
       {SLIDES_HERO.map((slide, i) => (
-        <SlideHero2 key={slide.titulo} slide={slide} ativo={i === ativo} primeiro={i === 0} />
+        <BannerHero2 key={slide.desktop} slide={slide} ativo={i === ativo} primeiro={i === 0} />
       ))}
 
       <button type="button" aria-label="Destaque anterior" onClick={() => ir(ativo - 1)} className={cn(SETA, "left-4 lg:left-8")}>
@@ -44,15 +46,22 @@ export default function Hero2() {
         <ChevronRight className="size-6" strokeWidth={1.5} />
       </button>
 
+      <Link
+        href="/store"
+        className="absolute bottom-14 left-1/2 z-10 inline-flex h-12 -translate-x-1/2 items-center gap-2 rounded-full bg-primary px-7 text-base font-bold whitespace-nowrap text-primary-foreground shadow-lg transition-colors hover:bg-primary-hover md:right-8 md:bottom-12 md:left-auto md:translate-x-0 lg:right-14"
+      >
+        Comprar agora <ArrowRight className="size-4" />
+      </Link>
+
       <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
         {SLIDES_HERO.map((slide, i) => (
           <button
-            key={slide.titulo}
+            key={slide.desktop}
             type="button"
             aria-label={`Ir para o destaque ${i + 1}`}
             aria-current={i === ativo}
             onClick={() => ir(i)}
-            className="h-1.5 w-14 overflow-hidden rounded-full bg-foreground/15 sm:w-24"
+            className="h-1.5 w-14 overflow-hidden rounded-full bg-background/70 sm:w-24"
           >
             <span
               key={i === ativo ? `${ativo}-${pausado}` : i}
