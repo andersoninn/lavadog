@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronRight, Home, PawPrint } from "lucide-react";
 import type { Promocao } from "@/lib/promocoes";
+import BannerLoja from "@/components/store-page/BannerLoja";
 
 type Props = {
   titulo: string;
@@ -42,7 +43,7 @@ export default function StoreHeader({
         )}
       </nav>
 
-      <div className="mt-5 grid grid-cols-1 items-center gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+      <div className="mt-5 grid grid-cols-1 gap-5">
         <div>
           <h1 className="flex items-center gap-3 text-3xl font-bold text-foreground sm:text-4xl">
             <PawPrint
@@ -56,28 +57,7 @@ export default function StoreHeader({
           </p>
         </div>
 
-        <div className="relative flex h-36 items-center overflow-hidden rounded-md border border-border bg-primary-soft px-6">
-          <div className="relative z-10 max-w-[65%]">
-            <p className="text-lg font-bold text-foreground">Cuidado que</p>
-            <p className="mt-0.5 inline-block rounded-md bg-primary px-2.5 py-0.5 text-xl font-extrabold text-foreground">
-              faz a diferença
-            </p>
-            <p className="mt-2 text-xs text-foreground/75">
-              As melhores marcas para o seu pet, com preços especiais.
-            </p>
-          </div>
-          {promocao && (
-            <div className="absolute top-1/2 right-3 z-10 flex size-24 -translate-y-1/2 rotate-6 flex-col items-center justify-center rounded-full bg-primary text-center shadow-md">
-              <span className="text-[11px] font-bold text-foreground">
-                Cupão
-              </span>
-              <span className="text-xl leading-none font-black text-foreground">
-                {promocao.desconto.replace(" off", "")}
-              </span>
-              <span className="text-xs font-black text-foreground">OFF</span>
-            </div>
-          )}
-        </div>
+        <BannerLoja promocao={promocao} />
       </div>
     </div>
   );
