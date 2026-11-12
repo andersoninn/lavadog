@@ -86,7 +86,7 @@ export default function AddToCartButton({
         className={
           destaque
             ? cn(
-                "flex h-10 w-full items-center justify-center gap-2 rounded-md bg-primary text-sm font-bold text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40",
+                "flex h-10 w-full items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-[13px] font-bold whitespace-nowrap sm:text-sm text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40",
                 className,
               )
             : cn(
