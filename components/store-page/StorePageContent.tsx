@@ -34,9 +34,13 @@ export default function StorePageContent({
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory ? [initialCategory] : [],
   );
-  const [selectedSpecies, setSelectedSpecies] = useState<string[]>(
-    initialSpecies ? [initialSpecies] : [],
-  );
+  // ?animal=outros → todas as espécies menos cães e gatos.
+  const [selectedSpecies, setSelectedSpecies] = useState<string[]>(() => {
+    if (!initialSpecies) return [];
+    if (initialSpecies.toLowerCase() === "outros")
+      return species.filter((s) => s !== "Cães" && s !== "Gatos");
+    return [initialSpecies];
+  });
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState(priceBounds.max);
   const [inStockOnly, setInStockOnly] = useState(false);
