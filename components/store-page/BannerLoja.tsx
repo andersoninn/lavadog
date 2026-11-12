@@ -39,11 +39,11 @@ export default function BannerLoja({
   const valor = promocao?.desconto.replace(/\s*off$/i, "");
 
   return (
-    <div className="relative flex min-h-44 items-center overflow-hidden rounded-xl border border-border bg-primary-soft px-6 py-5 sm:px-8">
+    <div className="relative flex min-h-36 items-center overflow-hidden rounded-xl border border-border bg-primary-soft px-5 py-4">
       {/* fundo: mancha clara, onda amarela e onda azul com patinha */}
       <div
         aria-hidden
-        className="absolute -top-16 left-1/2 size-56 rounded-full bg-background/70"
+        className="absolute -top-12 left-1/2 size-40 rounded-full bg-background/70"
       />
       <svg
         aria-hidden
@@ -62,7 +62,7 @@ export default function BannerLoja({
         aria-hidden
         viewBox="0 0 200 120"
         preserveAspectRatio="none"
-        className="absolute right-0 bottom-0 h-24 w-48 text-blue"
+        className="absolute right-0 bottom-0 h-16 w-36 text-blue"
       >
         <path
           d="M40 120 C 70 70, 120 90, 150 50 S 190 20, 200 15 L200 120 Z"
@@ -72,28 +72,28 @@ export default function BannerLoja({
       </svg>
       <PawPrint
         aria-hidden
-        className="absolute right-4 bottom-3 size-7 fill-white text-white"
+        className="absolute right-3 bottom-2 size-5 fill-white text-white"
       />
 
-      <div className="relative z-10 max-w-[60%] sm:max-w-[65%]">
-        <p className="flex items-center gap-2 text-xl font-extrabold whitespace-nowrap text-foreground sm:text-3xl">
+      <div className="relative z-10 max-w-[62%]">
+        <p className="flex items-center gap-2 text-lg font-extrabold whitespace-nowrap text-foreground sm:text-xl">
           <span className="relative">
-            <PawPrint className="size-7 fill-foreground text-foreground" />
-            <Raios className="absolute -top-4 -right-3 size-5 text-primary" />
+            <PawPrint className="size-5 fill-foreground text-foreground" />
+            <Raios className="absolute -top-3 -right-2.5 size-4 text-primary" />
           </span>
           Cuidado que
         </p>
-        <p className="mt-2 inline-block rounded-full bg-primary px-4 py-1 text-xl font-extrabold whitespace-nowrap text-foreground sm:text-3xl">
+        <p className="mt-1.5 inline-block rounded-full bg-primary px-3 py-0.5 text-lg font-extrabold whitespace-nowrap text-foreground sm:text-xl">
           faz a diferença
         </p>
-        <p className="mt-2.5 text-sm text-foreground/75">
+        <p className="mt-2 text-xs text-foreground/75">
           Os melhores produtos para o seu pet, com preços especiais.
         </p>
       </div>
 
       {valor && (
-        <div className="absolute top-1/2 right-3 z-10 size-28 -translate-y-1/2 sm:right-12 sm:size-36">
-          <Raios className="absolute -top-3 -right-3 size-8 text-primary" />
+        <div className="absolute top-1/2 right-4 z-10 size-24 -translate-y-1/2 sm:right-6 sm:size-28">
+          <Raios className="absolute -top-2 -right-2 size-6 text-primary" />
           <svg
             viewBox="0 0 100 100"
             className="size-full drop-shadow-md"
@@ -110,10 +110,10 @@ export default function BannerLoja({
             <span className="text-sm font-extrabold text-foreground">
               Cupão
             </span>
-            <span className="text-4xl font-black text-white [-webkit-text-stroke:1.5px_var(--foreground)] sm:text-[2.6rem]">
+            <span className="text-3xl font-black text-white [-webkit-text-stroke:1.2px_var(--foreground)] sm:text-[2rem]">
               {valor}
             </span>
-            <span className="text-lg font-black text-foreground">OFF</span>
+            <span className="text-sm font-black text-foreground">OFF</span>
           </div>
         </div>
       )}

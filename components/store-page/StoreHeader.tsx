@@ -43,7 +43,7 @@ export default function StoreHeader({
         )}
       </nav>
 
-      <div className="mt-5 grid grid-cols-1 gap-5">
+      <div className="mt-5 grid grid-cols-1 items-center gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
         <div>
           <h1 className="flex items-center gap-3 text-3xl font-bold text-foreground sm:text-4xl">
             <PawPrint
