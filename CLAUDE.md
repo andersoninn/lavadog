@@ -83,6 +83,7 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
 - [ ] Migrar alojamento da Vercel para a Cloudflare (conta, Workers Builds ligado ao GitHub, variáveis, DNS)
 - [ ] Confirmar com a Carol os prazos de entrega por zona (`PRAZOS_ENTREGA` em `lib/empresa.ts`: continente 2–4, ilhas 4–7 dias úteis) e se há levantamento na loja (caixa da página de produto)
+- [ ] Carol registar a loja no Livro de Reclamações Eletrónico (www.livroreclamacoes.pt/entrar → Registar; obrigatório para a loja online, além do livro físico na loja). O site já tem o link no rodapé e nos termos.
 - [ ] Carol rever os textos legais e confirmar prazos (preparação em 2 dias úteis, exceções de devolução) e saber que o NIF dela aparece no rodapé e nos termos
 - [ ] Anderson: `git pull --rebase` no PC (a imagem `dogCtaStore` e o favicon já estão no GitHub) e apagar `favico.ico` da raiz
 - [ ] Integração CTT Expresso no painel ("Criar envio CTT" → etiqueta PDF, seguimento, recolha, email). Depende de: Carol fazer a Adesão Online Expresso nos CTT, pedir acesso à API (Client ID, Contract ID, Authentication ID — vão para variáveis de ambiente) e pôr o peso dos produtos (metadata `peso` em gramas). DPD seria igual se ela escolher DPD. Sem agregadores pagos (Sendcloud ~28 €/mês).
