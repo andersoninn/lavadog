@@ -1,11 +1,12 @@
+import Image from "next/image";
 import {
   CreditCard,
   Landmark,
   Lock,
   ShieldCheck,
-  Smartphone,
   Truck,
   Wallet,
+  type LucideIcon,
 } from "lucide-react";
 
 const SELOS = [
@@ -26,10 +27,18 @@ const SELOS = [
   },
 ];
 
-// Formas de pagamento com ícones genéricos (sem logótipos de marcas).
-const PAGAMENTOS = [
+// Formas de pagamento: logótipo oficial quando a cliente o forneceu, senão ícone genérico.
+type Pagamento = {
+  nome: string;
+  icone?: LucideIcon;
+  logo?: { src: string; largura: number };
+};
+const PAGAMENTOS: Pagamento[] = [
   { nome: "Cartão", icone: CreditCard },
-  { nome: "MB WAY", icone: Smartphone },
+  {
+    nome: "MB WAY",
+    logo: { src: "/images/pagamentos/mbway.webp", largura: 58 },
+  },
   { nome: "Multibanco", icone: Landmark },
   { nome: "Apple Pay", icone: Wallet },
 ];
@@ -56,13 +65,30 @@ export default function SelosRodape() {
         className="mt-8 flex flex-wrap justify-center gap-3"
         aria-label="Formas de pagamento"
       >
-        {PAGAMENTOS.map(({ nome, icone: Icone }) => (
+        {PAGAMENTOS.map(({ nome, icone: Icone, logo }) => (
           <li
             key={nome}
-            className="flex items-center gap-2 rounded-md bg-background px-4 py-2 text-sm font-extrabold text-foreground"
+            className="flex h-10 items-center gap-2 rounded-md bg-background px-4 text-sm font-extrabold text-foreground"
           >
-            <Icone className="size-5 text-primary-hover" strokeWidth={2} />
-            {nome}
+            {logo ? (
+              <Image
+                src={logo.src}
+                alt={nome}
+                width={logo.largura}
+                height={28}
+                className="h-6 w-auto"
+              />
+            ) : (
+              <>
+                {Icone && (
+                  <Icone
+                    className="size-5 text-primary-hover"
+                    strokeWidth={2}
+                  />
+                )}
+                {nome}
+              </>
+            )}
           </li>
         ))}
       </ul>
