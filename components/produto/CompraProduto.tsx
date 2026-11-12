@@ -39,7 +39,7 @@ export default function CompraProduto({ product }: Props) {
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-3">
           <span className="hidden w-24 shrink-0 text-sm font-semibold text-foreground sm:block">Quantidade:</span>
-          <div className="flex h-12 shrink-0 items-center rounded-lg border border-border bg-card">
+          <div className="flex h-12 shrink-0 items-center rounded-md border border-border bg-card">
             <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} aria-label="Diminuir quantidade" className="flex size-12 items-center justify-center hover:text-primary-hover">
               <Minus className="size-4" />
             </button>
@@ -58,7 +58,7 @@ export default function CompraProduto({ product }: Props) {
                 setAdicionado(true);
               })
             }
-            className="flex h-12 min-w-56 flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 font-bold whitespace-nowrap text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40"
+            className="flex h-12 min-w-56 flex-1 items-center justify-center gap-2 rounded-md bg-primary px-4 font-bold whitespace-nowrap text-foreground transition-colors hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-40"
           >
             {adicionado && !aAdicionar ? <Check className="size-5" /> : <ShoppingCart className="size-5" />}
             {aAdicionar ? "A adicionar..." : adicionado ? "Adicionado" : "Adicionar ao carrinho"}
@@ -69,7 +69,7 @@ export default function CompraProduto({ product }: Props) {
           type="button"
           disabled={!canAdd || ocupado}
           onClick={() => matchedVariant && startComprar(() => comprarAgora(matchedVariant.id, quantity))}
-          className="flex h-12 items-center justify-center gap-2 rounded-lg border-2 border-blue-strong font-bold text-blue-strong transition-colors hover:bg-blue-soft disabled:pointer-events-none disabled:opacity-40"
+          className="flex h-12 items-center justify-center gap-2 rounded-md border-2 border-blue-strong font-bold text-blue-strong transition-colors hover:bg-blue-soft disabled:pointer-events-none disabled:opacity-40"
         >
           <Zap className="size-5" />
           {aComprar ? "A abrir o pagamento..." : "Comprar agora"}

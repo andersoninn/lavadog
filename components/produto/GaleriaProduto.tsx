@@ -19,7 +19,7 @@ export default function GaleriaProduto({ imagens, nome, selo, video }: Props) {
       <MiniaturasProduto imagens={imagens} temVideo={idVideo !== null} atual={atual} onEscolher={setAtual} />
 
       <div className="min-w-0 flex-1">
-        <div className="relative aspect-[8/7] w-full overflow-hidden rounded-xl border border-border bg-card">
+        <div className="relative aspect-[8/7] w-full overflow-hidden rounded-md border border-border bg-card">
           <div aria-hidden className="absolute -bottom-20 -left-20 size-56 rounded-full bg-primary-soft" />
           <PawPrint aria-hidden className="absolute top-1/3 right-5 size-20 rotate-12 text-primary/40" />
 

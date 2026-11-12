@@ -31,7 +31,7 @@ export default function AbasProduto({ abas }: { abas: Aba[] }) {
             aria-selected={ativa === a.id}
             onClick={() => setAtiva(a.id)}
             className={cn(
-              "shrink-0 rounded-t-lg px-4 py-2.5 text-sm font-semibold transition-colors",
+              "shrink-0 rounded-t-md px-4 py-2.5 text-sm font-semibold transition-colors",
               ativa === a.id ? "bg-primary text-foreground" : "text-muted-foreground hover:text-foreground",
             )}
           >

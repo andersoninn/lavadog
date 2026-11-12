@@ -59,7 +59,7 @@ export default async function CarrinhoPage({ searchParams }: { searchParams: Pro
           </h1>
 
           {erro && AVISOS[erro] && cart && (
-            <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{AVISOS[erro]}</p>
+            <p className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{AVISOS[erro]}</p>
           )}
 
           {!cart ? (
@@ -69,7 +69,7 @@ export default async function CarrinhoPage({ searchParams }: { searchParams: Pro
           ) : (
             <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
               <div className="flex flex-col gap-6">
-                <ul className="divide-y divide-border rounded-xl border border-border bg-card px-5">
+                <ul className="divide-y divide-border rounded-md border border-border bg-card px-5">
                   {lines.map((line) => {
                     const p = produtos.get(line.productId);
                     return (

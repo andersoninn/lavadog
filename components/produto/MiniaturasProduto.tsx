@@ -5,7 +5,7 @@ import { ImageIcon, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MINIATURAS = 4; // como no wireframe: 4 fotos + vídeo
-const base = "relative size-[72px] shrink-0 overflow-hidden rounded-lg border-2 bg-card transition-colors";
+const base = "relative size-[72px] shrink-0 overflow-hidden rounded-md border-2 bg-card transition-colors";
 const estado = (ativa: boolean) => (ativa ? "border-primary" : "border-border hover:border-primary/60");
 
 type Props = {

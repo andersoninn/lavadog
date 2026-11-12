@@ -44,7 +44,7 @@ export default function LinhaCarrinho({ line, href, marca }: Props) {
         ) : (
           <ImageIcon className="size-6 text-muted-foreground" />
         ),
-        "relative flex size-[88px] items-center justify-center overflow-hidden rounded-lg border border-border bg-primary-soft/60",
+        "relative flex size-[88px] items-center justify-center overflow-hidden rounded-md border border-border bg-primary-soft/60",
       )}
 
       <div className="min-w-0">

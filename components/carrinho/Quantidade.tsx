@@ -11,7 +11,7 @@ export default function Quantidade({ valor, desativado, onMudar }: Props) {
   const botao =
     "flex size-10 items-center justify-center hover:text-primary-hover disabled:opacity-40";
   return (
-    <div className="flex h-10 items-center rounded-lg border border-border bg-card">
+    <div className="flex h-10 items-center rounded-md border border-border bg-card">
       <button
         type="button"
         disabled={desativado}

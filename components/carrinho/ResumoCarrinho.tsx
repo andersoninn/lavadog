@@ -9,7 +9,7 @@ export default function ResumoCarrinho({ cart, promocao }: { cart: Cart; promoca
   const linha = "flex items-center justify-between text-sm";
 
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
+    <div className="rounded-md border border-border bg-card p-6">
       <h2 className="text-lg font-bold text-foreground">Resumo do pedido</h2>
 
       <div className="mt-4 space-y-2.5">
@@ -26,7 +26,7 @@ export default function ResumoCarrinho({ cart, promocao }: { cart: Cart; promoca
       </div>
 
       {promocao && (
-        <div className="mt-4 flex gap-3 rounded-lg bg-primary-soft p-3.5">
+        <div className="mt-4 flex gap-3 rounded-md bg-primary-soft p-3.5">
           <TicketPercent className="mt-0.5 size-5 shrink-0 text-foreground" />
           <p className="text-sm text-foreground">
             <span className="font-bold">{promocao.desconto}</span> {promocao.condicao.toLowerCase()} com o cupom{" "}
@@ -45,14 +45,14 @@ export default function ResumoCarrinho({ cart, promocao }: { cart: Cart; promoca
       <form action={finalizarCompra} className="mt-5">
         <button
           type="submit"
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary font-bold text-foreground transition-colors hover:bg-primary-hover"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-primary font-bold text-foreground transition-colors hover:bg-primary-hover"
         >
           <Lock className="size-4" /> Finalizar compra
         </button>
       </form>
       <Link
         href="/store"
-        className="mt-3 flex h-12 items-center justify-center gap-2 rounded-lg border-2 border-blue-strong font-bold text-blue-strong transition-colors hover:bg-blue-soft"
+        className="mt-3 flex h-12 items-center justify-center gap-2 rounded-md border-2 border-blue-strong font-bold text-blue-strong transition-colors hover:bg-blue-soft"
       >
         <ArrowLeft className="size-4" /> Continuar a comprar
       </Link>

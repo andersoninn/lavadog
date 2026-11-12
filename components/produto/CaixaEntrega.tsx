@@ -42,7 +42,7 @@ export default function CaixaEntrega() {
   }
 
   return (
-    <aside className="h-fit rounded-xl border border-border bg-primary-soft/60 p-5">
+    <aside className="h-fit rounded-md border border-border bg-primary-soft/60 p-5">
       <div className="flex gap-3.5">
         <Truck className="mt-0.5 size-6 shrink-0 text-foreground" />
         <div className="min-w-0 flex-1">
@@ -60,7 +60,7 @@ export default function CaixaEntrega() {
               defaultValue={cp}
               onKeyDown={(e) => e.key === "Enter" && (guardar(e.currentTarget.value), setAEditar(false))}
               onBlur={(e) => (guardar(e.currentTarget.value), setAEditar(false))}
-              className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm outline-none focus:border-foreground"
+              className="mt-2 w-full rounded-md border border-border bg-card px-3 py-2 text-sm outline-none focus:border-foreground"
             />
           )}
           <p className="mt-2 flex items-start gap-1.5 text-sm text-foreground">
