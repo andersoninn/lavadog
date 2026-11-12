@@ -69,7 +69,7 @@ export default async function CarrinhoPage({ searchParams }: { searchParams: Pro
           ) : (
             <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
               <div className="flex flex-col gap-6">
-                <ul className="divide-y divide-border rounded-3xl border border-border bg-card px-5">
+                <ul className="divide-y divide-border rounded-xl border border-border bg-card px-5">
                   {lines.map((line) => {
                     const p = produtos.get(line.productId);
                     return (

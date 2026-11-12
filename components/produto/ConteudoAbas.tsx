@@ -43,7 +43,7 @@ export function conteudoAbas(produto: Product, avaliacoes: AvaliacoesGoogle | nu
     <div className="flex flex-col gap-4">
       <p className="text-sm text-muted-foreground">Avaliações da LavaDog Store no Google.</p>
       {avaliacoes.avaliacoes.map((a) => (
-        <article key={a.nome + a.texto.slice(0, 20)} className="rounded-2xl border border-border bg-card p-4">
+        <article key={a.nome + a.texto.slice(0, 20)} className="rounded-lg border border-border bg-card p-4">
           <p className="flex items-center gap-2 text-sm font-semibold text-foreground">
             {a.nome}
             <span className="flex">
