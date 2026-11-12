@@ -6,7 +6,7 @@ import ControlosCarrossel from "@/components/depoimentos/ControlosCarrossel";
 import type { Depoimento } from "@/lib/depoimentos-exemplo";
 import { cn } from "@/lib/utils";
 
-const INTERVALO = 5000;
+const INTERVALO = 3000;
 
 /** Quantos cartões cabem: 1 no telemóvel, 2 no tablet, 3 no computador. */
 function usePorVista() {
@@ -21,7 +21,7 @@ function usePorVista() {
   return n;
 }
 
-/** Carrossel de depoimentos: avança sozinho (pára com o rato por cima), setas e pontos. */
+/** Carrossel de depoimentos: avança sozinho a cada 3 s (pára com o rato por cima), com pontos. */
 export default function CarrosselDepoimentos({
   depoimentos,
 }: {
