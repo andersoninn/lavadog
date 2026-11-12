@@ -49,7 +49,7 @@ Nota de acessibilidade: `#79a1c8` tem contraste baixo (~2.6:1) contra o fundo cl
 A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O Next.js mostra o catálogo; o pagamento acontece no **Stripe Checkout** (página da Stripe).
 
 - Catálogo: produtos e preços ativos do painel do Stripe (`lib/stripe.ts`), convertidos em `lib/store-data.ts` (`mapStripeProducts`).
-- Metadata do produto no Stripe: `categoria`, `marca`, `animal` (vírgulas), `preco_antigo`, `esgotado` (`true`), `stock` (número), `slug`, `destaque` (`mais vendido` → selo), `beneficios` (separados por `;`), `composicao`, `info_nutricional` — todos opcionais. Metadata do Stripe aceita até 500 caracteres por valor.
+- Metadata do produto no Stripe: `categoria`, `marca`, `animal` (vírgulas), `preco_antigo`, `esgotado` (`true`), `stock` (número), `slug`, `destaque` (`mais vendido` → selo), `beneficios` (separados por `;`), `composicao`, `info_nutricional`, `destaques` (até 3, separados por `;`, cartões "Principais benefícios"), `video` (link YouTube) — todos opcionais. Preço por kg sai sozinho quando a opção é um peso ("15 kg", "500 g"). Metadata do Stripe aceita até 500 caracteres por valor.
 - Variantes: cada preço do produto é uma variante; a opção vem da metadata do preço (ex.: `tamanho` = `M`) ou do apelido (`Tamanho: M`).
 - Carrinho: cookie `carrinho` no próprio site (`lib/cart-actions.ts`); `finalizarCompra` cria a sessão de checkout.
 - Depois do pagamento: `/carrinho/concluido` (confirma no Stripe e esvazia o carrinho) → `/carrinho/obrigado`.
@@ -80,6 +80,7 @@ A cliente deixou o Shopify. Decisão: **Stripe** para catálogo e pagamento. O N
 - [ ] `ADMIN_PASSWORD` para o painel de encomendas
 - [ ] Google: Place ID da LavaDog + chave Places API (New) → `GOOGLE_PLACE_ID`, `GOOGLE_PLACES_API_KEY`
 - [ ] Migrar alojamento da Vercel para a Cloudflare (conta, Workers Builds ligado ao GitHub, variáveis, DNS)
+- [ ] Confirmar com a Carol os prazos de entrega por zona (`PRAZOS_ENTREGA` em `lib/empresa.ts`: continente 2–4, ilhas 4–7 dias úteis) e se há levantamento na loja (caixa da página de produto)
 - [ ] Carol rever os textos legais e confirmar prazos (preparação em 2 dias úteis, exceções de devolução) e saber que o NIF dela aparece no rodapé e nos termos
 - [ ] Anderson: `git pull --rebase` no PC (a imagem `dogCtaStore` e o favicon já estão no GitHub) e apagar `favico.ico` da raiz
 - [ ] Integração CTT Expresso no painel ("Criar envio CTT" → etiqueta PDF, seguimento, recolha, email). Depende de: Carol fazer a Adesão Online Expresso nos CTT, pedir acesso à API (Client ID, Contract ID, Authentication ID — vão para variáveis de ambiente) e pôr o peso dos produtos (metadata `peso` em gramas). DPD seria igual se ela escolher DPD. Sem agregadores pagos (Sendcloud ~28 €/mês).

@@ -52,6 +52,10 @@ export type ProductDetalhes = {
   composicao: string | null;
   /** metadata "info_nutricional" */
   nutricao: string | null;
+  /** metadata "destaques": até 3 diferenciais curtos, separados por ";" (cartões) */
+  destaques: string[];
+  /** metadata "video": link do YouTube */
+  video: string | null;
 };
 
 // Categoria usada quando o produto ainda não tem a metadata "categoria" no
@@ -189,6 +193,12 @@ export function mapStripeProducts(stripeProducts: StripeStoreProduct[]): StoreCa
           .filter(Boolean),
         composicao: meta.composicao?.trim() || null,
         nutricao: meta.info_nutricional?.trim() || null,
+        destaques: (meta.destaques ?? "")
+          .split(";")
+          .map((d) => d.trim())
+          .filter(Boolean)
+          .slice(0, 3),
+        video: meta.video?.trim() || null,
       },
       images: sp.images ?? [],
       category,

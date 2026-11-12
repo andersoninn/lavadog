@@ -8,6 +8,7 @@ import { formatPrice, type Product } from "@/lib/store-data";
 import { useVariante } from "@/lib/use-variante";
 import PrecoProduto from "@/components/produto/PrecoProduto";
 import OpcoesProduto from "@/components/produto/OpcoesProduto";
+import { precoPorKg } from "@/lib/preco-kg";
 
 type Props = { product: Pick<Product, "price" | "oldPrice" | "variants" | "options"> };
 
@@ -23,9 +24,13 @@ export default function CompraProduto({ product }: Props) {
   const ocupado = aAdicionar || aComprar;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-5">
       {/* O preço antigo (metadata preco_antigo) refere-se ao preço principal do produto. */}
-      <PrecoProduto preco={preco} precoAntigo={preco === product.price ? product.oldPrice : undefined} />
+      <PrecoProduto
+        preco={preco}
+        precoAntigo={preco === product.price ? product.oldPrice : undefined}
+        porKg={precoPorKg(preco, matchedVariant?.selectedOptions ?? [])}
+      />
 
       <OpcoesProduto product={product} variante={variante} />
 

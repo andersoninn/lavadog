@@ -2,6 +2,7 @@
 
 import { Check } from "lucide-react";
 import { formatPrice, type Product } from "@/lib/store-data";
+import { quilosDaOpcao } from "@/lib/preco-kg";
 import type { useVariante } from "@/lib/use-variante";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +32,7 @@ export default function OpcoesProduto({ product, variante }: Props) {
                   disabled={!v}
                   onClick={() => variante.escolher(option.name, value)}
                   className={cn(
-                    "relative flex min-w-24 flex-col items-center justify-center rounded-2xl border-2 bg-card px-4 py-2.5 transition-colors",
+                    "relative flex min-w-24 flex-col items-center justify-center rounded-xl border-2 bg-card px-4 py-2 transition-colors",
                     escolhido ? "border-primary bg-primary-soft" : "border-border hover:border-primary/60",
                     !v && "pointer-events-none opacity-30",
                   )}
@@ -45,6 +46,11 @@ export default function OpcoesProduto({ product, variante }: Props) {
                     {value}
                   </span>
                   {umaSoOpcao && v && <span className="text-xs text-muted-foreground">{formatPrice(v.price)}</span>}
+                  {umaSoOpcao && v && escolhido && quilosDaOpcao(value) && (
+                    <span className="text-[11px] text-muted-foreground">
+                      ({formatPrice(v.price / (quilosDaOpcao(value) as number))} / kg)
+                    </span>
+                  )}
                 </button>
               );
             })}

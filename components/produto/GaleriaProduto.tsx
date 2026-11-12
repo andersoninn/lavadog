@@ -3,62 +3,41 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ImageIcon, PawPrint, Sparkles, Trophy } from "lucide-react";
-import { cn } from "@/lib/utils";
+import MiniaturasProduto from "@/components/produto/MiniaturasProduto";
+import { idYoutube } from "@/lib/preco-kg";
 
-type Props = { imagens: string[]; nome: string; selo?: string | null };
+type Props = { imagens: string[]; nome: string; selo?: string | null; video?: string | null };
 
-/** Miniaturas na vertical (em baixo no telemóvel) + imagem principal com selo. */
-export default function GaleriaProduto({ imagens, nome, selo }: Props) {
+/** Miniaturas na lateral (em baixo no telemóvel) + imagem principal com selo. */
+export default function GaleriaProduto({ imagens, nome, selo, video }: Props) {
   const [atual, setAtual] = useState(0);
+  const idVideo = video ? idYoutube(video) : null;
+  const aVerVideo = idVideo !== null && atual === -1;
 
   return (
     <div className="flex flex-col-reverse gap-3 lg:flex-row">
-      {imagens.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto lg:w-24 lg:shrink-0 lg:flex-col lg:overflow-visible">
-          {imagens.map((src, i) => (
-            <button
-              key={src}
-              type="button"
-              onClick={() => setAtual(i)}
-              aria-label={`Ver imagem ${i + 1}`}
-              className={cn(
-                "relative size-20 shrink-0 overflow-hidden rounded-2xl border-2 bg-card transition-colors lg:size-24",
-                i === atual
-                  ? "border-primary"
-                  : "border-border hover:border-primary/60",
-              )}
-            >
-              <Image
-                src={src}
-                alt=""
-                fill
-                sizes="96px"
-                className="object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      )}
+      <MiniaturasProduto imagens={imagens} temVideo={idVideo !== null} atual={atual} onEscolher={setAtual} />
 
       <div className="min-w-0 flex-1">
-        <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-border bg-card">
-          {/* Decoração da marca: meia-lua e pegada em amarelo suave */}
-          <div
-            aria-hidden
-            className="absolute -bottom-24 -left-24 size-72 rounded-full bg-primary-soft"
-          />
-          <PawPrint
-            aria-hidden
-            className="absolute top-1/4 right-6 size-24 rotate-12 text-primary/40"
-          />
+        <div className="relative aspect-[8/7] w-full overflow-hidden rounded-3xl border border-border bg-card">
+          <div aria-hidden className="absolute -bottom-20 -left-20 size-56 rounded-full bg-primary-soft" />
+          <PawPrint aria-hidden className="absolute top-1/3 right-5 size-20 rotate-12 text-primary/40" />
 
-          {imagens.length > 0 ? (
+          {aVerVideo ? (
+            <iframe
+              className="absolute inset-0 size-full"
+              src={`https://www.youtube-nocookie.com/embed/${idVideo}?autoplay=1`}
+              title={`Vídeo: ${nome}`}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          ) : imagens.length > 0 ? (
             <Image
-              src={imagens[atual]}
+              src={imagens[Math.max(atual, 0)]}
               alt={nome}
               fill
               priority
-              sizes="(min-width: 1024px) 45vw, 100vw"
+              sizes="(min-width: 1024px) 40vw, 100vw"
               className="relative object-contain p-6"
             />
           ) : (
@@ -68,8 +47,8 @@ export default function GaleriaProduto({ imagens, nome, selo }: Props) {
             </div>
           )}
 
-          {selo && (
-            <span className="absolute top-4 left-4 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-bold text-foreground shadow-sm">
+          {selo && !aVerVideo && (
+            <span className="absolute top-4 left-4 flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-sm font-bold text-foreground shadow-sm">
               {selo === "Novidade" ? <Sparkles className="size-4" /> : <Trophy className="size-4" />}
               {selo}
             </span>

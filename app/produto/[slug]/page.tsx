@@ -8,8 +8,12 @@ import SelosConfianca from "@/components/produto/SelosConfianca";
 import AbasProduto from "@/components/produto/AbasProduto";
 import CaixaEntrega from "@/components/produto/CaixaEntrega";
 import TrilhoProduto from "@/components/produto/TrilhoProduto";
+import AvaliacaoLoja from "@/components/produto/AvaliacaoLoja";
+import ProdutosRelacionados from "@/components/produto/ProdutosRelacionados";
+import { conteudoAbas } from "@/components/produto/ConteudoAbas";
 import { BreadcrumbJsonLd, ProductJsonLd } from "@/components/seo/JsonLd";
-import { getProdutoPorSlug } from "@/lib/catalogo";
+import { getCatalogo, getProdutoPorSlug } from "@/lib/catalogo";
+import { getAvaliacoesGoogle } from "@/lib/google-avaliacoes";
 import { getCurrentCart } from "@/lib/cart-actions";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -35,14 +39,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProdutoPage({ params }: Props) {
   const { slug } = await params;
-  const [produto, cart] = await Promise.all([
-    getProdutoPorSlug(slug).catch(() => null),
+  const [catalogo, cart, avaliacoes] = await Promise.all([
+    getCatalogo().catch(() => null),
     getCurrentCart().catch(() => null),
+    getAvaliacoesGoogle(),
   ]);
-  if (!produto) notFound();
+  const produto = catalogo?.products.find((p) => p.slug === slug);
+  if (!catalogo || !produto) notFound();
 
   const selo = produto.badge === "mais-vendido" ? "Mais vendido" : produto.badge === "novo" ? "Novidade" : null;
-  const resumo = produto.description ? produto.description.split("\n")[0].slice(0, 220) : null;
+  const resumo = produto.description ? produto.description.split("\n")[0].slice(0, 200) : null;
 
   return (
     <>
@@ -55,32 +61,35 @@ export default async function ProdutoPage({ params }: Props) {
         ]}
       />
       <main className="flex-1">
-        <div className="mx-auto w-full max-w-6xl px-6 pt-28 pb-24 sm:px-10 lg:px-16">
+        <div className="mx-auto w-full max-w-6xl px-6 pt-28 pb-24 sm:px-10">
           <TrilhoProduto categoria={produto.category} nome={produto.name} />
 
-          <div className="mt-6 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
-            <GaleriaProduto imagens={produto.images} nome={produto.name} selo={selo} />
+          <div className="mt-5 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-10">
+            <GaleriaProduto imagens={produto.images} nome={produto.name} selo={selo} video={produto.detalhes.video} />
 
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <div>
-                {produto.brand !== "Sem marca" && (
-                  <p className="text-sm font-bold text-blue-strong">{produto.brand}</p>
-                )}
-                <h1 className="mt-1 text-3xl leading-tight font-bold text-foreground sm:text-4xl">{produto.name}</h1>
-                {resumo && <p className="mt-3 text-[15px] leading-relaxed text-foreground/75">{resumo}</p>}
+                {produto.brand !== "Sem marca" && <p className="text-sm font-bold text-blue-strong">{produto.brand}</p>}
+                <h1 className="mt-0.5 text-2xl leading-tight font-bold text-foreground sm:text-3xl">{produto.name}</h1>
               </div>
-
+              <AvaliacaoLoja dados={avaliacoes} />
+              {resumo && (
+                <div>
+                  <p className="text-sm font-bold text-foreground">Descrição resumida</p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-foreground/75">{resumo}</p>
+                </div>
+              )}
               <CompraProduto product={produto} />
               <SelosConfianca />
             </div>
           </div>
 
-          <div className="mt-16 grid gap-10 lg:grid-cols-[1fr_380px]">
-            <AbasProduto descricao={produto.description} detalhes={produto.detalhes} />
-            <div className="lg:col-start-2 lg:row-start-1">
-              <CaixaEntrega />
-            </div>
+          <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <AbasProduto abas={conteudoAbas(produto, avaliacoes)} />
+            <CaixaEntrega />
           </div>
+
+          <ProdutosRelacionados produto={produto} todos={catalogo.products} />
         </div>
       </main>
       <Footer />

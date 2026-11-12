@@ -9,13 +9,13 @@ const SELOS = [
 
 export default function SelosConfianca() {
   return (
-    <ul className="grid grid-cols-2 gap-4 border-t border-border pt-5">
+    <ul className="flex flex-wrap gap-x-5 gap-y-3">
       {SELOS.map(({ icone: Icone, titulo, texto }) => (
         <li key={titulo} className="flex items-center gap-2.5">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-blue-soft">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-soft">
             <Icone className="size-4 text-blue-strong" />
           </span>
-          <span className="leading-tight">
+          <span className="leading-tight whitespace-nowrap">
             <span className="block text-xs font-bold text-foreground">{titulo}</span>
             <span className="block text-[11px] text-muted-foreground">{texto}</span>
           </span>
