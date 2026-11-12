@@ -74,7 +74,7 @@ export default function SelosRodape() {
         {PAGAMENTOS.map(({ nome, icone: Icone, logo }) => (
           <li
             key={nome}
-            className="flex h-10 items-center gap-2 rounded-md bg-white px-4 text-sm font-extrabold text-foreground"
+            className="flex h-10 items-center gap-2 rounded-[6px] bg-white px-4 text-sm font-extrabold text-foreground"
           >
             {logo ? (
               <Image
