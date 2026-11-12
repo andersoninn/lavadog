@@ -3,9 +3,9 @@ import CartaoAnimal, { type Animal } from "./CartaoAnimal";
 import CartaoDestaque, { type Destaque } from "./CartaoDestaque";
 
 const ANIMAIS: Animal[] = [
-  { nome: "Gato", href: "/store?animal=Gatos", icone: Cat, imagem: "/images/home/gato.png" },
+  { nome: "Gato", href: "/store?animal=Gatos", icone: Cat, imagem: "/images/home/gato.png", tamanho: "h-[96%] w-[46%]" },
   { nome: "Cão", href: "/store?animal=Cães", icone: Dog, imagem: "/images/home/cao.png" },
-  { nome: "Outros", href: "/store?animal=outros", icone: Rabbit, imagem: "/images/home/outros.png" },
+  { nome: "Outros", href: "/store?animal=outros", icone: Rabbit, imagem: "/images/home/outros.png", tamanho: "h-[82%] w-[42%]" },
 ];
 
 const DESTAQUES: Destaque[] = [
