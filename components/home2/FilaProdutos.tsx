@@ -44,7 +44,7 @@ export default function FilaProdutos({ produtos }: { produtos: Product[] }) {
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {produtos.map((p) => (
-          <li key={p.id} className="w-[70%] shrink-0 snap-start sm:w-[44%] md:w-[31%] lg:w-[23%] xl:w-[19%]">
+          <li key={p.id} className="flex w-[70%] shrink-0 snap-start sm:w-[44%] md:w-[31%] lg:w-[23%] xl:w-[19%]">
             <ProductCard product={p} />
           </li>
         ))}

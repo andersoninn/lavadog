@@ -99,7 +99,7 @@ export default function ProductCard({
   }
 
   return (
-    <article className="group relative flex flex-col rounded-md border border-border bg-card p-3 transition-shadow hover:shadow-md">
+    <article className="group relative flex h-full w-full flex-col rounded-md border border-border bg-card p-3 transition-shadow hover:shadow-md">
       <BotaoFavorito id={product.id} nome={product.name} />
       {imagem}
       <div className="mt-3 flex flex-1 flex-col">
