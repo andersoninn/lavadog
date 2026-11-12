@@ -101,3 +101,9 @@ body {
   background-size: cover;
   background-attachment: scroll;
 }
+
+/* Barra de progresso do herói da /home2 */
+@keyframes progresso-hero {
+  from { width: 0%; }
+  to { width: 100%; }
+}

@@ -54,6 +54,8 @@ export default async function StorePage({
     typeof params.categoria === "string" ? params.categoria : undefined;
   const initialSpecies =
     typeof params.animal === "string" ? params.animal : undefined;
+  const initialSearch =
+    typeof params.q === "string" ? params.q.slice(0, 80) : undefined;
   const initialPromoOnly = params.promo === "true";
   const initialSort =
     typeof params.sort === "string" &&
@@ -109,12 +111,13 @@ export default async function StorePage({
           </p>
         )}
         <StorePageContent
-          key={`${initialCategory ?? ""}-${initialSpecies ?? ""}-${initialPromoOnly}-${initialSort ?? ""}`}
+          key={`${initialCategory ?? ""}-${initialSpecies ?? ""}-${initialPromoOnly}-${initialSort ?? ""}-${initialSearch ?? ""}`}
           catalog={catalog}
           initialCategory={initialCategory}
           initialSpecies={initialSpecies}
           initialPromoOnly={initialPromoOnly}
           initialSort={initialSort}
+          initialSearch={initialSearch}
           promocao={promocoes[0] ?? null}
         />
       </main>

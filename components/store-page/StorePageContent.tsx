@@ -18,6 +18,7 @@ export default function StorePageContent({
   initialSpecies,
   initialPromoOnly,
   initialSort,
+  initialSearch,
   promocao = null,
 }: {
   catalog: StoreCatalog;
@@ -26,9 +27,10 @@ export default function StorePageContent({
   initialSpecies?: string;
   initialPromoOnly?: boolean;
   initialSort?: SortOption;
+  initialSearch?: string;
 }) {
   const { products, categories, species, brands, priceBounds } = catalog;
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch ?? "");
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     initialCategory ? [initialCategory] : [],
   );
