@@ -56,7 +56,7 @@ export default async function Home2({ searchParams }: { searchParams: Promise<{ 
           extraHref="&promo=true"
           lateral={<CartaoOportunidades />}
         />
-        <Store />
+        <Store destaques={false} />
         <StorePromoBanner promocoes={promocoes} />
         <Contatos />
       </main>
