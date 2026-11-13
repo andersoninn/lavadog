@@ -64,7 +64,10 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
             {navLinks.map((link) => (
               <Link
                 key={link.label}
-                className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', size: 'sm' }),
+                  link.destaque && 'rounded-full bg-primary px-4 font-bold text-primary-foreground shadow-sm hover:bg-primary-hover hover:text-primary-foreground',
+                )}
                 href={link.href}
                 target={link.external ? '_blank' : undefined}
                 rel={link.external ? 'noopener noreferrer' : undefined}
@@ -154,10 +157,10 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
             {navLinks.map((link) => (
               <Link
                 key={link.label}
-                className={buttonVariants({
-                  variant: 'ghost',
-                  className: 'justify-start',
-                })}
+                className={cn(
+                  buttonVariants({ variant: 'ghost', className: 'justify-start' }),
+                  link.destaque && 'rounded-full bg-primary px-4 font-bold text-primary-foreground shadow-sm hover:bg-primary-hover hover:text-primary-foreground',
+                )}
                 href={link.href}
                 target={link.external ? '_blank' : undefined}
                 rel={link.external ? 'noopener noreferrer' : undefined}
