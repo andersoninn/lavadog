@@ -18,12 +18,8 @@ export default function Hero2() {
   const [pausado, setPausado] = React.useState(false);
   const total = SLIDES_HERO.length;
 
-  React.useEffect(() => {
-    if (pausado) return;
-    const id = setTimeout(() => setAtivo((a) => (a + 1) % total), INTERVALO);
-    return () => clearTimeout(id);
-  }, [ativo, pausado, total]);
-
+  // A troca de banner acontece quando a barra acaba de encher (onAnimationEnd),
+  // por isso pausar a animação pausa também o carrossel, sem saltos.
   const ir = (i: number) => setAtivo((i + total) % total);
 
   return (
@@ -64,12 +60,15 @@ export default function Hero2() {
             className="h-1.5 w-14 overflow-hidden rounded-full bg-background/70 sm:w-24"
           >
             <span
-              key={i === ativo ? `${ativo}-${pausado}` : i}
+              key={i === ativo ? `ativo-${ativo}` : i}
+              onAnimationEnd={i === ativo ? () => ir(ativo + 1) : undefined}
+              style={i === ativo ? { animationDuration: `${INTERVALO}ms` } : undefined}
               className={cn(
                 "block h-full rounded-full bg-blue",
                 i < ativo && "w-full",
                 i > ativo && "w-0",
-                i === ativo && (pausado ? "w-full" : "animate-[progresso-hero_6s_linear_forwards]"),
+                i === ativo && "animate-[progresso-hero_6s_linear_forwards]",
+                i === ativo && pausado && "[animation-play-state:paused]",
               )}
             />
           </button>
