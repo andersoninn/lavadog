@@ -33,7 +33,7 @@ export default function Hero2() {
       aria-label="Destaques da loja"
       onMouseEnter={() => setPausado(true)}
       onMouseLeave={() => setPausado(false)}
-      className="relative aspect-[887/1774] max-h-[calc(100svh-10rem)] w-full overflow-hidden bg-primary-soft md:aspect-[1681/935] md:max-h-[calc(100svh-10rem)]"
+      className="relative aspect-[887/1774] max-h-[calc(100svh-5.5rem)] w-full overflow-hidden bg-primary-soft md:aspect-[1681/935] md:max-h-[calc(100svh-5.5rem)]"
     >
       {SLIDES_HERO.map((slide, i) => (
         <BannerHero2 key={slide.desktop} slide={slide} ativo={i === ativo} primeiro={i === 0} />

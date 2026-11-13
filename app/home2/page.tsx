@@ -37,7 +37,7 @@ export default async function Home2({ searchParams }: { searchParams: Promise<{ 
   return (
     <>
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
-      <main className="flex-1 pt-20 md:pt-16">
+      <main className="flex-1">
         <h1 className="sr-only">LavaDog Store — Pet Shop Online em Portugal. {SITE_TAGLINE}.</h1>
         <Hero2 />
         <FaixaVantagens2 />
