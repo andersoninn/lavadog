@@ -32,6 +32,8 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
         {
           'top-4 inset-x-[2.5%] w-auto border-border bg-background/95 shadow backdrop-blur-lg supports-backdrop-filter:bg-background/40 lg:inset-x-0 lg:w-full lg:max-w-6xl':
             scrolled && !open,
+          // No topo da página: fundo claro a 40% com desfoque (não totalmente transparente).
+          'bg-background/40 backdrop-blur-md': !scrolled && !open,
           'bg-background/90': open,
           'md:translate-y-[calc(-100%-2rem)] lg:translate-y-0': navHidden,
         },
