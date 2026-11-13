@@ -27,12 +27,19 @@ const tabs = [
  * lido em app/page.tsx). Sem cupões ativos, o cartão mostra um convite para a
  * loja — ver components/PromoCartao.tsx.
  */
-export default function StorePromoBanner({ promocoes = [] }: { promocoes?: Promocao[] }) {
+export default function StorePromoBanner({
+  promocoes = [],
+  compacto = false,
+}: {
+  promocoes?: Promocao[];
+  /** Menos espaço por cima (usado na /home2, logo a seguir à faixa de categorias). */
+  compacto?: boolean;
+}) {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
     <section
-      className="relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen overflow-x-clip bg-[#3A2C22] text-white mt-10 sm:mt-24 lg:mt-[84px] pb-24"
+      className={`relative mx-[calc(50%-50vw)] lg:mx-[calc(50%-50.5vw)] w-screen overflow-x-clip bg-[#3A2C22] text-white pb-24 ${compacto ? "mt-6 lg:mt-8" : "mt-10 sm:mt-24 lg:mt-[84px]"}`}
       id="store-promo-banner"
     >
       {/* Background */}

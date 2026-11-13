@@ -31,7 +31,7 @@ export default function VitrineAnimal({
   const especie = ativa === "Gato" ? "Gatos" : "Cães";
 
   return (
-    <section id={id} className="mx-auto w-full max-w-7xl px-6 py-14 sm:px-10 lg:px-16">
+    <section id={id} className="mx-auto w-full max-w-7xl px-6 pt-14 pb-8 sm:px-10 lg:px-16">
       <h2 className="text-center text-3xl font-bold text-foreground sm:text-4xl">{titulo}</h2>
       <p className="mt-2 text-center text-muted-foreground">{subtitulo}</p>
       {abas.length > 1 && <AbasAnimal abas={abas} ativa={ativa} onMudar={setAtiva} />}

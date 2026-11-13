@@ -18,7 +18,7 @@ export default async function Store({ destaques = true }: { destaques?: boolean 
   return (
     <section
       id="store"
-      className={`flex w-full ${destaques ? "pt-34" : "pt-10"} flex-col justify-center gap-8 overflow-hidden bg-background py-6`}
+      className={`flex w-full ${destaques ? "pt-34 py-6" : "py-0"} flex-col justify-center gap-8 overflow-hidden bg-background`}
     >
       <ScrollReveal
         className="flex w-full flex-col gap-8"
@@ -34,7 +34,7 @@ export default async function Store({ destaques = true }: { destaques?: boolean 
           </div>
         )}
         <StoreCategories species={species} />
-        <div className="lg:mt-[84px]">
+        <div className={destaques ? "lg:mt-[84px]" : undefined}>
           <StoreMarquee />
         </div>
       </ScrollReveal>
