@@ -12,14 +12,13 @@ const INTERVALO = 6000;
 const SETA =
   "absolute top-1/2 z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-foreground/10 text-foreground backdrop-blur-sm transition-colors hover:bg-foreground/20 sm:flex";
 
-/** Herói em carrossel com setas e barras de progresso (estilo loja). */
+/** Herói em carrossel com setas e barras de progresso (estilo loja), muda a cada 6 s. */
 export default function Hero2() {
   const [ativo, setAtivo] = React.useState(0);
-  const [pausado, setPausado] = React.useState(false);
   const total = SLIDES_HERO.length;
 
-  // A troca de banner acontece quando a barra acaba de encher (onAnimationEnd),
-  // por isso pausar a animação pausa também o carrossel, sem saltos.
+  // A troca de banner acontece quando a barra acaba de encher (onAnimationEnd).
+  // Sem pausa ao passar o rato: o banner ocupa quase o ecrã e parecia travado.
   const ir = (i: number) => setAtivo((i + total) % total);
 
   return (
@@ -27,8 +26,6 @@ export default function Hero2() {
       id="home"
       aria-roledescription="carrossel"
       aria-label="Destaques da loja"
-      onMouseEnter={() => setPausado(true)}
-      onMouseLeave={() => setPausado(false)}
       className="relative aspect-[887/1774] max-h-[calc(100svh-5.5rem)] w-full overflow-hidden bg-primary-soft md:aspect-[1681/935] md:max-h-[calc(100svh-5.5rem)]"
     >
       {SLIDES_HERO.map((slide, i) => (
@@ -68,7 +65,6 @@ export default function Hero2() {
                 i < ativo && "w-full",
                 i > ativo && "w-0",
                 i === ativo && "animate-[progresso-hero_6s_linear_forwards]",
-                i === ativo && pausado && "[animation-play-state:paused]",
               )}
             />
           </button>
