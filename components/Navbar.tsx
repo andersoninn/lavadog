@@ -30,7 +30,7 @@ export default function Navbar({ cartCount = 0 }: { cartCount?: number }) {
       className={cn(
         'animate-in fade-in slide-in-from-top-8 fixed inset-x-0 top-0 z-99 mx-auto w-full max-w-7xl rounded-md border border-transparent transition-[all,transform] duration-300 ease-out',
         {
-          'top-4 inset-x-[2.5%] w-auto border-border bg-background/95 shadow backdrop-blur-lg supports-backdrop-filter:bg-background/90 lg:inset-x-0 lg:w-full lg:max-w-6xl':
+          'top-4 inset-x-[2.5%] w-auto border-border bg-background/95 shadow backdrop-blur-lg supports-backdrop-filter:bg-background/40 lg:inset-x-0 lg:w-full lg:max-w-6xl':
             scrolled && !open,
           'bg-background/90': open,
           'md:translate-y-[calc(-100%-2rem)] lg:translate-y-0': navHidden,
