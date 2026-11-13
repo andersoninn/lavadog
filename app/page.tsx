@@ -4,7 +4,6 @@ import Hero2 from "@/components/home2/Hero2";
 import FaixaVantagens2 from "@/components/home2/FaixaVantagens2";
 import SecaoAtalhos from "@/components/home2/SecaoAtalhos";
 import VitrineAnimal from "@/components/home2/VitrineAnimal";
-import CartaoOportunidades from "@/components/home2/CartaoOportunidades";
 import { imperdiveis, sugestoes } from "@/components/home2/vitrines";
 import Store from "@/components/Store";
 import StorePromoBanner from "@/components/StorePromoBanner";
@@ -57,7 +56,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
           subtitulo="Não deixe escapar estas oportunidades"
           porAnimal={imperdiveis(produtos)}
           extraHref="&promo=true"
-          lateral={<CartaoOportunidades />}
         />
         <Store />
         <StorePromoBanner promocoes={promocoes} compacto />
