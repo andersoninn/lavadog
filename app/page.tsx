@@ -1,41 +1,66 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+import Hero2 from "@/components/home2/Hero2";
+import FaixaVantagens2 from "@/components/home2/FaixaVantagens2";
+import SecaoAtalhos from "@/components/home2/SecaoAtalhos";
+import VitrineAnimal from "@/components/home2/VitrineAnimal";
+import CartaoOportunidades from "@/components/home2/CartaoOportunidades";
+import { imperdiveis, sugestoes } from "@/components/home2/vitrines";
 import Store from "@/components/Store";
 import StorePromoBanner from "@/components/StorePromoBanner";
 import Contatos from "@/components/Contatos";
 import Footer from "@/components/Footer";
 import { getCurrentCart } from "@/lib/cart-actions";
+import { getCatalogo } from "@/lib/catalogo";
 import { getPromocoes } from "@/lib/stripe";
+import { catalogoDemo } from "@/lib/demo-catalogo";
+import { mapStripeProducts } from "@/lib/store-data";
 import { SITE_TAGLINE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default async function Home() {
-  const [cart, promocoes] = await Promise.all([
+export default async function Home({ searchParams }: { searchParams: Promise<{ demo?: string }> }) {
+  // /?demo=1 → vitrines com os produtos fictícios, só para ver o visual.
+  const demo = (await searchParams).demo === "1";
+  const [cart, promocoes, catalogo] = await Promise.all([
     getCurrentCart().catch(() => null),
     // Sem permissão ou sem cupões: o banner mostra o convite para a loja.
     getPromocoes().catch((error) => {
       console.error("Banner: não foi possível ler os cupões do Stripe", error);
       return [];
     }),
+    demo ? Promise.resolve(mapStripeProducts(catalogoDemo())) : getCatalogo().catch(() => null),
   ]);
+  const produtos = catalogo?.products ?? [];
+  if (demo) for (const p of produtos) p.slug = `${p.slug}?demo=1`;
 
   return (
     <>
       <Navbar cartCount={cart?.totalQuantity ?? 0} />
       <main className="flex-1">
-        {/*
-          O Google espera um <h1> por página, e o herói do site é uma imagem —
-          não tinha nenhum. Fica invisível para o utilizador (`sr-only`) mas é
-          lido por buscadores e leitores de ecrã.
-        */}
+        {/* O herói é uma imagem: o <h1> fica invisível, mas é lido por buscadores e leitores de ecrã. */}
         <h1 className="sr-only">LavaDog Store — Pet Shop Online em Portugal. {SITE_TAGLINE}.</h1>
-        <Hero />
+        <Hero2 />
+        <FaixaVantagens2 />
+        <SecaoAtalhos />
+        <VitrineAnimal
+          id="sugestoes"
+          titulo="As nossas sugestões"
+          subtitulo="Encontre tudo o que precisa para o seu animal de estimação"
+          porAnimal={sugestoes(produtos)}
+        />
+        <VitrineAnimal
+          id="imperdiveis"
+          titulo="Produtos imperdíveis"
+          subtitulo="Não deixe escapar estas oportunidades"
+          porAnimal={imperdiveis(produtos)}
+          extraHref="&promo=true"
+          lateral={<CartaoOportunidades />}
+        />
         <Store />
-        <StorePromoBanner promocoes={promocoes} />
+        <StorePromoBanner promocoes={promocoes} compacto />
         <Contatos />
       </main>
       <Footer />
